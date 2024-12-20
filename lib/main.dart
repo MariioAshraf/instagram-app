@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-
-void main() {
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+void main() async{
+  await dotenv.load();
+  String url = dotenv.env['PROJECT_URL'] ?? '';
+  String anonKey = dotenv.env['API_KEY'] ?? '';
+  await Supabase.initialize(
+    url: url,
+    anonKey: anonKey,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
