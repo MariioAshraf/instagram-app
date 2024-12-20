@@ -1,0 +1,7 @@
+import 'package:dartz/dartz.dart';
+import 'package:instagram_app/features/login/data/models/login_input_body_model.dart';
+
+abstract class LoginRepo {
+  Either<Exception, Future<void>> login(
+      LoginInputBodyModel loginInputBodyModel);
+}
