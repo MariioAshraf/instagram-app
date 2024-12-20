@@ -6,3 +6,13 @@ abstract class LoginRepo {
   Either<LoginFailure, Future<void>> login(
       LoginInputBodyModel loginInputBodyModel);
 }
+
+class LoginRepoImpl implements LoginRepo {
+  @override
+  Either<LoginFailure, Future<void>> login(LoginInputBodyModel loginInputBodyModel) {
+
+    throw UnimplementedError();
+  }
+
+
+}
