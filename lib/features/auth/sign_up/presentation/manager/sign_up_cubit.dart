@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/features/auth/sign_up/domain/use_cases/sign_up_use_case.dart';
 import 'package:meta/meta.dart';
 
@@ -8,8 +9,8 @@ part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit(this.signUpUseCase) : super(SignUpInitial());
-  SignUpUseCase signUpUseCase;
-
+ final SignUpUseCase signUpUseCase;
+  static SignUpCubit get(context) => BlocProvider.of(context);
   Future<void> signUp(RegisterInputModel registerInputModel) async {
     emit(SignUpLoading());
     final res = await signUpUseCase.call(registerInputModel);
