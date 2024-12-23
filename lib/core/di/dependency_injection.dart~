@@ -5,7 +5,7 @@ import 'package:instagram_app/features/auth/sign_up/domain/use_cases/sign_up_use
 
 final getIt = GetIt.instance;
 
-void serviceLocator() {
+void setupServiceLocator() {
   getIt.registerSingleton<SignUpRepoImpl>(SignUpRepoImpl());
   getIt.registerSingleton<SignUpUseCase>(SignUpUseCase(getIt()));
   getIt.registerSingleton<LoginRepoImpl>(LoginRepoImpl());
