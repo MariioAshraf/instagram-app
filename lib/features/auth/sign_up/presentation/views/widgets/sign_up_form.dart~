@@ -119,7 +119,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 return 'password doesn\'t match';
               }
             },
-            controller: signUpCubit.confirmPasswordController,
+            // controller: signUpCubit.confirmPasswordController,
             obscureText: isObscureText,
             suffixIcon: IconButton(
               onPressed: () {

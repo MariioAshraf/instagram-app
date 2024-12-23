@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:instagram_app/features/auth/sign_up/domain/repos/sign_up_repo.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/use_cases/use_case.dart';
 import '../../../models/user_model.dart';
@@ -19,9 +19,7 @@ class SignUpUseCase extends UseCase<void, RegisterInputModel> {
       (failure) => Left(failure),
       (userId) async {
         try {
-          final user = UserModel(name: param.name, uId: userId);
-          final supabase = Supabase.instance.client;
-          await supabase.from('users').insert(user.toJson());
+          await saveUserData(param, userId);
           return const Right(null);
         } catch (e) {
           return Left(
@@ -29,5 +27,13 @@ class SignUpUseCase extends UseCase<void, RegisterInputModel> {
         }
       },
     );
+  }
+
+  Future<void> saveUserData(RegisterInputModel param, String userId) async {
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    final userModel =
+        UserModel(name: param.name, uId: userId, profileImageUrl: '');
+    await usersCollection.doc(userId).set(userModel.toJson());
   }
 }
