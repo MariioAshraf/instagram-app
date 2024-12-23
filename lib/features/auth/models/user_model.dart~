@@ -1,9 +1,16 @@
+
+
 class UserModel {
   late final String name;
+
   String? uId;
+
   String? profileImageUrl;
+  
   String? coverImageUrl;
+
   String? bio;
+
   String? viewStoryAt;
 
   UserModel({
