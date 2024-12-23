@@ -45,8 +45,10 @@ class LoginViewBody extends StatelessWidget {
                 //   await loginCubit.login();
                 // }
               },
-              textTitle: 'Login',
-              textStyle: AppTextStyles.font16WhiteSemiBold,
+              childWidget: Text(
+                'Login',
+                style: AppTextStyles.font16WhiteSemiBold,
+              ),
             ),
             verticalSpacing(40),
             const TermsAndConditionsText(),

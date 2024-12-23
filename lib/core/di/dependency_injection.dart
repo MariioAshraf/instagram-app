@@ -7,6 +7,7 @@ final getIt = GetIt.instance;
 
 void setupServiceLocator() {
   getIt.registerSingleton<SignUpRepoImpl>(SignUpRepoImpl());
-  getIt.registerSingleton<SignUpUseCase>(SignUpUseCase(getIt()));
+  getIt
+      .registerSingleton<SignUpUseCase>(SignUpUseCase(getIt<SignUpRepoImpl>()));
   getIt.registerSingleton<LoginRepoImpl>(LoginRepoImpl());
 }

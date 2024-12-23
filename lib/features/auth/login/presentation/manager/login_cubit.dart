@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/features/auth/login/data/repos/login_repo.dart';
-import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:meta/meta.dart';
 
 import '../../data/models/login_input_body_model.dart';

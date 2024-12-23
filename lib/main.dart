@@ -1,13 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/routing/app_router.dart';
 import 'core/di/dependency_injection.dart';
+import 'core/helpers/bloc_observer.dart';
+import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   setupServiceLocator();
-  await dotenv.load();
+  Bloc.observer = AppBlocObserver();
   await supabaseInitialization();
   runApp(const MyApp());
 }
@@ -17,10 +25,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateRoute: AppRouter().generateRoute,
-      title: 'Flutter Demo',
-      theme: ThemeData(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      child: MaterialApp(
+        initialRoute: Routes.loginView,
+        onGenerateRoute: AppRouter().generateRoute,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
