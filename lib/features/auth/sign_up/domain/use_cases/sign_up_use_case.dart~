@@ -23,7 +23,7 @@ class SignUpUseCase extends UseCase<void, RegisterInputModel> {
           return const Right(null);
         } catch (e) {
           return Left(
-              Failure( "Failed to save user data: ${e.toString()}"));
+              Failure(message: "Failed to save user data: ${e.toString()}"));
         }
       },
     );

@@ -18,8 +18,10 @@ class LoginRepoImpl implements LoginRepo {
               password: loginInputBodyModel.password);
       final uId = userCredential.user!.uid;
       return Right(uId);
+    } on FirebaseAuthException catch (e) {
+      return Left(FirebaseFailure.fromFirebaseException(e));
     } catch (e) {
-      return Left(Failure(message: e.toString()));
+      return Left(Failure(e.toString()));
     }
   }
 
