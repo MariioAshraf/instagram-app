@@ -3,8 +3,8 @@ import 'package:instagram_app/features/auth/sign_up/data/models/register_input_m
 
 import '../../../../../core/errors/failure.dart';
 
-abstract class SignUpRepo {
-  Future<Either<Failure, String>> signUp(RegisterInputModel registerInputModel);
 
+abstract  class SignUpRepo {
+  Future<Either<Failure, String>> signUp(RegisterInputModel registerInputModel);
   Future<void> saveUserData(String name, String userId);
 }

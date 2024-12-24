@@ -19,21 +19,16 @@ class SignUpUseCase extends UseCase<void, RegisterInputModel> {
       (failure) => Left(failure),
       (userId) async {
         try {
-          await saveUserData(param, userId);
+          await saveUserData(param.name, userId);
           return const Right(null);
         } catch (e) {
-          return Left(
-              Failure(message: "Failed to save user data: ${e.toString()}"));
+          return Left(Failure("Failed to save user data: ${e.toString()}"));
         }
       },
     );
   }
 
-  Future<void> saveUserData(RegisterInputModel param, String userId) async {
-    CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
-    final userModel =
-        UserModel(name: param.name, uId: userId, profileImageUrl: '');
-    await usersCollection.doc(userId).set(userModel.toJson());
+  Future<void> saveUserData(String name, String userId) async {
+
   }
 }
