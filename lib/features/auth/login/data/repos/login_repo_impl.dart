@@ -19,15 +19,10 @@ class LoginRepoImpl implements LoginRepo {
       final uId = userCredential.user!.uid;
       return Right(uId);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return Left(Failure(message: 'weak-password'));
-      } else if (e.code == 'email-already-in-use') {
-        return Left(Failure(message: 'email already in use'));
-      } else {
-        return Left(Failure(message: 'authentication error'));
-      }
+      print('error ===========================    ${e.code}');
+      return Left(FirebaseFailure.fromFirebaseException(e));
     } catch (e) {
-      return Left(Failure(message: e.toString()));
+      return Left(Failure(e.toString()));
     }
   }
 

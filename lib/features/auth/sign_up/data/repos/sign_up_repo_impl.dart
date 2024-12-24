@@ -16,7 +16,7 @@ class SignUpRepoImpl implements SignUpRepo {
       final uId = userCredentials.user!.uid;
       return Right(uId);
     } catch (e) {
-      return Left(Failure(message: e.toString()));
+      return Left(Failure( e.toString()));
     }
   }
 }

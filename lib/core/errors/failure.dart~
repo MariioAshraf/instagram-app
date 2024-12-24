@@ -10,11 +10,12 @@ class FirebaseFailure extends Failure {
   FirebaseFailure(super.message);
 
   factory FirebaseFailure.fromFirebaseException(FirebaseAuthException e) {
+
+
+
     switch (e.code) {
       case 'weak-password':
         return FirebaseFailure('The password provided is too weak.');
-      case 'invalid-credential':
-        return FirebaseFailure('invalid credential.');
       case 'email-already-in-use':
         return FirebaseFailure('email already in use.');
       case 'wrong-password':
