@@ -22,7 +22,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   late UserModel userModel;
 
-  void login() async {
+  Future<void> login() async {
     emit(LoginLoading());
     LoginInputBodyModel loginInputBodyModel = LoginInputBodyModel(
       email: emailController.text,

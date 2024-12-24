@@ -134,7 +134,7 @@ void _showSuccessMessage(BuildContext context) {
       duration: const Duration(seconds: 3),
       action: SnackBarAction(
         label: 'Ok',
-        textColor: AppColorsManager.mainBlue,
+        textColor: AppColorsManager.darkBlue,
         onPressed: () {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
         },

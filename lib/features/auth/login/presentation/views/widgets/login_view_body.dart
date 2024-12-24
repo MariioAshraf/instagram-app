@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../core/helpers/spacing.dart';
 import '../../../../../../core/theming/app_styles.dart';
+import '../../../../../../core/utils/spacing.dart';
 import '../../../../../../core/widgets/app_text_button.dart';
 import '../../../../sign_up/presentation/views/widgets/don\'t_have_account_text.dart';
 import '../../../../sign_up/presentation/views/widgets/terms_and_conditions_text.dart';
+import '../../manager/login_cubit.dart';
+import 'login_bloc_listener.dart';
+import 'login_form.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // var loginCubit = LoginCubit.get(context);
+    var loginCubit = LoginCubit.get(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 40.h),
       child: SingleChildScrollView(
@@ -28,7 +31,7 @@ class LoginViewBody extends StatelessWidget {
               style: AppTextStyles.font14GreyRegular,
             ),
             verticalSpacing(30),
-            // const LoginForm(),
+            const LoginForm(),
             verticalSpacing(22),
             Align(
               alignment: Alignment.centerRight,
@@ -38,12 +41,12 @@ class LoginViewBody extends StatelessWidget {
               ),
             ),
             verticalSpacing(22),
-            // const LoginBlocListener(),
+            const LoginBlocListener(),
             AppTextButton(
               onPressed: () async {
-                // if (loginCubit.formKey.currentState!.validate()) {
-                //   await loginCubit.login();
-                // }
+                if (loginCubit.formKey.currentState!.validate()) {
+                  await loginCubit.login();
+                }
               },
               childWidget: Text(
                 'Login',

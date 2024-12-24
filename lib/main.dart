@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/routing/app_router.dart';
 import 'core/di/dependency_injection.dart';
-import 'core/helpers/bloc_observer.dart';
+import 'core/utils/bloc_observer.dart';
 import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
 import 'firebase_options.dart';
