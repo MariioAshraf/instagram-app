@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+
+class ScaffoldGradientBackgroundContainer extends StatelessWidget {
+  final Widget child;
+
+  const ScaffoldGradientBackgroundContainer({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.blue[50]!,
+            Colors.white,
+            Colors.white,
+            Colors.blue[50]!
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: const [0.1, 0.2, 0.8, 0.9],
+        ),
+      ),
+      child: child,
+    );
+  }
+}
