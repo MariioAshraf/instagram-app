@@ -4,7 +4,7 @@ import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/errors/failure.dart';
 import 'package:instagram_app/core/use_cases/use_case.dart';
 import 'package:instagram_app/features/auth/login/data/models/login_input_body_model.dart';
-import 'package:instagram_app/features/auth/login/data/repos/login_repo.dart';
+import 'package:instagram_app/features/auth/login/domain/repos/login_repo.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 
 class LoginUseCase extends UseCase<UserModel, LoginInputBodyModel> {
@@ -16,7 +16,7 @@ class LoginUseCase extends UseCase<UserModel, LoginInputBodyModel> {
   Future<Either<Failure, UserModel>> call([LoginInputBodyModel? param]) async {
     var result = await loginRepo.login(param!);
     return result.fold((failure) => Left(failure), (uId) async {
-      UserModel userModel = await getUserData(uId);
+      final UserModel userModel = await getUserData(uId);
       return Right(userModel);
     });
   }
