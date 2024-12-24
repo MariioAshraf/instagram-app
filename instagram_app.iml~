@@ -60,7 +60,14 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />
+<<<<<<< Updated upstream
     <orderEntry type="library" name="Dart Packages" level="project" />
+<<<<<<< HEAD
+=======
     <orderEntry type="library" name="Flutter Plugins" level="project" />
+>>>>>>> Stashed changes
+=======
+    <orderEntry type="library" name="Flutter Plugins" level="project" />
+>>>>>>> origin/development
   </component>
 </module>

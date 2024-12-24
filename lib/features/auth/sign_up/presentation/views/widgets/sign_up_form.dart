@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/features/auth/sign_up/presentation/views/widgets/password_validation.dart';
-
-import '../../../../../../core/helpers/app_regex.dart';
-import '../../../../../../core/helpers/spacing.dart';
+import '../../../../../../core/utils/app_regex.dart';
 import '../../../../../../core/theming/app_colors.dart';
+import '../../../../../../core/utils/spacing.dart';
 import '../../../../../../core/widgets/app_text_form_field.dart';
 import '../../manager/sign_up_cubit.dart';
 

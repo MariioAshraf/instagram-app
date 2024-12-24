@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:instagram_app/core/helpers/extensions.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
+import 'package:instagram_app/core/utils/extensions.dart';
 import 'package:instagram_app/features/auth/sign_up/presentation/views/widgets/sign_up_form.dart';
 import 'package:instagram_app/features/auth/sign_up/presentation/views/widgets/terms_and_conditions_text.dart';
-import '../../../../../../core/helpers/spacing.dart';
 import '../../../../../../core/routing/routes.dart';
 import '../../../../../../core/theming/app_styles.dart';
+import '../../../../../../core/utils/spacing.dart';
 import '../../../../../../core/widgets/app_text_button.dart';
 import '../../manager/sign_up_cubit.dart';
 import 'already_have_an_account_text.dart';
