@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../../core/errors/failure.dart';
 import '../models/login_input_body_model.dart';
-import 'login_repo.dart';
+import '../../domain/repos/login_repo.dart';
 
 class LoginRepoImpl implements LoginRepo {
   @override

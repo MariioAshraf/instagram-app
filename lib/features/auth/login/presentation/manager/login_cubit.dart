@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram_app/features/auth/login/data/domain/user_cases/login_use_case.dart';
 import 'package:meta/meta.dart';
 import '../../../models/user_model.dart';
 import '../../data/models/login_input_body_model.dart';
+import '../../domain/user_cases/login_use_case.dart';
 
 part 'login_state.dart';
 
