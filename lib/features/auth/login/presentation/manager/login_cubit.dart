@@ -1,7 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import '../../../models/user_model.dart';
 import '../../data/models/login_input_body_model.dart';
 import '../../domain/user_cases/login_use_case.dart';
@@ -29,8 +27,9 @@ class LoginCubit extends Cubit<LoginState> {
       password: passwordController.text,
     );
     var result = await loginUseCase.call(loginInputBodyModel);
-    result.fold((l) => emit(LoginFailure(errMessage: l.message)), (userModel) {
-      userModel = userModel;
+    result.fold((failure) => emit(LoginFailure(errMessage: failure.message)),
+        (userModel) {
+      this.userModel = userModel;
       emit(LoginSuccess());
     });
   }
