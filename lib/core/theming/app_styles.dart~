@@ -45,7 +45,7 @@ class AppTextStyles {
     color: AppColorsManager.grey,
   );
   static TextStyle font17GreyRegular = TextStyle(
-    fontSize: 17.sp,
+    fontSize: 20.sp,
     fontWeight: FontWeightHelper.regular,
     color: AppColorsManager.grey,
   );
