@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/routing/app_router.dart';
+import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'core/di/dependency_injection.dart';
 import 'core/utils/bloc_observer.dart';
 import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
+import 'features/auth/login/domain/user_cases/login_use_case.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -28,10 +30,13 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      child: MaterialApp(
-        initialRoute: Routes.loginView,
-        onGenerateRoute: AppRouter().generateRoute,
-        debugShowCheckedModeBanner: false,
+      child: BlocProvider(
+        create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
+        child: MaterialApp(
+          initialRoute: Routes.loginView,
+          onGenerateRoute: AppRouter().generateRoute,
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }
