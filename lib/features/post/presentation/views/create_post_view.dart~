@@ -1,0 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:instagram_app/features/post/presentation/views/widgets/create_post_view_body.dart';
+class CreatePostView extends StatelessWidget {
+  const CreatePostView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: CreatePostViewBody(
+
+      ),
+    );
+  }
+}
