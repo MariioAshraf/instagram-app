@@ -9,6 +9,7 @@ import 'core/utils/bloc_observer.dart';
 import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
 import 'features/auth/login/domain/user_cases/login_use_case.dart';
+import 'features/home/presentation/manager/bottom_nav_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -30,8 +31,15 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      child: BlocProvider(
-        create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<LoginCubit>(
+            create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
+          ),
+          BlocProvider(
+            create: (context) => BottomNavCubit(),
+          )
+        ],
         child: MaterialApp(
           initialRoute: Routes.loginView,
           onGenerateRoute: AppRouter().generateRoute,

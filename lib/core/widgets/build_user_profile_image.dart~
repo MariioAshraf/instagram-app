@@ -7,10 +7,7 @@ import '../../features/auth/login/presentation/manager/login_cubit.dart';
 import '../../features/auth/models/user_model.dart';
 import '../../features/home/presentation/views/widgets/image_shimmer_loading.dart';
 
-Widget buildUserProfileImage(
-  BuildContext context, {
-  double radius = 24,
-}) {
+Widget buildUserProfileImage(BuildContext context, {double radius = 24}) {
   final UserModel userModel = LoginCubit.get(context).userModel;
   return userModel.hasProfileImage
       ? UserCircleProfileImage(
