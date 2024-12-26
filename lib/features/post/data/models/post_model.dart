@@ -4,7 +4,7 @@ class PostModel {
   String userName;
   String uId;
   String? userProfileImage;
-  String? postFileUrl;
+  List<String>? postFileUrl;
   String? postTitle;
   DateTime createdAt;
   String postId;
@@ -19,25 +19,30 @@ class PostModel {
     required this.createdAt,
   });
 
-  factory PostModel.fromJson(json) {
+  // Factory method to create an instance from JSON
+  factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
       postId: json['postId'],
       userName: json['name'],
       uId: json['uId'],
       userProfileImage: json['userProfileImage'],
-      postFileUrl: json['postImage'] ?? '',
+      // Ensure postFileUrl is a List<String>
+      postFileUrl: (json['postFileUrls'] as List<dynamic>?)
+          ?.map((item) => item as String)
+          .toList(),
       postTitle: json['postTitle'] ?? '',
-      createdAt: (json['createdAt'] as Timestamp).toDate().toLocal(),
+      createdAt: (json['createdAt'] as Timestamp).toDate(),
     );
   }
 
+  // Method to convert instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'postId': postId,
       'name': userName,
       'uId': uId,
       'userProfileImage': userProfileImage,
-      'postImage': postFileUrl,
+      'postFileUrls': postFileUrl,
       'postTitle': postTitle,
       'createdAt': createdAt,
     };
