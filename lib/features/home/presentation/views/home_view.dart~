@@ -16,7 +16,7 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: Colors.transparent,
-            bottomNavigationBar: _buildBottomNavBar(bottomNavCubit,context),
+            bottomNavigationBar: _buildBottomNavBar(bottomNavCubit),
             body: bottomNavCubit.screens[bottomNavCubit.currentIndex],
           );
         },
