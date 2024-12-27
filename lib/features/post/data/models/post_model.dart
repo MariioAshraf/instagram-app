@@ -31,7 +31,7 @@ class PostModel {
           ?.map((item) => item as String)
           .toList(),
       postTitle: json['postTitle'] ?? '',
-      createdAt: (json['createdAt'] as Timestamp).toDate(),
+      createdAt: (json['createdAt'] as Timestamp).toDate().toLocal(),
     );
   }
 

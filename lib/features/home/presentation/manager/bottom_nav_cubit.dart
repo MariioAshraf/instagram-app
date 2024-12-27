@@ -29,7 +29,7 @@ class BottomNavCubit extends Cubit<BottomNavState> {
         label: 'Search',
       ),
       BottomNavigationBarItem(
-        icon: buildUserProfileImage(context, radius: 18),
+        icon: buildUserProfileImage(context, radius: 14),
         label: 'Profile',
       ),
     ];
