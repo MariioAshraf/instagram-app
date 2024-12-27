@@ -1,60 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart';
+import 'package:instagram_app/features/post/presentation/views/widgets/post_media_college.dart';
+import 'create_post_text_field.dart';
+import 'create_post_top_bar.dart';
 
-class CreatePostViewBody extends StatelessWidget {
-  const CreatePostViewBody({super.key});
+class CreatePostViewBody extends StatefulWidget {
+  const CreatePostViewBody({super.key, required this.postCubit});
+
+  final PostCubit postCubit;
+
+  @override
+  State<CreatePostViewBody> createState() => _CreatePostViewBodyState();
+}
+
+class _CreatePostViewBodyState extends State<CreatePostViewBody> {
+  @override
+  void initState() {
+    widget.postCubit.checkPostStatus();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.postCubit.postTitleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-      child: const Column(
+      padding: EdgeInsets.only(
+        top: 40.h,
+        right: 16.w,
+        left: 16.w,
+      ),
+      child: Column(
         children: [
-          Text('Create Post'),
+          const CreatePostTopBar(),
+          const CreatePostTextField(),
+          _buildPostCollege(widget.postCubit.media),
         ],
       ),
     );
   }
 }
-void _showBottomSheet(BuildContext context) {
-  PostCubit postCubit = PostCubit.get(context);
-  showModalBottomSheet(
-    context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(16),
-      ),
-    ),
-    builder: (BuildContext context) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 4,
-              width: 50,
-              margin: const EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: const Text("Add a Photo or Video"),
-              onTap: () => postCubit.pickPostFiles(),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.close),
-              title: const Text("Cancel"),
-              onTap: () => Navigator.of(context).pop(),
-            ),
-          ],
-        ),
-      );
-    },
-  );
+
+Widget _buildPostCollege(List<XFile>? media) {
+  return media != null && media.isNotEmpty
+      ? PhotoCollage(images: media)
+      : const SizedBox.shrink();
 }

@@ -25,7 +25,8 @@ class AppTextStyles {
     fontSize: 13.sp,
     fontWeight: FontWeightHelper.regular,
     color: AppColorsManager.grey,
-  );static TextStyle font11MoreGreyRegular = TextStyle(
+  );
+  static TextStyle font11MoreGreyRegular = TextStyle(
     fontSize: 11.sp,
     fontWeight: FontWeightHelper.regular,
     color: AppColorsManager.moreGrey,
@@ -34,7 +35,8 @@ class AppTextStyles {
     fontSize: 13.sp,
     fontWeight: FontWeightHelper.regular,
     color: AppColorsManager.mainBlue,
-  );static TextStyle font12BlueRegular = TextStyle(
+  );
+  static TextStyle font12BlueRegular = TextStyle(
     fontSize: 12.sp,
     fontWeight: FontWeightHelper.regular,
     color: AppColorsManager.mainBlue,
@@ -64,12 +66,12 @@ class AppTextStyles {
     fontWeight: FontWeightHelper.medium,
     color: AppColorsManager.darkBlue,
   );
-static TextStyle font18DarkBlueBold = TextStyle(
+  static TextStyle font18DarkBlueBold = TextStyle(
     fontSize: 18.sp,
     fontWeight: FontWeightHelper.bold,
     color: AppColorsManager.darkBlue,
   );
-static TextStyle font18WhiteMedium = TextStyle(
+  static TextStyle font18WhiteMedium = TextStyle(
     fontSize: 18.sp,
     fontWeight: FontWeightHelper.medium,
     color: Colors.white,

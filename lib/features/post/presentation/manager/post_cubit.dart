@@ -11,7 +11,8 @@ part 'post_state.dart';
 class PostCubit extends Cubit<PostState> {
   PostCubit(this.postUseCase) : super(PostInitial());
   final PostUseCase postUseCase;
- static PostCubit get(context) => BlocProvider.of(context);
+
+  static PostCubit get(context) => BlocProvider.of(context);
   List<XFile>? media;
 
   Future<void> pickPostFiles() async {
@@ -33,8 +34,12 @@ class PostCubit extends Cubit<PostState> {
   }
 
   Future<void> createPost(UserModel userModel) async {
-    var result = await postUseCase.call(userModel, media);
-    result.fold((failure) => emit(CreatePostFailure(failure.message)), (r) {
+    var result =
+        await postUseCase.call(userModel, media, postTitleController.text);
+    result.fold((failure) {
+      print(failure.message);
+      emit(CreatePostFailure(failure.message));
+    }, (r) {
       media = null;
       emit(CreatePostSuccess());
     });

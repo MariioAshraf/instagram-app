@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_app/core/utils/extensions.dart';
+import '../../../../../core/routing/routes.dart';
 import '../../../../../core/theming/app_colors.dart';
 import '../../../../../core/theming/app_styles.dart';
+
 class WhatIsInYourHeadTextButton extends StatelessWidget {
   const WhatIsInYourHeadTextButton({
     super.key,
@@ -18,7 +21,9 @@ class WhatIsInYourHeadTextButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
       ),
-      onPressed: () {},
+      onPressed: () {
+        context.pushNamed(Routes.createPostView);
+      },
       child: Text(
         'What\'s in your head?',
         style: AppTextStyles.font17GreyRegular,

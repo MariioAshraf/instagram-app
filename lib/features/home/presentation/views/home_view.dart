@@ -32,6 +32,8 @@ class HomeView extends StatelessWidget {
         highlightColor: Colors.transparent,
       ),
       child: BottomNavigationBar(
+        iconSize: 24,
+        type:   BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: bottomNavCubit.buildBottomNavItems(context),
@@ -42,7 +44,7 @@ class HomeView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         selectedItemColor: AppColorsManager.mainBlue,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: Colors.black54,
       ),
     );
   }

@@ -66,7 +66,6 @@ class PostRepoImpl extends PostRepo {
             '${DateTime.now().millisecondsSinceEpoch}_${file.uri.pathSegments.last}';
 
         final String fullPath = 'posts/$userId/$fileName';
-
         await supabase.storage.from('posts').upload(
               fullPath,
               file,
