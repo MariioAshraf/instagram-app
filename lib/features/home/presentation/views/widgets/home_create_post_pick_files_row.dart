@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'home_choose_file_video_and_image_text_button.dart';
+import '../../../../../core/theming/app_colors.dart';
+import '../../../../../core/theming/app_styles.dart';
+import '../../../../../core/utils/spacing.dart';
 
 class HomeCreatePostPickFilesRow extends StatelessWidget {
   const HomeCreatePostPickFilesRow({
@@ -14,12 +15,20 @@ class HomeCreatePostPickFilesRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: HomeChooseFileVideoAndImageTextButton(
-            type: 'Image',
-            icon: Icons.add_photo_alternate,
-            onTap: () {},
-          ),
-        ),
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.add_photo_alternate,
+              color: AppColorsManager.mainBlue,
+            ),
+            horizontalSpacing(7),
+            Text(
+              'Image',
+              style: AppTextStyles.font14DarkBlueMedium,
+            )
+          ],
+        )),
         VerticalDivider(
           indent: 23.h,
           endIndent: 23.h,
@@ -27,12 +36,20 @@ class HomeCreatePostPickFilesRow extends StatelessWidget {
           color: Colors.black,
         ),
         Expanded(
-          child: HomeChooseFileVideoAndImageTextButton(
-            type: 'Video',
-            icon: Icons.movie,
-            onTap: () {},
-          ),
-        ),
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.movie,
+              color: AppColorsManager.mainBlue,
+            ),
+            horizontalSpacing(7),
+            Text(
+              'Video',
+              style: AppTextStyles.font14DarkBlueMedium,
+            )
+          ],
+        )),
       ],
     );
   }

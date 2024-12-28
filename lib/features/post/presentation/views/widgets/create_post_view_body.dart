@@ -18,7 +18,10 @@ class CreatePostViewBody extends StatefulWidget {
 class _CreatePostViewBodyState extends State<CreatePostViewBody> {
   @override
   void initState() {
-    widget.postCubit.checkPostStatus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.postCubit.checkPostStatus();
+    });
+
     super.initState();
   }
 

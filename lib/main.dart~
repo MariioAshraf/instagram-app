@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       child: MultiBlocProvider(
         providers: [
+
+
           BlocProvider<LoginCubit>(
             create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
           ),
