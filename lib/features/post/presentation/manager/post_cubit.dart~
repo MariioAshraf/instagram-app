@@ -37,6 +37,7 @@ class PostCubit extends Cubit<PostState> {
     var result =
         await postUseCase.call(userModel, media, postTitleController.text);
     result.fold((failure) {
+      print(failure.message);
       emit(CreatePostFailure(failure.message));
     }, (r) {
       media = null;

@@ -16,23 +16,21 @@ class CreatePostView extends StatelessWidget {
   Widget build(BuildContext context) {
     final PostCubit postCubit = PostCubit.get(context);
     return ScaffoldGradientBackgroundContainer(
-      child: SafeArea(
-        child: Scaffold(
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.miniStartFloat,
-          backgroundColor: Colors.transparent,
-          floatingActionButton: _buildPickImagesFloatingButton(context),
-          body: BlocBuilder<PostCubit, PostState>(
-            buildWhen: (_, current) =>
-                current is CanNotUploadPost ||
-                current is CanUploadPost ||
-                current is PostFilesPickedSuccess,
-            builder: (context, state) {
-              return CreatePostViewBody(
-                postCubit: postCubit,
-              );
-            },
-          ),
+      child: Scaffold(
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniStartFloat,
+        backgroundColor: Colors.transparent,
+        floatingActionButton: _buildPickImagesFloatingButton(context),
+        body: BlocBuilder<PostCubit, PostState>(
+          buildWhen: (_, current) =>
+              current is CanNotUploadPost ||
+              current is CanUploadPost ||
+              current is PostFilesPickedSuccess,
+          builder: (context, state) {
+            return CreatePostViewBody(
+              postCubit: postCubit,
+            );
+          },
         ),
       ),
     );
