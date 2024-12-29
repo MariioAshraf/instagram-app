@@ -5,6 +5,7 @@ import 'package:instagram_app/features/auth/sign_up/domain/use_cases/sign_up_use
 import 'package:instagram_app/features/post/data/repos/post_repo_impl.dart';
 import 'package:instagram_app/features/post/domain/use_cases/post_use_case.dart';
 import '../../features/auth/login/domain/user_cases/login_use_case.dart';
+import '../../features/profile/data/repos/profile_repo_impl.dart';
 
 final getIt = GetIt.instance;
 
@@ -20,4 +21,7 @@ void setupServiceLocator() {
   // post repo dependencies
   getIt.registerSingleton<PostRepoImpl>(PostRepoImpl());
   getIt.registerSingleton<PostUseCase>(PostUseCase(getIt<PostRepoImpl>()));
+
+  // profile repo dependencies
+  getIt.registerSingleton<ProfileRepoImpl>(ProfileRepoImpl());
 }

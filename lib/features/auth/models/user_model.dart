@@ -8,7 +8,7 @@ class UserModel {
 
   UserModel({
     required this.name,
-    required this.uId,
+     this.uId,
     this.profileImageUrl = '',
     this.coverImageUrl = '',
     this.bio = '',

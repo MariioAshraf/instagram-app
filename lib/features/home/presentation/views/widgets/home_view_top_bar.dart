@@ -12,7 +12,7 @@ class HomeViewTopBar extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(
-          top: 70.h,
+          top: 20.h,
           left: 5.w,
           right: 5.w,
           bottom: 20.h,

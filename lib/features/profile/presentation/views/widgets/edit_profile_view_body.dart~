@@ -20,6 +20,20 @@ class EditProfileViewBody extends StatefulWidget {
 }
 
 class _EditProfileViewBodyState extends State<EditProfileViewBody> {
+  late ProfileCubit profileCubit;
+
+  @override
+  void initState() {
+    profileCubit = ProfileCubit.get(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    profileCubit.disposeControllers();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

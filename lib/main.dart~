@@ -12,6 +12,7 @@ import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
 import 'features/auth/login/domain/user_cases/login_use_case.dart';
 import 'features/home/presentation/manager/bottom_nav_cubit.dart';
+import 'features/profile/presentation/manager/profile_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => BottomNavCubit(),
-          )
+          ),
+          BlocProvider(create: (context) => ProfileCubit()),
         ],
         child: MaterialApp(
           initialRoute: Routes.loginView,

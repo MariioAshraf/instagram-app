@@ -24,14 +24,11 @@ class SaveAndCancelButtonsEditProfile extends StatelessWidget {
           child: TextButton(
             style: ButtonStyle(
               overlayColor: const WidgetStatePropertyAll(Colors.grey),
-              shape: WidgetStatePropertyAll(
-                RoundedRectangleBorder(
+              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                   side: const BorderSide(
                     color: Colors.grey,
                   ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(16))),
               padding: const WidgetStatePropertyAll(
                 EdgeInsets.zero,
               ),
