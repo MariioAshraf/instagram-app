@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/features/auth/user_model_extensions.dart';
 import '../../features/auth/login/presentation/manager/login_cubit.dart';
 import '../../features/auth/models/user_model.dart';
@@ -33,13 +32,11 @@ class UserCircleProfileImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundColor: Colors.white,
-      radius: radius,
+      radius: radius.r,
       child: ClipOval(
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: BoxFit.cover,
-          width: 56,
-          height: 56,
           placeholder: (context, url) => const ImageShimmerLoading(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
@@ -56,7 +53,7 @@ class UserDefaultProfileCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: radius,
+      radius: radius.r,
       backgroundColor: Colors.grey,
       child: const Icon(
         Icons.person,

@@ -1,13 +1,15 @@
-import 'dart:ffi';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/features/auth/user_model_extensions.dart';
 import '../../features/auth/login/presentation/manager/login_cubit.dart';
 import '../../features/auth/models/user_model.dart';
 import '../../features/home/presentation/views/widgets/image_shimmer_loading.dart';
 
-Widget buildUserProfileImage(BuildContext context, {double radius = 24}) {
+Widget buildUserProfileImage(
+  BuildContext context, {
+  double radius = 24,
+}) {
   final UserModel userModel = LoginCubit.get(context).userModel;
   return userModel.hasProfileImage
       ? UserCircleProfileImage(
@@ -30,13 +32,11 @@ class UserCircleProfileImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundColor: Colors.white,
-      radius: radius,
+      radius: radius.r,
       child: ClipOval(
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: BoxFit.cover,
-          width: 56,
-          height: 56,
           placeholder: (context, url) => const ImageShimmerLoading(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
@@ -53,7 +53,7 @@ class UserDefaultProfileCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: radius,
+      radius: radius.r,
       backgroundColor: Colors.grey,
       child: const Icon(
         Icons.person,
@@ -61,4 +61,36 @@ class UserDefaultProfileCircleAvatar extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget buildUserCoverImage({
+  required String coverImageUrl,
+  required double height,
+}) {
+  return coverImageUrl.isNotEmpty?
+   Container(
+    height: height * 0.27,
+    width: double.maxFinite,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        fit: BoxFit.fill,
+        image: CachedNetworkImageProvider(coverImageUrl),
+      ),
+      color: Colors.red,
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(16.r),
+        bottomRight: Radius.circular(16.r),
+      ),
+    ),
+  ) : Container(
+    height: height * 0.27,
+    width: double.maxFinite,
+    decoration: BoxDecoration(
+      color: Colors.grey[300],
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(16.r),
+        bottomRight: Radius.circular(16.r),
+      ),
+    ),
+  );
 }
