@@ -1,9 +1,13 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/widgets/build_user_profile_image.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
+import 'package:meta/meta.dart';
+import '../../../profile/presentation/manager/profile_cubit.dart';
 import '../../../profile/presentation/views/profile_view.dart';
 import '../../../search/presentation/views/search_view.dart';
 import '../views/widgets/home_view_body.dart';

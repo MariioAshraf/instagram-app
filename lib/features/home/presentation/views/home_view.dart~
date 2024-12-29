@@ -16,8 +16,8 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: Colors.transparent,
-            bottomNavigationBar: _buildBottomNavBar(bottomNavCubit, context),
-            body: bottomNavCubit.screens(context)[bottomNavCubit.currentIndex],
+            bottomNavigationBar: _buildBottomNavBar(bottomNavCubit,context),
+            body: bottomNavCubit.screens[bottomNavCubit.currentIndex],
           );
         },
       ),
@@ -33,7 +33,7 @@ class HomeView extends StatelessWidget {
       ),
       child: BottomNavigationBar(
         iconSize: 24,
-        type: BottomNavigationBarType.fixed,
+        type:   BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: bottomNavCubit.buildBottomNavItems(context),

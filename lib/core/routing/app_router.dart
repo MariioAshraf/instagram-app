@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/routing/routes.dart';
+import 'package:instagram_app/features/profile/presentation/views/edit_profile_view.dart';
 
 import '../../features/auth/login/presentation/views/login_view.dart';
 import '../../features/auth/sign_up/presentation/views/sign_up_view.dart';
@@ -13,23 +14,27 @@ import '../di/dependency_injection.dart';
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case Routes.loginView: // here
+      case Routes.loginView:
         return MaterialPageRoute(
           builder: (_) => const LoginView(),
         );
-      case Routes.homeView: // and here
+      case Routes.homeView:
         return MaterialPageRoute(
           builder: (_) => const HomeView(),
         );
-      case Routes.createPostView: // and here
+      case Routes.createPostView:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
               create: (context) => PostCubit(getIt.get<PostUseCase>()),
               child: const CreatePostView()),
         );
-      case Routes.signUpView: // and here
+      case Routes.signUpView:
         return MaterialPageRoute(
           builder: (_) => const SignUpView(),
+        );
+      case Routes.editProfileView:
+        return MaterialPageRoute(
+          builder: (_) => const EditProfileView(),
         );
       default:
         return null;
