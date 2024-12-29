@@ -19,7 +19,7 @@ class LoginRepoImpl implements LoginRepo {
       final uId = userCredential.user!.uid;
       return Right(uId);
     } on FirebaseAuthException catch (e) {
-      return Left(FirebaseFailure.fromFirebaseException(e));
+      return Left(FirebaseAuthFailure.fromFirebaseAuthException(e));
     } catch (e) {
       return Left(Failure(e.toString()));
     }

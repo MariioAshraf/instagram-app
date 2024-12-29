@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/routing/app_router.dart';
 import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
+import 'package:instagram_app/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/di/dependency_injection.dart';
 import 'core/utils/bloc_observer.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => BottomNavCubit(),
           ),
-          BlocProvider(create: (context) => ProfileCubit()),
+          BlocProvider(
+              create: (context) => ProfileCubit(getIt.get<ProfileRepoImpl>())),
         ],
         child: MaterialApp(
           initialRoute: Routes.loginView,

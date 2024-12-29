@@ -6,23 +6,23 @@ class Failure {
   const Failure(this.message);
 }
 
-class FirebaseFailure extends Failure {
-  FirebaseFailure(super.message);
+class FirebaseAuthFailure extends Failure {
+  FirebaseAuthFailure(super.message);
 
-  factory FirebaseFailure.fromFirebaseException(FirebaseAuthException e) {
+  factory FirebaseAuthFailure.fromFirebaseAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':
-        return FirebaseFailure('The password provided is too weak.');
+        return FirebaseAuthFailure('The password provided is too weak.');
       case 'invalid-credential':
-        return FirebaseFailure('invalid credential.');
+        return FirebaseAuthFailure('invalid credential.');
       case 'email-already-in-use':
-        return FirebaseFailure('email already in use.');
+        return FirebaseAuthFailure('email already in use.');
       case 'wrong-password':
-        return FirebaseFailure('Wrong password provided.');
+        return FirebaseAuthFailure('Wrong password provided.');
       case 'user-not-found':
-        return FirebaseFailure('user not found.');
+        return FirebaseAuthFailure('user not found.');
       default:
-        return FirebaseFailure('Authentication error.');
+        return FirebaseAuthFailure('Authentication error.');
     }
   }
 }

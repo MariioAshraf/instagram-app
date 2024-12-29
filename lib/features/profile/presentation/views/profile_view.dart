@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/build_drawer.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/profile_view_body.dart';
 
@@ -18,8 +20,14 @@ class _ProfileViewState extends State<ProfileView> {
       key: _scaffoldKey,
       drawer: const BuildDrawer(),
       backgroundColor: Colors.transparent,
-      body: ProfileViewBody(
-        scaffoldKey: _scaffoldKey,
+      body: BlocBuilder<LoginCubit, LoginState>(
+        buildWhen: (previous, current) =>
+            current is GetUserSuccess || current is GetUserLoading,
+        builder: (context, state) {
+          return ProfileViewBody(
+            scaffoldKey: _scaffoldKey,
+          );
+        },
       ),
     );
   }
