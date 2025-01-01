@@ -35,8 +35,10 @@ class UserCircleProfileImage extends StatelessWidget {
       radius: radius.r,
       child: ClipOval(
         child: CachedNetworkImage(
+          height: radius.r * 2,
+          width: radius.r * 2,
           imageUrl: imageUrl,
-          fit: BoxFit.cover,
+          fit: BoxFit.fitHeight,
           placeholder: (context, url) => const ImageShimmerLoading(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
