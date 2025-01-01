@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/features/home/presentation/views/widgets/gradient_background.dart';
 
+import '../../../auth/login/presentation/manager/login_cubit.dart';
 import '../manager/bottom_nav_cubit.dart';
 
 class HomeView extends StatelessWidget {
@@ -16,8 +17,8 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: Colors.transparent,
-            bottomNavigationBar: _buildBottomNavBar(bottomNavCubit,context),
-            body: bottomNavCubit.screens[bottomNavCubit.currentIndex],
+            bottomNavigationBar: _buildBottomNavBar(bottomNavCubit, context),
+            body: bottomNavCubit.screens(context)[bottomNavCubit.currentIndex],
           );
         },
       ),
@@ -26,6 +27,7 @@ class HomeView extends StatelessWidget {
 
   Theme _buildBottomNavBar(
       BottomNavCubit bottomNavCubit, BuildContext context) {
+      final String profileImageUrl = LoginCubit.get(context).userModel.profileImageUrl!;
     return Theme(
       data: ThemeData(
         splashColor: Colors.transparent,
@@ -33,10 +35,10 @@ class HomeView extends StatelessWidget {
       ),
       child: BottomNavigationBar(
         iconSize: 24,
-        type:   BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: bottomNavCubit.buildBottomNavItems(context),
+        items: bottomNavCubit.buildBottomNavItems(profileImageUrl),
         currentIndex: bottomNavCubit.currentIndex,
         onTap: (index) {
           bottomNavCubit.changeBottomNav(index);

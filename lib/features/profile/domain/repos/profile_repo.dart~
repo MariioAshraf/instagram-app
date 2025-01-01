@@ -9,7 +9,7 @@ abstract class ProfileRepo {
     required UserModel userModel,
   });
 
-  Future<Either<Failure, String>> uploadUserProfileAndCoverImagesAndGetUrl(
+  Future<Either<Failure, String>> uploadUserProfileAndCoverImages(
     String filePath,
     String uId,
   );

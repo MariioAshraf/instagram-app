@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:instagram_app/core/utils/extensions.dart';
+import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/spacing.dart';
-import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
-import 'package:instagram_app/features/profile/presentation/views/widgets/profile_view_body.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/save_and_cancel_buttons_edit_profile.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/update_name_and_bio_text_fields.dart';
-
-import '../../../../../core/theming/app_colors.dart';
+import 'package:instagram_app/features/profile/presentation/views/widgets/update_profile_bloc_listener.dart';
+import 'package:instagram_app/features/profile/presentation/views/widgets/user_profile_and_cover_images.dart';
+import '../../../../../constants.dart';
 import '../../../../auth/login/presentation/manager/login_cubit.dart';
 
 class EditProfileViewBody extends StatefulWidget {
@@ -22,11 +21,36 @@ class EditProfileViewBody extends StatefulWidget {
 class _EditProfileViewBodyState extends State<EditProfileViewBody> {
   @override
   Widget build(BuildContext context) {
+    final ProfileCubit profileCubit = ProfileCubit.get(context);
+    final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: [
           const UpdateProfileBlocListener(),
-          const UserProfileAndCoverImages(),
+          Stack(
+            children: [
+              UserProfileAndCoverImages(),
+              Positioned(
+                right: size.width * .36,
+                bottom: 1,
+                child: PickImageIconButton(
+                  onPressed: () {
+                    profileCubit.pickProfilePhoto();
+                  },
+                ),
+              ),
+              Positioned(
+                right: 3,
+                bottom: size.height * 0.06,
+                child: PickImageIconButton(
+                  onPressed: () {
+                    profileCubit.pickCoverPhoto();
+                  },
+                ),
+              ),
+            ],
+          ),
+          const ChangeImagesBlocListener(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
             child: Column(
@@ -43,56 +67,55 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
   }
 }
 
-class UpdateProfileBlocListener extends StatelessWidget {
-  const UpdateProfileBlocListener({super.key});
+class PickImageIconButton extends StatelessWidget {
+  const PickImageIconButton({
+    required this.onPressed,
+    super.key,
+  });
+
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    LoginCubit loginCubit = LoginCubit.get(context);
-    return BlocListener<ProfileCubit, ProfileState>(
-      child: const SizedBox.shrink(),
-      listener: (context, state) {
-        if (state is UpdateUserFailure) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              icon: const Icon(
-                Icons.error,
-                color: Colors.red,
-                size: 32,
-              ),
-              content: Text(state.errMessage),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Got it',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500)),
-                ),
-              ],
-            ),
-          );
-        }
-        if (state is UpdateUserSuccess) {
-          loginCubit.getUser();
-          context.pop();
-          context.pop();
-        }
-        if (state is UpdateUserLoading) {
-          showDialog(
-            context: context,
-            builder: (context) => const Center(
-              child: CircularProgressIndicator(
-                color: AppColorsManager.mainBlue,
-              ),
-            ),
-          );
-        }
-      },
+    return CircleAvatar(
+      backgroundColor: Colors.white,
+      radius: 22.r,
+      child: CircleAvatar(
+        radius: 20.r,
+        backgroundColor: AppColorsManager.mainBlue,
+        child: IconButton(
+            color: Colors.white,
+            onPressed: onPressed,
+            icon: const Icon(Icons.edit)),
+      ),
     );
+  }
+}
+
+class ChangeImagesBlocListener extends StatelessWidget {
+  const ChangeImagesBlocListener({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final String uId = LoginCubit.get(context).userModel.uId!;
+    ProfileCubit profileCubit = ProfileCubit.get(context);
+    return BlocListener<ProfileCubit, ProfileState>(
+        child: const SizedBox.shrink(),
+        listener: (context, state) {
+          if (state is PickProfilePhotoSuccess) {
+            profileCubit.uploadProfilePhoto(
+              path: state.profilePath,
+              uId: uId,
+            );
+          }
+          if (state is PickCoverPhotoSuccess) {
+            profileCubit.uploadCoverPhoto(
+              path: state.profilePath,
+              uId: uId,
+            );
+          }
+        });
   }
 }

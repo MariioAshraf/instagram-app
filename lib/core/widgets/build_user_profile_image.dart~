@@ -35,8 +35,10 @@ class UserCircleProfileImage extends StatelessWidget {
       radius: radius.r,
       child: ClipOval(
         child: CachedNetworkImage(
+          // height: radius.r * 2,
+          // width: radius.r * 2,
           imageUrl: imageUrl,
-          fit: BoxFit.cover,
+          fit: BoxFit.fitHeight,
           placeholder: (context, url) => const ImageShimmerLoading(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
@@ -61,36 +63,4 @@ class UserDefaultProfileCircleAvatar extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget buildUserCoverImage({
-  required String coverImageUrl,
-  required double height,
-}) {
-  return coverImageUrl.isNotEmpty?
-   Container(
-    height: height * 0.27,
-    width: double.maxFinite,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        fit: BoxFit.fill,
-        image: CachedNetworkImageProvider(coverImageUrl),
-      ),
-      color: Colors.red,
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(16.r),
-        bottomRight: Radius.circular(16.r),
-      ),
-    ),
-  ) : Container(
-    height: height * 0.27,
-    width: double.maxFinite,
-    decoration: BoxDecoration(
-      color: Colors.grey[300],
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(16.r),
-        bottomRight: Radius.circular(16.r),
-      ),
-    ),
-  );
 }

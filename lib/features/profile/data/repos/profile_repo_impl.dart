@@ -1,27 +1,69 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/auth/user_model_extensions.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../constants.dart';
 import '../../../../core/errors/failure.dart';
 import '../../domain/repos/profile_repo.dart';
 
 class ProfileRepoImpl implements ProfileRepo {
+  final usersCollection =
+      FirebaseFirestore.instance.collection(kUsersCollection);
+
   @override
-  Future<Either<Failure, UserModel>> updateUserNameAndBio(
+  Future<Either<Failure, void>> updateUserNameAndBio(
       {String? name, String? bio, required UserModel userModel}) async {
     try {
-      final userDocRef = FirebaseFirestore.instance
-          .collection(kUsersCollection)
-          .doc(userModel.uId);
-      final updatedUserModel = userModel.copyWith(name: name, bio: bio);
-      if (name != null || bio != null) {
+      final userDocRef = usersCollection.doc(userModel.uId);
+      final updatedName =
+          (name != null && name.isNotEmpty) ? name : userModel.name;
+      final updatedBio = (bio != null && bio.isNotEmpty) ? bio : userModel.bio;
+      if (updatedName != userModel.name || updatedBio != userModel.bio) {
+        final updatedUserModel =
+            userModel.copyWith(name: updatedName, bio: updatedBio);
         await userDocRef.set(updatedUserModel.toJson());
       }
-      return right(updatedUserModel);
+      return right(null);
     } on FirebaseException catch (e) {
       return Left(Failure(e.message ?? "An unknown Firebase error occurred"));
+    } catch (e) {
+      return left(Failure("An unexpected error occurred: ${e.toString()}"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadUserProfileAndCoverImagesAndGetUrl(
+      String path, String uId) async {
+    try {
+      final supabase = Supabase.instance.client;
+      final file = File(path);
+      final String fileName =
+          '${DateTime.now().millisecondsSinceEpoch}_${file.uri.pathSegments.last}';
+      final String fullPath = 'profile/$uId/$fileName';
+      await supabase.storage.from('profile').upload(
+            fullPath,
+            file,
+          );
+      final String fileUrl =
+          supabase.storage.from('profile').getPublicUrl(fullPath);
+      return right(fileUrl);
+    } catch (e) {
+      return left(Failure("An unexpected error occurred: ${e.toString()}"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> saveProfileAndCoverImagesUrl({
+    required String imageUrl,
+    required String uId,
+    required String type,
+  }) async {
+    try {
+      final path = type == kProfileImage ? kProfileImage : kCoverImage;
+      await usersCollection.doc(uId).update({path: imageUrl});
+      return right(null);
     } catch (e) {
       return left(Failure("An unexpected error occurred: ${e.toString()}"));
     }
