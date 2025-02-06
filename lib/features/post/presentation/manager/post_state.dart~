@@ -14,7 +14,6 @@ final class PostFilesPickedFailure extends PostState {
 }
 
 final class CreatePostSuccess extends PostState {}
-final class CreatePostLoading extends PostState {}
 
 final class CreatePostFailure extends PostState {
   final String errMessage;
