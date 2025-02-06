@@ -1,24 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/features/auth/user_model_extensions.dart';
+import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
 import '../../features/auth/login/presentation/manager/login_cubit.dart';
 import '../../features/auth/models/user_model.dart';
 import '../../features/home/presentation/views/widgets/image_shimmer_loading.dart';
 
-Widget buildUserProfileImage(
-  BuildContext context, {
+Widget buildUserProfileImage(BuildContext context, {
   double radius = 24,
 }) {
-  final UserModel userModel = LoginCubit.get(context).userModel;
+  final UserModel userModel = LoginCubit
+      .get(context)
+      .userModel;
   return userModel.hasProfileImage
-      ? UserCircleProfileImage(
-          imageUrl: userModel.profileImageUrl!,
-          radius: radius,
-        )
+      ? BlocBuilder<LoginCubit,LoginState>(
+    builder: (context, state) {
+      return UserCircleProfileImage(
+        imageUrl: userModel.profileImageUrl!,
+        radius: radius,
+      );
+    },
+  )
       : UserDefaultProfileCircleAvatar(
-          radius: radius,
-        );
+    radius: radius,
+  );
 }
 
 class UserCircleProfileImage extends StatelessWidget {
@@ -35,8 +42,8 @@ class UserCircleProfileImage extends StatelessWidget {
       radius: radius.r,
       child: ClipOval(
         child: CachedNetworkImage(
-          // height: radius.r * 2,
-          // width: radius.r * 2,
+          height: radius.r * 2,
+          width: radius.r * 2,
           imageUrl: imageUrl,
           fit: BoxFit.fitHeight,
           placeholder: (context, url) => const ImageShimmerLoading(),

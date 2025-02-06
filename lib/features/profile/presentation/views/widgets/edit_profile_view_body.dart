@@ -8,11 +8,12 @@ import 'package:instagram_app/features/profile/presentation/views/widgets/save_a
 import 'package:instagram_app/features/profile/presentation/views/widgets/update_name_and_bio_text_fields.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/update_profile_bloc_listener.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_profile_and_cover_images.dart';
-import '../../../../../constants.dart';
 import '../../../../auth/login/presentation/manager/login_cubit.dart';
 
 class EditProfileViewBody extends StatefulWidget {
-  const EditProfileViewBody({super.key});
+  const EditProfileViewBody({super.key, required this.size});
+
+  final Size size;
 
   @override
   State<EditProfileViewBody> createState() => _EditProfileViewBodyState();
@@ -22,16 +23,18 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
   @override
   Widget build(BuildContext context) {
     final ProfileCubit profileCubit = ProfileCubit.get(context);
-    final size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       child: Column(
         children: [
           const UpdateProfileBlocListener(),
           Stack(
             children: [
-              UserProfileAndCoverImages(),
+              UserProfileAndCoverImages(
+                size: widget.size,
+              ),
               Positioned(
-                right: size.width * .36,
+                right: widget.size.width * .36,
                 bottom: 1,
                 child: PickImageIconButton(
                   onPressed: () {
@@ -41,7 +44,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
               ),
               Positioned(
                 right: 3,
-                bottom: size.height * 0.06,
+                bottom: widget.size.height * 0.06,
                 child: PickImageIconButton(
                   onPressed: () {
                     profileCubit.pickCoverPhoto();

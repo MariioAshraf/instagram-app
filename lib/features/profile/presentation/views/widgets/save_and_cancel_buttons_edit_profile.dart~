@@ -24,11 +24,14 @@ class SaveAndCancelButtonsEditProfile extends StatelessWidget {
           child: TextButton(
             style: ButtonStyle(
               overlayColor: const WidgetStatePropertyAll(Colors.grey),
-              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
                   side: const BorderSide(
                     color: Colors.grey,
                   ),
-                  borderRadius: BorderRadius.circular(16))),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
               padding: const WidgetStatePropertyAll(
                 EdgeInsets.zero,
               ),
@@ -55,12 +58,13 @@ class SaveAndCancelButtonsEditProfile extends StatelessWidget {
                 EdgeInsets.zero,
               ),
             ),
-            onPressed: () {
-              profileCubit.updateUserNameAndBio(
+            onPressed: () async {
+              await profileCubit.updateUserNameAndBio(
                 name: profileCubit.nameController.text,
                 bio: profileCubit.bioController.text,
                 userModel: userModel,
               );
+              await LoginCubit.get(context).getUser();
             },
             child: Text(
               'Save',

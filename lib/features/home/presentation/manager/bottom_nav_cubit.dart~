@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/widgets/build_user_profile_image.dart';
+import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
+import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import '../../../profile/presentation/views/profile_view.dart';
 import '../../../search/presentation/views/search_view.dart';
@@ -30,9 +32,13 @@ class BottomNavCubit extends Cubit<BottomNavState> {
       BottomNavigationBarItem(
         icon: CircleAvatar(
             backgroundColor:
-                currentIndex == 2 ? Colors.white : Colors.transparent,
+            currentIndex == 2 ? Colors.white : Colors.transparent,
             radius: 16.r,
-            child: buildUserProfileImage(context, radius: 14)),
+            child: BlocBuilder<LoginCubit, LoginState>(
+              builder: (context, state) {
+                return buildUserProfileImage(context, radius: 14);
+              },
+            )),
         label: 'Profile',
       ),
     ];
@@ -40,7 +46,7 @@ class BottomNavCubit extends Cubit<BottomNavState> {
 
   List<Widget> screens(BuildContext context) {
     return [
-      const HomeViewBody(),
+      const SafeArea(child: HomeViewBody()),
       const SearchView(),
       const ProfileView(),
     ];

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/features/home/presentation/views/widgets/gradient_background.dart';
-
 import '../manager/bottom_nav_cubit.dart';
 
 class HomeView extends StatelessWidget {

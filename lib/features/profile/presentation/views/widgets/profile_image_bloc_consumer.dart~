@@ -57,6 +57,9 @@ class ProfileImageBlocConsumer extends StatelessWidget {
                 ),
               );
             }
+            if (state is UploadProfilePhotoSuccess) {
+              // اباصي هنا ال صوره الجديده لليوزر مودل ال بستخدمه من ال لوجين
+            }
           },
           builder: (context, state) {
             return state is UploadProfilePhotoLoading

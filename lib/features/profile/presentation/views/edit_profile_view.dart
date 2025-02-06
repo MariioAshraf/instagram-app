@@ -13,6 +13,7 @@ class EditProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return ScaffoldGradientBackgroundContainer(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -26,7 +27,9 @@ class EditProfileView extends StatelessWidget {
         body: BlocBuilder<LoginCubit, LoginState>(
           buildWhen: (previous, current) => current is GetUserSuccess,
           builder: (context, state) {
-            return  EditProfileViewBody();
+            return EditProfileViewBody(
+              size: size,
+            );
           },
         ),
       ),

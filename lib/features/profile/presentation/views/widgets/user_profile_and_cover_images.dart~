@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:instagram_app/features/home/presentation/views/widgets/image_shimmer_loading.dart';
 import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/profile_image_bloc_consumer.dart';
 import '../../../../../core/widgets/build_user_cover_image.dart';
 
 class UserProfileAndCoverImages extends StatelessWidget {
   const UserProfileAndCoverImages({
-    super.key,
-    required this.size,
+    super.key, required this.size,
   });
-
-  final Size size;
-
+ final Size size;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -27,11 +23,9 @@ class UserProfileAndCoverImages extends StatelessWidget {
                 current is UploadCoverPhotoSuccess ||
                 current is UploadCoverPhotoLoading,
             builder: (context, state) {
-              return state is UploadCoverPhotoLoading
-                  ? const ImageShimmerLoading()
-                  : buildUserCoverImage(
-                      context,
-                    );
+              return buildUserCoverImage(
+                context,
+              );
             },
           ),
           ProfileImageBlocConsumer(

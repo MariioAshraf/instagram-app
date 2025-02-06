@@ -22,14 +22,11 @@ class ProfileViewBody extends StatefulWidget {
 class _ProfileViewBodyState extends State<ProfileViewBody> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final UserModel userModel = LoginCubit.get(context).userModel;
     return SingleChildScrollView(
       child: Column(
         children: [
-          UserProfileAndCoverImages(
-            size: size,
-          ),
+          const UserProfileAndCoverImages(),
           verticalSpacing(10),
           UserNameAndBio(
             name: userModel.name,

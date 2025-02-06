@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
-import 'package:instagram_app/features/auth/user_model_extensions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../constants.dart';
 import '../../../../core/errors/failure.dart';
@@ -13,17 +12,21 @@ class ProfileRepoImpl implements ProfileRepo {
       FirebaseFirestore.instance.collection(kUsersCollection);
 
   @override
-  Future<Either<Failure, void>> updateUserNameAndBio(
-      {String? name, String? bio, required UserModel userModel}) async {
+  Future<Either<Failure, void>> updateUserNameAndBio({
+    String? name,
+    String? bio,
+    required UserModel userModel,
+  }) async {
     try {
       final userDocRef = usersCollection.doc(userModel.uId);
       final updatedName =
           (name != null && name.isNotEmpty) ? name : userModel.name;
       final updatedBio = (bio != null && bio.isNotEmpty) ? bio : userModel.bio;
-      if (updatedName != userModel.name || updatedBio != userModel.bio) {
-        final updatedUserModel =
-            userModel.copyWith(name: updatedName, bio: updatedBio);
-        await userDocRef.set(updatedUserModel.toJson());
+      if (updatedName != userModel.name) {
+        userDocRef.update({kUserName: updatedName});
+      }
+      if (updatedBio != userModel.bio) {
+        userDocRef.update({kUserBio: updatedBio});
       }
       return right(null);
     } on FirebaseException catch (e) {
