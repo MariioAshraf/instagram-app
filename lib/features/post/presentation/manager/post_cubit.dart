@@ -34,6 +34,7 @@ class PostCubit extends Cubit<PostState> {
   }
 
   Future<void> createPost(UserModel userModel) async {
+    emit(CreatePostLoading());
     var result =
         await postUseCase.call(userModel, media, postTitleController.text);
     result.fold((failure) {
