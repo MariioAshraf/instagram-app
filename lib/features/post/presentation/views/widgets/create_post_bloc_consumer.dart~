@@ -5,7 +5,6 @@ import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart
 import 'package:instagram_app/features/post/presentation/views/widgets/create_post_view_body.dart';
 import '../../../../../core/theming/app_colors.dart';
 import '../../../../../core/theming/app_styles.dart';
-
 class CreatePostBlocConsumer extends StatelessWidget {
   const CreatePostBlocConsumer({
     super.key,
@@ -58,7 +57,7 @@ class CreatePostBlocConsumer extends StatelessWidget {
         }
       },
       buildWhen: (_, current) =>
-          current is CanNotUploadPost ||
+      current is CanNotUploadPost ||
           current is CanUploadPost ||
           current is PostFilesPickedSuccess,
       builder: (context, state) {

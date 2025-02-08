@@ -26,7 +26,9 @@ class _CreatePostViewBodyState extends State<CreatePostViewBody> {
 
   @override
   void dispose() {
-    widget.postCubit.postTitleController.dispose();
+    if (mounted) {
+      widget.postCubit.postTitleController.dispose();
+    }
     super.dispose();
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../manager/post_cubit.dart';
+
 class CreatePostTextField extends StatelessWidget {
   const CreatePostTextField({
     super.key,
@@ -19,7 +19,9 @@ class CreatePostTextField extends StatelessWidget {
         }
       },
       decoration: const InputDecoration(
-          hintText: 'What is in your mind...', border: InputBorder.none),
+        hintText: 'What is in your mind...',
+        border: InputBorder.none,
+      ),
     );
   }
 }

@@ -27,20 +27,21 @@ class LoginBlocListener extends StatelessWidget {
               content: Text(state.errMessage),
               actions: [
                 TextButton(
-                    onPressed: () {
-                      context.pop();
-                    },
-                    child: Text(
-                      'Got it',
-                      style: AppTextStyles.font14DarkBlueMedium,
-                    ))
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: Text(
+                    'Got it',
+                    style: AppTextStyles.font14DarkBlueMedium,
+                  ),
+                ),
               ],
             ),
           );
         }
         if (state is LoginSuccess) {
           context.pop();
-          context.pushNamed(Routes.homeView);
+          context.pushReplacementNamed(Routes.homeView);
         }
         if (state is LoginLoading) {
           showDialog(

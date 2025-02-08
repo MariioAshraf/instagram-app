@@ -36,7 +36,6 @@ class _CreatePostTopBarState extends State<CreatePostTopBar> {
           style: AppTextStyles.font18DarkBlueBold,
         ),
         horizontalSpacing(20),
-        // const Spacer(),
         BlocBuilder<PostCubit, PostState>(
           buildWhen: (previous, current) =>
               current is CanNotUploadPost ||
@@ -50,10 +49,11 @@ class _CreatePostTopBarState extends State<CreatePostTopBar> {
               child: state is CanNotUploadPost
                   ? Text(
                       'Post',
-                      style: AppTextStyles.font13GreyRegular
-                          .copyWith(fontSize: 21),
+                      style: AppTextStyles.font13GreyRegular.copyWith(
+                        fontSize: 21,
+                      ),
                     )
-                  : _buildCreatePostTextButton(postCubit, userModel),
+                  : _createPostTextButton(postCubit, userModel),
             );
           },
         )
@@ -61,8 +61,7 @@ class _CreatePostTopBarState extends State<CreatePostTopBar> {
     );
   }
 
-  TextButton _buildCreatePostTextButton(
-      PostCubit postCubit, UserModel userModel) {
+  TextButton _createPostTextButton(PostCubit postCubit, UserModel userModel) {
     return TextButton(
         style: ButtonStyle(
           overlayColor: const WidgetStatePropertyAll(Colors.black12),
@@ -76,6 +75,7 @@ class _CreatePostTopBarState extends State<CreatePostTopBar> {
           postCubit.createPost(
             userModel,
           );
+
           // postCubit.getAllPosts();
         },
         child: Text(
