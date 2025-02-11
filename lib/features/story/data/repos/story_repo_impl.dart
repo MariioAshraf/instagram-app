@@ -29,7 +29,6 @@ class StoryRepoImpl implements StoryRepo {
 
         final mediaUrl = result.fold((l) => null, (r) => r);
 
-        /// remind to check the path
         final DocumentReference docRef = FirebaseFirestore.instance
             .collection('users')
             .doc(userModel.uId)
@@ -66,14 +65,13 @@ class StoryRepoImpl implements StoryRepo {
       final String fileName =
           '${DateTime.now().millisecondsSinceEpoch}_${file.uri.pathSegments.last}';
 
-      /// remind to check the path
       final String fullPath = 'story/$userId/$fileName';
-      await supabase.storage.from('story').upload(
+      await supabase.storage.from('stories').upload(
             fullPath,
             file,
           );
       final String fileUrl =
-          supabase.storage.from('story').getPublicUrl(fullPath);
+          supabase.storage.from('stories').getPublicUrl(fullPath);
 
       return Right(fileUrl);
     } catch (e) {
@@ -81,4 +79,5 @@ class StoryRepoImpl implements StoryRepo {
           Failure('An error occurred while uploading media: ${e.toString()}'));
     }
   }
+
 }

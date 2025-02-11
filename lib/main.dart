@@ -46,11 +46,11 @@ class MyApp extends StatelessWidget {
             create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
           ),
           BlocProvider(
-            create: (context) => BottomNavCubit(),
+            create: (context) => ProfileCubit(
+              getIt.get<ProfileRepoImpl>(),
+              getIt.get<ProfileUseCase>(),
+            ),
           ),
-          BlocProvider(
-              create: (context) => ProfileCubit(
-                  getIt.get<ProfileRepoImpl>(), getIt.get<ProfileUseCase>())),
         ],
         child: MaterialApp(
           initialRoute: Routes.loginView,

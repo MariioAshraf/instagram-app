@@ -10,7 +10,6 @@ class BuildDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final UserModel userModel = LoginCubit.get(context).userModel;
     return Drawer(
       elevation: 0,
@@ -32,7 +31,7 @@ class BuildDrawer extends StatelessWidget {
               ],
             ),
           ),
-          DrawerItemBuilder(),
+          const DrawerItemBuilder(),
         ],
       ),
     );

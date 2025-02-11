@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
-
 import '../../../../core/errors/failure.dart';
 
 abstract class StoryRepo {
@@ -16,4 +14,5 @@ abstract class StoryRepo {
   Future<Either<Failure, String>> uploadStoryMedia(
     String userId,  File file
   );
+
 }

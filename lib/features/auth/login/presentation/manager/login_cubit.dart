@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../constants.dart';
 import '../../../models/user_model.dart';
@@ -24,6 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
   late UserModel userModel;
   final usersCollection =
       FirebaseFirestore.instance.collection(kUsersCollection);
+
   Future<void> login() async {
     emit(LoginLoading());
     LoginInputBodyModel loginInputBodyModel = LoginInputBodyModel(
@@ -37,6 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccess());
     });
   }
+
   Future<void> getUser() async {
     if (FirebaseAuth.instance.currentUser != null) {
       emit(GetUserLoading());
@@ -45,5 +48,10 @@ class LoginCubit extends Cubit<LoginState> {
       userModel = UserModel.fromJson(docSnapShot);
       emit(GetUserSuccess());
     }
+  }
+
+  disposeControllers() {
+    emailController.dispose();
+    passwordController.dispose();
   }
 }

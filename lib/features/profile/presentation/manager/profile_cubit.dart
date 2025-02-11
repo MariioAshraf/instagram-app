@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/constants.dart';
@@ -14,6 +15,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   final ProfileUseCase profileUseCase;
   final nameController = TextEditingController();
   final bioController = TextEditingController();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   static ProfileCubit get(context) => BlocProvider.of(context);
 
