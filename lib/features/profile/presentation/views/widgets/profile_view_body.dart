@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_app/core/routing/routes.dart';
+import 'package:instagram_app/core/utils/extensions.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_name_and_bio.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_profile_and_cover_images.dart';
@@ -10,10 +12,7 @@ import 'edit_profile_row.dart';
 class ProfileViewBody extends StatefulWidget {
   const ProfileViewBody({
     super.key,
-    required this.scaffoldKey,
   });
-
-  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   State<ProfileViewBody> createState() => _ProfileViewBodyState();
@@ -39,11 +38,12 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 45.w),
             child: InkWell(
-                overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                onTap: () {
-                  widget.scaffoldKey.currentState!.openDrawer();
-                },
-                child: const EditProfileRow()),
+              overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+              onTap: () {
+                context.pushNamed(Routes.editProfileView);
+              },
+              child: const EditProfileRow(),
+            ),
           ),
           verticalSpacing(50),
         ],

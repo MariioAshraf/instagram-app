@@ -9,8 +9,27 @@ import '../../manager/login_cubit.dart';
 import 'login_bloc_listener.dart';
 import 'login_form.dart';
 
-class LoginViewBody extends StatelessWidget {
+class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
+
+  @override
+  State<LoginViewBody> createState() => _LoginViewBodyState();
+}
+
+class _LoginViewBodyState extends State<LoginViewBody> {
+  late LoginCubit loginCubit;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loginCubit = LoginCubit.get(context);
+  }
+
+  @override
+  void dispose() {
+    loginCubit.disposeControllers();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
+import 'package:instagram_app/features/home/presentation/manager/bottom_nav_cubit.dart';
 import '../../../../../core/theming/app_styles.dart';
 
 class DrawerTileItem extends StatefulWidget {
@@ -15,12 +16,12 @@ class DrawerTileItem extends StatefulWidget {
 
 class _DrawerTileItemState extends State<DrawerTileItem> {
   final List<Icon> icons = [
-    const Icon(Icons.edit, color: AppColorsManager.mainBlue),
+    const Icon(Icons.person, color: AppColorsManager.mainBlue),
     const Icon(Icons.photo_library, color: AppColorsManager.mainBlue),
     const Icon(Icons.logout_outlined, color: AppColorsManager.mainBlue),
   ];
   final List<String> titles = [
-    'Edit Profile',
+    'Profile',
     'Photos/Videos',
     'Logout',
   ];
@@ -49,7 +50,7 @@ class _DrawerTileItemState extends State<DrawerTileItem> {
 void Function()? _onPressed(int index, BuildContext context) {
   if (index == 0) {
     context.pop();
-    context.pushNamed(Routes.editProfileView);
+    BottomNavCubit.get(context).changeBottomNav(2);
   } else if (index == 1) {
     // Photos/Videos
   } else if (index == 2) {

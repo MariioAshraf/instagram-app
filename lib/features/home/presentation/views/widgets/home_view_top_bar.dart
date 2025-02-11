@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/assets.dart';
+import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
+import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
 
 class HomeViewTopBar extends StatelessWidget {
   const HomeViewTopBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldKey = ProfileCubit.get(context).scaffoldKey;
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(
@@ -37,10 +40,15 @@ class HomeViewTopBar extends StatelessWidget {
                 size: 30,
               ),
             ),
-            SvgPicture.asset(
-              AssetsData.homeTopBarShareIcon,
-              height: 30.h,
-              width: 30.w,
+            IconButton(
+              onPressed: () {
+                scaffoldKey.currentState!.openDrawer();
+              },
+              icon: const Icon(
+                Icons.list,
+                color: AppColorsManager.darkBlue,
+                size: 30,
+              ),
             ),
           ],
         ),
