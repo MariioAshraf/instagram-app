@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import 'package:instagram_app/features/story/presentation/views/widgets/preview_stories_images.dart';
 import 'package:instagram_app/features/story/presentation/views/widgets/preview_stories_videos.dart';
-import 'package:instagram_app/features/story/presentation/views/widgets/story_caption.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/story_caption_and_upload_button.dart';
 
 class StoryPreviewViewBody extends StatefulWidget {
   const StoryPreviewViewBody({super.key});
@@ -21,7 +21,7 @@ class _StoryPreviewViewBodyState extends State<StoryPreviewViewBody> {
   @override
   void initState() {
     storyCubit = StoryCubit.get(context);
-    storiesList = storyCubit.listFiles;
+    storiesList = storyCubit.storiesList;
     super.initState();
   }
 
@@ -66,7 +66,7 @@ class _StoryPreviewViewBodyState extends State<StoryPreviewViewBody> {
             icon: const Icon(Icons.cancel),
           ),
         ),
-        StoryCaption(currentIndex: currentIndex),
+        StoryCaptionAndUploadButton(currentIndex: currentIndex),
       ],
     );
   }
@@ -74,16 +74,14 @@ class _StoryPreviewViewBodyState extends State<StoryPreviewViewBody> {
   Future<void> _deleteStoryFile(
       StoryCubit storyCubit, BuildContext context) async {
     storyCubit.removeFile(currentIndex);
-    debugPrint('currentIndex after deletion: $currentIndex');
     setState(() {
-      if (storyCubit.listFiles.isEmpty) {
+      if (storyCubit.storiesList.isEmpty) {
         Navigator.pop(context);
       } else {
-        currentIndex = currentIndex >= storyCubit.listFiles.length
-            ? storyCubit.listFiles.length - 1
+        currentIndex = currentIndex >= storyCubit.storiesList.length
+            ? storyCubit.storiesList.length - 1
             : currentIndex;
       }
     });
-    debugPrint('currentIndex after adjustment: $currentIndex');
   }
 }

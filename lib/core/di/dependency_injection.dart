@@ -5,6 +5,7 @@ import 'package:instagram_app/features/auth/sign_up/domain/use_cases/sign_up_use
 import 'package:instagram_app/features/post/data/repos/post_repo_impl.dart';
 import 'package:instagram_app/features/post/domain/use_cases/post_use_case.dart';
 import 'package:instagram_app/features/profile/domain/use_cases/profile_use_case.dart';
+import 'package:instagram_app/features/story/data/repos/story_repo_impl.dart';
 import '../../features/auth/login/domain/use_cases/login_use_case.dart';
 import '../../features/profile/data/repos/profile_repo_impl.dart';
 
@@ -27,4 +28,6 @@ void setupServiceLocator() {
   getIt.registerSingleton<ProfileRepoImpl>(ProfileRepoImpl());
   getIt.registerSingleton<ProfileUseCase>(
       ProfileUseCase(getIt<ProfileRepoImpl>()));
+  // story repo dependencies
+  getIt.registerSingleton<StoryRepoImpl>(StoryRepoImpl());
 }

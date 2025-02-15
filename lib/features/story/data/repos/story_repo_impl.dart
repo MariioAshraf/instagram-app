@@ -5,17 +5,18 @@ import 'package:instagram_app/core/errors/failure.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/story/data/repos/story_repo.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../constants.dart';
 import '../models/story_model.dart';
 
 class StoryRepoImpl implements StoryRepo {
   @override
-  Future<Either<Failure, void>> uploadStoryToFireBase({
+  Future<Either<Failure, void>> uploadStory({
     required UserModel userModel,
     required List<File> media,
     required List<String> captions,
     required List videoPlayerControllerList,
   }) async {
-    try {
+    // try {
       final batch = FirebaseFirestore.instance.batch();
       for (int i = 0; i < media.length; i++) {
         final file = media[i];
@@ -30,9 +31,9 @@ class StoryRepoImpl implements StoryRepo {
         final mediaUrl = result.fold((l) => null, (r) => r);
 
         final DocumentReference docRef = FirebaseFirestore.instance
-            .collection('users')
+            .collection(kUsersCollection)
             .doc(userModel.uId)
-            .collection('stories')
+            .collection(kStoriesCollection)
             .doc();
 
         final StoryModel storyModel = StoryModel(
@@ -52,32 +53,31 @@ class StoryRepoImpl implements StoryRepo {
       }
       await batch.commit();
       return const Right(null);
-    } catch (e) {
-      return Left(Failure(e.toString()));
-    }
+    // } catch (e) {
+    //   return Left(Failure(e.toString()));
+    // }
   }
 
   @override
   Future<Either<Failure, String>> uploadStoryMedia(
       String userId, File file) async {
-    try {
+    // try {
       final supabase = Supabase.instance.client;
       final String fileName =
           '${DateTime.now().millisecondsSinceEpoch}_${file.uri.pathSegments.last}';
 
-      final String fullPath = 'story/$userId/$fileName';
-      await supabase.storage.from('stories').upload(
+      final String fullPath = '$kStoriesCollection/$userId/$fileName';
+      await supabase.storage.from(kStoriesCollection).upload(
             fullPath,
             file,
           );
       final String fileUrl =
-          supabase.storage.from('stories').getPublicUrl(fullPath);
+          supabase.storage.from(kStoriesCollection).getPublicUrl(fullPath);
 
       return Right(fileUrl);
-    } catch (e) {
-      return Left(
-          Failure('An error occurred while uploading media: ${e.toString()}'));
-    }
+    // } catch (e) {
+    //   return Left(
+    //       Failure('An error occurred while uploading media: ${e.toString()}'));
+    // }
   }
-
 }

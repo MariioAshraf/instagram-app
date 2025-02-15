@@ -20,26 +20,7 @@ class HomeViewBody extends StatelessWidget {
           HomeViewTopBar(),
           HomeCreatePostContainer(),
           StoriesListViewBuilder(),
-          PickStoryBlocListener(),
         ],
-      ),
-    );
-  }
-}
-
-class PickStoryBlocListener extends StatelessWidget {
-  const PickStoryBlocListener({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: BlocListener<StoryCubit, StoryState>(
-        child: const SizedBox.shrink(),
-        listener: (context, state) {
-          if (state is StoryMediaPickedSuccess) {
-            context.pushNamed(Routes.storyPreviewView);
-          }
-        },
       ),
     );
   }

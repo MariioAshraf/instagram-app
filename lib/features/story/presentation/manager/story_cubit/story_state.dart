@@ -16,3 +16,12 @@ final class StoryMediaPickedFailure extends StoryState {
 
 /// about pause and play stories videos
 final class TriggerVideoPlayerSuccess extends StoryState {}
+
+/// about upload stories
+final class UploadStoriesLoading extends StoryState {}
+final class UploadStoriesSuccess extends StoryState {}
+final class UploadStoriesFailure extends StoryState {
+  final String errMsg;
+
+  UploadStoriesFailure({required this.errMsg});
+}

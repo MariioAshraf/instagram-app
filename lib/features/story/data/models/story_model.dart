@@ -96,7 +96,7 @@ class StoryModel {
       'createdAt': Timestamp.fromDate(createdAt),
       'storyId': storyId,
       'localFilePath': localFilePath,
-      'storyUserModel': storyUserModel
+      'storyUserModel': storyUserModel?.toJson()
     };
   }
 }
