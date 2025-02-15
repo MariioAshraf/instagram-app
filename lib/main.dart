@@ -7,12 +7,12 @@ import 'package:instagram_app/core/routing/app_router.dart';
 import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'package:instagram_app/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:instagram_app/features/profile/domain/use_cases/profile_use_case.dart';
+import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import 'core/di/dependency_injection.dart';
 import 'core/utils/bloc_observer.dart';
 import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
-import 'features/auth/login/domain/user_cases/login_use_case.dart';
-import 'features/home/presentation/manager/bottom_nav_cubit.dart';
+import 'features/auth/login/domain/use_cases/login_use_case.dart';
 import 'features/profile/presentation/manager/profile_cubit.dart';
 import 'features/story/data/models/story_model.dart';
 import 'firebase_options.dart';
@@ -50,6 +50,9 @@ class MyApp extends StatelessWidget {
               getIt.get<ProfileRepoImpl>(),
               getIt.get<ProfileUseCase>(),
             ),
+          ),
+          BlocProvider(
+            create: (context) => StoryCubit(),
           ),
         ],
         child: MaterialApp(

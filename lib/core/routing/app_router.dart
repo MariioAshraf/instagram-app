@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/features/profile/presentation/views/edit_profile_view.dart';
+import 'package:instagram_app/features/story/presentation/views/story_preview_view.dart';
 import '../../features/auth/login/presentation/views/login_view.dart';
 import '../../features/auth/sign_up/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/manager/bottom_nav_cubit.dart';
@@ -40,6 +41,10 @@ class AppRouter {
       case Routes.signUpView:
         return MaterialPageRoute(
           builder: (_) => const SignUpView(),
+        );
+      case Routes.storyPreviewView:
+        return MaterialPageRoute(
+          builder: (_) => const StoryPreviewView(),
         );
       case Routes.editProfileView:
         return MaterialPageRoute(

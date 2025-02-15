@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
 import 'package:instagram_app/features/home/presentation/manager/bottom_nav_cubit.dart';
 import '../../../../../core/theming/app_styles.dart';
 
-class DrawerTileItem extends StatefulWidget {
+class DrawerTileItem extends StatelessWidget {
   const DrawerTileItem({super.key, required this.index});
 
   final int index;
 
-  @override
-  State<DrawerTileItem> createState() => _DrawerTileItemState();
-}
-
-class _DrawerTileItemState extends State<DrawerTileItem> {
-  final List<Icon> icons = [
-    const Icon(Icons.person, color: AppColorsManager.mainBlue),
-    const Icon(Icons.photo_library, color: AppColorsManager.mainBlue),
-    const Icon(Icons.logout_outlined, color: AppColorsManager.mainBlue),
+  final List<Icon> icons = const [
+    Icon(Icons.person, color: AppColorsManager.mainBlue),
+    Icon(Icons.photo_library, color: AppColorsManager.mainBlue),
+    Icon(Icons.logout_outlined, color: AppColorsManager.mainBlue),
   ];
-  final List<String> titles = [
+
+  final List<String> titles = const [
     'Profile',
     'Photos/Videos',
     'Logout',
@@ -29,14 +24,14 @@ class _DrawerTileItemState extends State<DrawerTileItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: icons[widget.index],
+      leading: icons[index],
       title: Text(
-        titles[widget.index],
+        titles[index],
         style: AppTextStyles.font14DarkBlueMedium,
       ),
       trailing: IconButton(
           onPressed: () {
-            _onPressed(widget.index, context);
+            _onPressed(index, context);
           },
           icon: const Icon(
             color: Colors.black,

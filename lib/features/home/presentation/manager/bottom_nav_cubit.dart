@@ -50,11 +50,8 @@ class BottomNavCubit extends Cubit<BottomNavState> {
 
   List<Widget> screens(BuildContext context) {
     return [
-      SafeArea(
-        child: BlocProvider(
-          create: (context) => StoryCubit(),
-          child: const HomeViewBody(),
-        ),
+      const SafeArea(
+        child: HomeViewBody(),
       ),
       const SearchView(),
       const ProfileView(),

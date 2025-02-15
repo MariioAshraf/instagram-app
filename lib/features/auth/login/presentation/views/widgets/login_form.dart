@@ -27,12 +27,6 @@ class _LoginFormState extends State<LoginForm> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    passwordController.dispose();
-    super.dispose();
-  }
-
   bool hasLowerCase = false;
   bool hasUpperCase = false;
   bool hasMinLength = false;
