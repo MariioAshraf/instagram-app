@@ -7,6 +7,7 @@ import 'package:instagram_app/core/routing/app_router.dart';
 import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'package:instagram_app/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:instagram_app/features/profile/domain/use_cases/profile_use_case.dart';
+import 'package:instagram_app/features/story/data/repos/story_repo_impl.dart';
 import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import 'core/di/dependency_injection.dart';
 import 'core/utils/bloc_observer.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => StoryCubit(),
+            create: (context) => StoryCubit(getIt.get<StoryRepoImpl>()),
           ),
         ],
         child: MaterialApp(

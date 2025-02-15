@@ -3,16 +3,19 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/features/auth/models/user_model.dart';
+import 'package:instagram_app/features/story/data/repos/story_repo.dart';
 import 'package:video_player/video_player.dart';
 
 part 'story_state.dart';
 
 class StoryCubit extends Cubit<StoryState> {
-  StoryCubit() : super(StoryInitial());
+  StoryCubit(this.storyRepo) : super(StoryInitial());
+  final StoryRepo storyRepo;
 
   static StoryCubit get(BuildContext context) => BlocProvider.of(context);
 
-  List<File> listFiles = [];
+  List<File> storiesList = [];
 
   List<TextEditingController> textEditingControllersList = [];
 
@@ -20,7 +23,7 @@ class StoryCubit extends Cubit<StoryState> {
 
   Future<void> pickStoryMedia() async {
     try {
-      listFiles.clear();
+      storiesList.clear();
       textEditingControllersList.clear();
       videoPlayerControllerList.clear();
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -28,12 +31,12 @@ class StoryCubit extends Cubit<StoryState> {
         type: FileType.media,
       );
       if (result != null) {
-        listFiles = result.paths.map((path) => File(path!)).toList();
+        storiesList = result.paths.map((path) => File(path!)).toList();
         textEditingControllersList = List.generate(
-          listFiles.length,
+          storiesList.length,
           (_) => TextEditingController(),
         );
-        for (var file in listFiles) {
+        for (var file in storiesList) {
           if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
             // await createThumbnails(file.path, listFiles.indexOf(file));
             final controller = VideoPlayerController.file(file);
@@ -48,6 +51,26 @@ class StoryCubit extends Cubit<StoryState> {
     } catch (e) {
       emit(StoryMediaPickedFailure(errMsg: e.toString()));
     }
+  }
+
+  Future<void> uploadStory({
+    required UserModel userModel,
+  }) async {
+    emit(UploadStoriesLoading());
+    List<String> captions = [];
+    textEditingControllersList.map((textController) {
+      captions.add(textController.text);
+    }).toList();
+    var result = await storyRepo.uploadStory(
+      userModel: userModel,
+      media: storiesList,
+      captions: captions,
+      videoPlayerControllerList: videoPlayerControllerList,
+    );
+    result.fold((l) {
+      print('reeeeeeeeeeeeeeeeeeeee${l.message}');
+      emit(UploadStoriesFailure(errMsg: l.message));
+    }, (r) => emit(UploadStoriesSuccess()));
   }
 
   bool showPauseIcon = true;
@@ -77,6 +100,6 @@ class StoryCubit extends Cubit<StoryState> {
       videoPlayerControllerList[index]!.dispose();
     }
     videoPlayerControllerList.removeAt(index);
-    listFiles.removeAt(index);
+    storiesList.removeAt(index);
   }
 }

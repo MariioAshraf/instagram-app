@@ -4,7 +4,7 @@ import 'package:instagram_app/features/auth/models/user_model.dart';
 import '../../../../core/errors/failure.dart';
 
 abstract class StoryRepo {
-  Future<Either<Failure, void>> uploadStoryToFireBase({
+  Future<Either<Failure, void>> uploadStory({
     required UserModel userModel,
     required List<File> media,
     required List<String> captions,
