@@ -16,7 +16,7 @@ class StoryRepoImpl implements StoryRepo {
     required List<String> captions,
     required List videoPlayerControllerList,
   }) async {
-    // try {
+    try {
       final batch = FirebaseFirestore.instance.batch();
       for (int i = 0; i < media.length; i++) {
         final file = media[i];
@@ -53,15 +53,15 @@ class StoryRepoImpl implements StoryRepo {
       }
       await batch.commit();
       return const Right(null);
-    // } catch (e) {
-    //   return Left(Failure(e.toString()));
-    // }
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, String>> uploadStoryMedia(
       String userId, File file) async {
-    // try {
+    try {
       final supabase = Supabase.instance.client;
       final String fileName =
           '${DateTime.now().millisecondsSinceEpoch}_${file.uri.pathSegments.last}';
@@ -75,9 +75,9 @@ class StoryRepoImpl implements StoryRepo {
           supabase.storage.from(kStoriesCollection).getPublicUrl(fullPath);
 
       return Right(fileUrl);
-    // } catch (e) {
-    //   return Left(
-    //       Failure('An error occurred while uploading media: ${e.toString()}'));
-    // }
+    } catch (e) {
+      return Left(
+          Failure('An error occurred while uploading media: ${e.toString()}'));
+    }
   }
 }
