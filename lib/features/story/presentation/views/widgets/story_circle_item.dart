@@ -19,9 +19,9 @@ class StoryCircleItem extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundColor: AppColorsManager.mainBlue,
-            radius: 52.5.r,
+            radius: 45.r,
             child: UserCircleProfileImage(
-              radius: 50.r,
+              radius: 42.5.r,
               imageUrl:
                   'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg',
             ),

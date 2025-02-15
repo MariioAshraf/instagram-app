@@ -1,0 +1,89 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/preview_stories_images.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/preview_stories_videos.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/story_caption.dart';
+
+class StoryPreviewViewBody extends StatefulWidget {
+  const StoryPreviewViewBody({super.key});
+
+  @override
+  State<StoryPreviewViewBody> createState() => _StoryPreviewViewBodyState();
+}
+
+class _StoryPreviewViewBodyState extends State<StoryPreviewViewBody> {
+  int currentIndex = 0;
+  late StoryCubit storyCubit;
+  late List<File> storiesList;
+
+  @override
+  void initState() {
+    storyCubit = StoryCubit.get(context);
+    storiesList = storyCubit.listFiles;
+    super.initState();
+  }
+
+  _onPageChanged(int index) {
+    {
+      final file = storiesList[currentIndex];
+      if ((file.path.endsWith('.mp4') || file.path.endsWith('.mov')) &&
+          storyCubit.videoPlayerControllerList[currentIndex]!.value.isPlaying) {
+        storyCubit.videoPlayerControllerList[currentIndex]!.pause();
+      }
+      setState(() {
+        currentIndex = index;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Center(
+          child: PageView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: storiesList.length,
+            onPageChanged: _onPageChanged,
+            itemBuilder: (context, index) {
+              final file = storiesList[index];
+              if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
+                return PreviewStoriesVideos(index: index);
+              }
+              return PreviewStoriesImages(file: file);
+            },
+          ),
+        ),
+        Positioned(
+          top: 15.h,
+          left: 15.w,
+          child: IconButton(
+            onPressed: () {
+              _deleteStoryFile(storyCubit, context);
+            },
+            icon: const Icon(Icons.cancel),
+          ),
+        ),
+        StoryCaption(currentIndex: currentIndex),
+      ],
+    );
+  }
+
+  Future<void> _deleteStoryFile(
+      StoryCubit storyCubit, BuildContext context) async {
+    storyCubit.removeFile(currentIndex);
+    debugPrint('currentIndex after deletion: $currentIndex');
+    setState(() {
+      if (storyCubit.listFiles.isEmpty) {
+        Navigator.pop(context);
+      } else {
+        currentIndex = currentIndex >= storyCubit.listFiles.length
+            ? storyCubit.listFiles.length - 1
+            : currentIndex;
+      }
+    });
+    debugPrint('currentIndex after adjustment: $currentIndex');
+  }
+}

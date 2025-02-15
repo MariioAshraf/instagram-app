@@ -20,9 +20,9 @@ class _LoginViewBodyState extends State<LoginViewBody> {
   late LoginCubit loginCubit;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     loginCubit = LoginCubit.get(context);
+    super.initState();
   }
 
   @override
