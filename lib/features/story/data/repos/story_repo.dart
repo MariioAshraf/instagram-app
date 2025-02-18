@@ -11,8 +11,9 @@ abstract class StoryRepo {
     required List videoPlayerControllerList,
   });
 
-  Future<Either<Failure, String>> uploadStoryMedia(
-    String userId,  File file
-  );
+  Future<Either<Failure, String>> uploadStoryMedia(String userId, File file);
 
+  Future<Either<Failure, void>> getMyStories({required String userId});
+
+  Future<Either<Failure, void>> getFriendsStories();
 }

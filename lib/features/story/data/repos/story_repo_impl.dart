@@ -3,12 +3,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:instagram_app/core/errors/failure.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
+import 'package:instagram_app/features/story/data/data_sources/story_local_data_source.dart';
+import 'package:instagram_app/features/story/data/data_sources/story_remote_data_source.dart';
 import 'package:instagram_app/features/story/data/repos/story_repo.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../constants.dart';
 import '../models/story_model.dart';
 
 class StoryRepoImpl implements StoryRepo {
+  final StoryRemoteDataSource storyRemoteDataSource;
+  final StoryLocalDataSource storyLocalDataSource;
+
+  StoryRepoImpl({
+    required this.storyRemoteDataSource,
+    required this.storyLocalDataSource,
+  });
+
+  final firebaseInstance = FirebaseFirestore.instance;
+
   @override
   Future<Either<Failure, void>> uploadStory({
     required UserModel userModel,
@@ -17,7 +29,7 @@ class StoryRepoImpl implements StoryRepo {
     required List videoPlayerControllerList,
   }) async {
     try {
-      final batch = FirebaseFirestore.instance.batch();
+      final batch = firebaseInstance.batch();
       for (int i = 0; i < media.length; i++) {
         final file = media[i];
         final isVideo = videoPlayerControllerList[i] != null;
@@ -30,10 +42,10 @@ class StoryRepoImpl implements StoryRepo {
 
         final mediaUrl = result.fold((l) => null, (r) => r);
 
-        final DocumentReference docRef = FirebaseFirestore.instance
+        final DocumentReference docRef = firebaseInstance
             .collection(kUsersCollection)
             .doc(userModel.uId)
-            .collection(kStoriesCollection)
+            .collection(kStories)
             .doc();
 
         final StoryModel storyModel = StoryModel(
@@ -66,18 +78,60 @@ class StoryRepoImpl implements StoryRepo {
       final String fileName =
           '${DateTime.now().millisecondsSinceEpoch}_${file.uri.pathSegments.last}';
 
-      final String fullPath = '$kStoriesCollection/$userId/$fileName';
-      await supabase.storage.from(kStoriesCollection).upload(
+      final String fullPath = '$kStories/$userId/$fileName';
+      await supabase.storage.from(kStories).upload(
             fullPath,
             file,
           );
       final String fileUrl =
-          supabase.storage.from(kStoriesCollection).getPublicUrl(fullPath);
+          supabase.storage.from(kStories).getPublicUrl(fullPath);
 
       return Right(fileUrl);
     } catch (e) {
       return Left(
           Failure('An error occurred while uploading media: ${e.toString()}'));
     }
+  }
+
+  @override
+  Future<Either<Failure, List<StoryModel>>> getMyStories({
+    required String userId,
+  }) async {
+    try {
+      final List<StoryModel> localStories =
+          storyLocalDataSource.getMyStories(userId: userId);
+
+      final Map<String, List<String>> viewersIds = {};
+      final List<String> localStoriesIds =
+          localStories.map((e) => e.storyId).toList();
+
+      for (var story in localStories) {
+        viewersIds[story.storyId] = story.viewersIds?.keys.toList() ?? [];
+      }
+
+      final List<StoryModel> remoteStories =
+          await storyRemoteDataSource.getMyStories(
+        viewersIds: viewersIds,
+        localStoriesIds: localStoriesIds,
+        userId: userId,
+      );
+
+      final List<StoryModel> allStories = [...localStories, ...remoteStories];
+
+      //  محتاج اخزن الاستوري بتاعتي لوكالي اول م ارفعها وبعد كدا اتشيك اذا كانت ب نل او لا عشان لو الاك ع جهاز تاني ولما اجيب من عالنت اجيب بس ال viewers الجديده مجبش كل الاستوري الا لو كانت مش عندي
+      // if (remoteStories.isNotEmpty) {
+      //   await storyLocalDataSource.cacheStories(remoteStories);
+      // }
+
+      return Right(allStories);
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> getFriendsStories() {
+    // TODO: implement getFriendsStories
+    throw UnimplementedError();
   }
 }
