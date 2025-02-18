@@ -5,4 +5,6 @@ class Routes {
   static const String createPostView = '/createPostView';
   static const String editProfileView = '/editPostView';
   static const String storyPreviewView = '/storyPreviewView';
+  static const displayOfflineStoriesView =
+      '/displayOfflineStoriesStoryView';
 }

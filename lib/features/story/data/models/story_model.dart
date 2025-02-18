@@ -66,7 +66,7 @@ class StoryModel {
           : DateTime.now(),
       storyId: json['storyId'],
       localFilePath: json['localFilePath'],
-      storyUserModel: json['storyUserModel'],
+      storyUserModel: UserModel.fromJson(json['storyUserModel']),
     );
   }
 

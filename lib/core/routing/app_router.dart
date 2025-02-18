@@ -42,6 +42,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const SignUpView(),
         );
+        // case Routes.displayOfflineStoriesView:
+        // return MaterialPageRoute(
+        //   builder: (_) => const SignUpView(),
+        // );
       case Routes.storyPreviewView:
         return MaterialPageRoute(
           builder: (_) => const StoryPreviewView(),
