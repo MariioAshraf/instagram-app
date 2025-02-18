@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:instagram_app/constants.dart';
-
 import '../models/story_model.dart';
 
 abstract class StoryLocalDataSource {

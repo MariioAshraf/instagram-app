@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_app/constants.dart';
+import 'package:instagram_app/core/functions/hive_functions.dart';
+import 'package:instagram_app/features/story/data/extensions/story_model_extension.dart';
 import 'package:instagram_app/features/story/data/models/story_model.dart';
 
 abstract class StoryRemoteDataSource {
   Future<List<StoryModel>> getMyStories({
-    required Map<String, List<String>> viewersIds,
-    required List<String> localStoriesIds,
     required String userId,
   });
 
@@ -30,28 +30,48 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
 
   @override
   Future<List<StoryModel>> getMyStories({
-    required Map<String, List<String>> viewersIds,
-    required List<String> localStoriesIds,
     required String userId,
   }) async {
-    final storiesSnapShot = await storiesCollection
-        .doc(userId)
-        .collection(kStories)
-        .get();
+    final storiesSnapShot =
+        await storiesCollection.doc(userId).collection(kStories).get();
+
+    final Map<String, StoryModel> localStoriesMap = {
+      for (var story in await HiveFunctions.getMyStories(userId))
+        story.storyId: story
+    };
 
     final List<Future<StoryModel?>> futures =
         storiesSnapShot.docs.map((storyDoc) async {
       final viewersSnapShot =
           await storyDoc.reference.collection('viewers').get();
 
-      bool isNotStoredLocally = !localStoriesIds.contains(storyDoc.id);
+      final StoryModel? localStory = localStoriesMap[storyDoc.id];
 
-      bool hasNewViewers = viewersIds[storyDoc.id] == null ||
-          viewersIds[storyDoc.id]!.length != viewersSnapShot.size;
-
-      if (isNotStoredLocally || hasNewViewers) {
-        return StoryModel.fromJson(storyDoc.data());
+      if (localStory == null) {
+        return StoryModel.fromJson(storyDoc.data()).copyWith(
+          viewersIds: {},
+          viewersModels: {},
+        );
       }
+
+      bool hasNewViewers = (localStory.viewersIds == null ||
+          localStory.viewersIds!.keys.length != viewersSnapShot.size);
+
+      if (hasNewViewers) {
+        final updatedViewers =
+            Map<String, String>.from(localStory.viewersIds ?? {});
+
+        for (var viewerDoc in viewersSnapShot.docs) {
+          final viewerId = viewerDoc.id;
+
+          if (!updatedViewers.containsKey(viewerId)) {
+            updatedViewers[viewerId] = viewerDoc.get('viewedAt');
+          }
+        }
+
+        return localStory.copyWith(viewersIds: updatedViewers);
+      }
+
       return null;
     }).toList();
 

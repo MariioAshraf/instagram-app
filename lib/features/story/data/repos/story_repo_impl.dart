@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:instagram_app/core/errors/failure.dart';
+import 'package:instagram_app/core/functions/hive_functions.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/story/data/data_sources/story_local_data_source.dart';
 import 'package:instagram_app/features/story/data/data_sources/story_remote_data_source.dart';
@@ -60,7 +61,11 @@ class StoryRepoImpl implements StoryRepo {
           storyId: docRef.id,
           storyUserModel: userModel,
         );
-
+        await HiveFunctions.saveStory(
+          file.path,
+          storyModel,
+          userModel,
+        );
         batch.set(docRef, storyModel.toJson());
       }
       await batch.commit();
@@ -101,28 +106,19 @@ class StoryRepoImpl implements StoryRepo {
       final List<StoryModel> localStories =
           storyLocalDataSource.getMyStories(userId: userId);
 
-      final Map<String, List<String>> viewersIds = {};
-      final List<String> localStoriesIds =
-          localStories.map((e) => e.storyId).toList();
-
-      for (var story in localStories) {
-        viewersIds[story.storyId] = story.viewersIds?.keys.toList() ?? [];
-      }
-
       final List<StoryModel> remoteStories =
           await storyRemoteDataSource.getMyStories(
-        viewersIds: viewersIds,
-        localStoriesIds: localStoriesIds,
         userId: userId,
       );
+      print('remoteeeeeeeee $remoteStories');
+      print('localllllllllll $localStories');
 
       final List<StoryModel> allStories = [...localStories, ...remoteStories];
 
-      //  محتاج اخزن الاستوري بتاعتي لوكالي اول م ارفعها وبعد كدا اتشيك اذا كانت ب نل او لا عشان لو الاك ع جهاز تاني ولما اجيب من عالنت اجيب بس ال viewers الجديده مجبش كل الاستوري الا لو كانت مش عندي
-      // if (remoteStories.isNotEmpty) {
-      //   await storyLocalDataSource.cacheStories(remoteStories);
-      // }
-
+      if (remoteStories.isNotEmpty) {
+        await HiveFunctions.saveStories(remoteStories);
+      }
+      print('leeeeeeeeeeeeeeeeee${allStories.toString()}');
       return Right(allStories);
     } catch (e) {
       return Left(Failure(e.toString()));

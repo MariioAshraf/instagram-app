@@ -15,6 +15,7 @@ import 'core/utils/bloc_observer.dart';
 import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
 import 'features/auth/login/domain/use_cases/login_use_case.dart';
+import 'features/auth/models/user_model.dart';
 import 'features/profile/presentation/manager/profile_cubit.dart';
 import 'features/story/data/models/story_model.dart';
 import 'firebase_options.dart';
@@ -27,6 +28,7 @@ void main() async {
   await supabaseInitialization();
   await Hive.initFlutter();
   Hive.registerAdapter(StoryModelAdapter());
+  Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(MediaTypeAdapter());
   await Hive.openBox<StoryModel>(kStories);
   setupServiceLocator();

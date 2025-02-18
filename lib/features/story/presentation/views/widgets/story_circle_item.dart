@@ -2,17 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import '../../../../../core/theming/app_styles.dart';
+import '../../../../../core/utils/assets.dart';
 import '../../../../../core/utils/spacing.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
 
-class StoryCircleItem extends StatelessWidget {
-  const StoryCircleItem({super.key});
+class StoryCircleItem extends StatefulWidget {
+  const StoryCircleItem(
+      {super.key,
+      this.profileImageUrl = AssetsData.defaultOnlineProfileImage,
+      this.name = 'name',
+      required this.index});
 
+  final String? profileImageUrl;
+  final String? name;
+  final int index;
+
+  @override
+  State<StoryCircleItem> createState() => _StoryCircleItemState();
+}
+
+class _StoryCircleItemState extends State<StoryCircleItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: 10.w,
+        left: widget.index == 0 ? 0 : 10.w,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -22,13 +36,12 @@ class StoryCircleItem extends StatelessWidget {
             radius: 45.r,
             child: UserCircleProfileImage(
               radius: 42.5.r,
-              imageUrl:
-                  'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg',
+              imageUrl: widget.profileImageUrl!,
             ),
           ),
           verticalSpacing(10),
           Text(
-            'Story',
+            widget.name!,
             style: AppTextStyles.font14DarkBlueMedium,
           ),
         ],
