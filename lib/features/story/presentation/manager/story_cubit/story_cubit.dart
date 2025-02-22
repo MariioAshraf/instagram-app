@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/story/data/models/story_model.dart';
 import 'package:instagram_app/features/story/data/repos/story_repo.dart';
@@ -15,7 +18,8 @@ class StoryCubit extends Cubit<StoryState> {
   final StoryRepo storyRepo;
 
   static StoryCubit get(BuildContext context) => BlocProvider.of(context);
-
+  final _usersCollection =
+      FirebaseFirestore.instance.collection(kUsersCollection);
   List<File> storiesList = [];
 
   List<TextEditingController> textEditingControllersList = [];
@@ -86,6 +90,7 @@ class StoryCubit extends Cubit<StoryState> {
     });
   }
 
+  /// Variables for load story
   Timer? timer;
   Timer? tapTimer;
   bool isVideoInitialized = false;
@@ -96,7 +101,8 @@ class StoryCubit extends Cubit<StoryState> {
   late Duration elapsedTime;
   late bool isStoryLoading;
 
-  Future<void> loadStory(StoryModel storyModel) async {
+  /// for load story and download story file
+  Future<void> loadOnlineStory(StoryModel storyModel, String userId) async {
     emit(LoadStoryLoading());
     isStoryLoading = true;
     try {
@@ -115,38 +121,66 @@ class StoryCubit extends Cubit<StoryState> {
         await initializeVideoController(storyModel);
       }
       isStoryLoading = false;
-      // setStorySeen(storyModel);
+      setStorySeen(storyModel, userId: userId);
       emit(LoadStorySuccess(story: storyModel));
     } catch (e) {
       emit(LoadStoryFailure(errMsg: e.toString()));
     }
   }
 
-  // setStorySeen(StoryModel storyModel) async {
-  //   final docRef = await usersCollection
-  //       .doc(storyModel.userId)
-  //       .collection('stories')
-  //       .doc(storyModel.storyId)
-  //       .collection('viewers')
-  //       .doc(userId)
-  //       .get();
-  //   if (!docRef.exists) {
-  //     final viewedAt = DateTime.now().toIso8601String();
-  //     await docRef.reference.set({'viewedAt': viewedAt});
-  //     var box = Hive.box<StoryModel>(kStoryBox);
-  //     StoryModel? story = box.get(storyModel.storyId);
-  //     if (story != null && !story.viewersIds!.containsKey(userId)) {
-  //       story.viewersIds![userId!] = viewedAt;
-  //       await box.put(story.storyId, story);
-  //     }
-  //     print('story seen');
-  //   }
-  // }
+  setStorySeen(StoryModel storyModel, {required String userId}) async {
+    final docRef = await _usersCollection
+        .doc(storyModel.userId)
+        .collection(kStoriesCollection)
+        .doc(storyModel.storyId)
+        .collection('viewers')
+        .doc(userId)
+        .get();
+    if (!docRef.exists) {
+      final viewedAt = DateTime.now().toIso8601String();
+      await docRef.reference.set({'viewedAt': viewedAt});
+      var box = Hive.box<StoryModel>(kStoriesCollection);
+      StoryModel? story = box.get(storyModel.storyId);
+      if (story != null && !story.viewersIds!.containsKey(userId)) {
+        story.viewersIds![userId] = viewedAt;
+        await box.put(story.storyId, story);
+      }
+      print('story seen');
+    }
+  }
+
+  void closeControllers() {
+    cancelTimers();
+    _disposeVideoController();
+  }
+
+  void cancelTimers() {
+    timer?.cancel();
+    tapTimer?.cancel();
+  }
+
   void _disposeVideoController() {
     if (isVideoInitialized) {
       videoController?.pause();
       videoController?.dispose();
       isVideoInitialized = false;
+    }
+  }
+
+  void pauseStory() {
+    timer?.cancel();
+    if (!isImage && videoController?.value.isPlaying == true) {
+      videoController?.pause();
+    }
+  }
+
+  void resumeStory() {
+    if (isImage) {
+      emit(StartTimer());
+    } else if (videoController?.value.isInitialized == true &&
+        !videoController!.value.isPlaying) {
+      videoController?.play();
+      emit(StartTimer());
     }
   }
 
@@ -167,6 +201,8 @@ class StoryCubit extends Cubit<StoryState> {
           errMsg: "Failed to initialize video: ${e.toString()}"));
     }
   }
+
+  /// for triggering video player and story preview removal
 
   bool showPauseIcon = true;
   Timer? _hideIconTimer;

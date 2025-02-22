@@ -7,16 +7,18 @@ import 'home_display_my_stories_circle.dart';
 class StoriesListViewBuilder extends StatelessWidget {
   const StoriesListViewBuilder({
     super.key,
+    required this.preventRebuildIssueWithConst,
   });
+
+  final String preventRebuildIssueWithConst;
 
   @override
   Widget build(BuildContext context) {
-    final myStories = StoryCubit.get(context).myStories;
     return ListView.builder(
       itemCount: 10,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) => index == 0
-          ? myStories.isEmpty
+          ? StoryCubit.get(context).myStories.isEmpty
               ? const HomeCreateStoryButton()
               : HomeDisplayMyStoriesCircle(
                   index: index,

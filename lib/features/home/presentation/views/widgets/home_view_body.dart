@@ -18,7 +18,6 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody> {
   @override
-  @override
   void initState() {
     StoryCubit.get(context)
         .getMyStories(LoginCubit.get(context).userModel.uId!);

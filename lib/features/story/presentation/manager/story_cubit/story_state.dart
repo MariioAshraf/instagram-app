@@ -60,3 +60,12 @@ final class LoadStoryLoading extends StoryState {}
 final class StartTimer extends StoryState {}
 
 final class VideoInitialized extends StoryState {}
+
+/// about download stories
+final class DownloadingStorySuccess extends StoryState {
+  final StoryModel story;
+
+  DownloadingStorySuccess({required this.story});
+}
+
+final class DownloadingStoryLoading extends StoryState {}
