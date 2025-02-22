@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../../constants.dart';
 import '../../features/auth/models/user_model.dart';
@@ -5,13 +6,13 @@ import '../../features/story/data/models/story_model.dart';
 
 class HiveFunctions {
   static Future<StoryModel?> getStory(String storyId) async {
-    var box = Hive.box<StoryModel>(kStories);
+    var box = Hive.box<StoryModel>(kStoriesCollection);
     StoryModel? story = box.get(storyId);
     return story;
   }
 
   static Future<List<StoryModel>> getMyStories(String userId) async {
-    var box = Hive.box<StoryModel>(kStories);
+    var box = Hive.box<StoryModel>(kStoriesCollection);
     return box.values.where((story) => story.userId == userId).toList();
   }
 
@@ -20,7 +21,7 @@ class HiveFunctions {
     StoryModel story,
     UserModel userModel,
   ) async {
-    var box = Hive.box<StoryModel>(kStories);
+    var box = Hive.box<StoryModel>(kStoriesCollection);
     StoryModel localStory = StoryModel(
       storyUserModel: userModel,
       caption: story.caption,
@@ -37,11 +38,11 @@ class HiveFunctions {
       viewersModels: <String, UserModel>{},
     );
     await box.put(story.storyId, localStory);
-    print('story saved to hive${localStory.toJson()}');
+    debugPrint('story saved to hive${localStory.toJson()}');
   }
 
   static saveStories(List<StoryModel> stories) {
-    var box = Hive.box<StoryModel>(kStories);
+    var box = Hive.box<StoryModel>(kStoriesCollection);
     Map<String, StoryModel> storiesMap = {
       for (var story in stories) story.storyId: story
     };

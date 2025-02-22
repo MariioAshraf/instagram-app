@@ -14,7 +14,10 @@ abstract class StoryRepo {
 
   Future<Either<Failure, String>> uploadStoryMedia(String userId, File file);
 
-  Future<Either<Failure, List<StoryModel>>> getMyStories({required String userId});
+  Future<Either<Failure, List<StoryModel>>> getMyStories(
+      {required String userId});
 
   Future<Either<Failure, void>> getFriendsStories();
+
+  Future<Either<Failure, StoryModel>> downloadStoryFile(StoryModel storyModel);
 }

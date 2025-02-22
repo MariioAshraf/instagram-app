@@ -17,7 +17,7 @@ class StoryLocalDataSourceImpl implements StoryLocalDataSource {
 
   @override
   List<StoryModel> getMyStories({required String userId}) {
-    var box = Hive.box<StoryModel>(kStories);
+    var box = Hive.box<StoryModel>(kStoriesCollection);
     return box.values.where((story) => story.userId == userId).toList()
       ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
   }

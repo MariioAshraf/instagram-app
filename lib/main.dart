@@ -30,7 +30,7 @@ void main() async {
   Hive.registerAdapter(StoryModelAdapter());
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(MediaTypeAdapter());
-  await Hive.openBox<StoryModel>(kStories);
+  await Hive.openBox<StoryModel>(kStoriesCollection);
   setupServiceLocator();
   Bloc.observer = AppBlocObserver();
 

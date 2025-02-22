@@ -1,0 +1,222 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
+import 'package:instagram_app/features/story/data/extensions/story_model_extension.dart';
+import 'package:video_player/video_player.dart';
+import '../../data/models/story_model.dart';
+import '../manager/story_cubit/story_cubit.dart';
+
+class DisplayOnlineStoryView extends StatefulWidget {
+  const DisplayOnlineStoryView({super.key, required this.stories});
+
+  final List<StoryModel> stories;
+
+  @override
+  State<DisplayOnlineStoryView> createState() => _DisplayOnlineStoryViewState();
+}
+
+class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
+  late StoryCubit _storyCubit;
+  int _currentIndex = 0;
+
+  // bool _isPaused = false;
+  late String userId;
+
+  @override
+  void initState() {
+    userId = LoginCubit.get(context).userModel.uId!;
+    super.initState();
+    _storyCubit = StoryCubit.get(context);
+    _loadCurrentStory();
+  }
+
+  void _loadCurrentStory() async {
+    final story = widget.stories[_currentIndex];
+    if (story.haslocalFilePath) {
+      await _storyCubit.loadOnlineStory(story, userId);
+    } else {
+      // await storyCubit.downloadStoryFile(story);
+    }
+  }
+
+  @override
+  void dispose() {
+    // storyCubit.getFriendsStories();
+    _storyCubit.closeControllers();
+    super.dispose();
+  }
+
+  void _onNextStory() {
+    if (_currentIndex < widget.stories.length - 1) {
+      if (widget.stories[_currentIndex].mediaType == MediaType.video) {
+        _storyCubit.videoController?.pause();
+        _storyCubit.videoController?.dispose();
+      }
+      setState(() {
+        _currentIndex++;
+      });
+      _loadCurrentStory();
+    }
+  }
+
+  void _onPreviousStory() {
+    if (_currentIndex > 0) {
+      if (widget.stories[_currentIndex].mediaType == MediaType.video) {
+        _storyCubit.videoController?.pause();
+        _storyCubit.videoController?.dispose();
+      }
+      setState(() {
+        _currentIndex--;
+      });
+      _loadCurrentStory();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: BlocConsumer<StoryCubit, StoryState>(
+        buildWhen: (previous, current) =>
+            current is DownloadingStoryLoading ||
+            current is DownloadingStorySuccess ||
+            current is LoadStoryFailure ||
+            current is LoadStorySuccess,
+        listener: (context, state) async {
+          if (state is DownloadingStorySuccess) {
+            widget.stories[_currentIndex] = state.story;
+            await _storyCubit.loadOnlineStory(widget.stories[_currentIndex], userId);
+          }
+        },
+        builder: (context, state) {
+          if (state is DownloadingStoryLoading) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.red,
+                strokeWidth: .7,
+              ),
+            );
+          }
+          if (_storyCubit.isStoryLoading) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: .7,
+              ),
+            );
+          }
+          if (state is LoadStoryFailure) {
+            return const Center(
+              child: Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ),
+            );
+          }
+          if (state is LoadStorySuccess) {
+            final story = state.story;
+            return GestureDetector(
+              onLongPress: () {
+                _storyCubit.pauseStory();
+              },
+              onLongPressUp: () {
+                _storyCubit.resumeStory();
+              },
+              onTapDown: (details) {
+                // Timer()
+                if (details.localPosition.dx <
+                    MediaQuery.of(context).size.width / 2) {
+                  _onPreviousStory();
+                } else {
+                  _onNextStory();
+                }
+              },
+              child: Stack(
+                children: [
+                  _buildStoryMedia(story.mediaType, story.localFilePath!),
+                  _buildProgressBars(),
+                  _buildCaption(story.caption),
+                ],
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text(
+                "No Story Available",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildStoryMedia(MediaType mediaType, String localFilePath) {
+    if (mediaType == MediaType.image) {
+      return Center(
+        child: Image.file(
+          File(localFilePath),
+          fit: BoxFit.cover,
+          width: double.infinity,
+        ),
+      );
+    } else if (mediaType == MediaType.video &&
+        _storyCubit.videoController != null) {
+      return Center(
+        child: AspectRatio(
+            aspectRatio: _storyCubit.videoController!.value.aspectRatio,
+            child: VideoPlayer(_storyCubit.videoController!)),
+      );
+    }
+    return const Center(
+      child: CircularProgressIndicator(
+        color: Colors.white,
+        strokeWidth: .7,
+      ),
+    );
+  }
+
+  Widget _buildProgressBars() {
+    return Positioned(
+      top: 50,
+      left: 16,
+      right: 16,
+      child: Row(
+        children: List.generate(widget.stories.length, (index) {
+          final progress = index < _currentIndex
+              ? 1.0
+              : (index == _currentIndex
+                  ? (_storyCubit.elapsedTime.inMicroseconds /
+                          _storyCubit.storyDuration.inMicroseconds)
+                      .clamp(0.0, 1.0)
+                  : 0.0);
+          return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: LinearProgressIndicator(
+                value: progress,
+                backgroundColor: Colors.white.withAlpha(100),
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildCaption(String caption) {
+    return Positioned(
+      bottom: 80,
+      left: 16,
+      right: 16,
+      child: Text(
+        caption,
+        style: const TextStyle(color: Colors.white, fontSize: 18),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}
