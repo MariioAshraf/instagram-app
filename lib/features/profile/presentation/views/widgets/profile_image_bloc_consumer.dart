@@ -24,10 +24,6 @@ class ProfileImageBlocConsumer extends StatelessWidget {
         radius: radius,
         backgroundColor: hasStories ? AppColorsManager.mainBlue : Colors.white,
         child: BlocConsumer<ProfileCubit, ProfileState>(
-          buildWhen: (_, current) =>
-              current is UploadProfilePhotoLoading ||
-              current is UploadProfilePhotoSuccess ||
-              current is UploadProfilePhotoFailure,
           listener: (context, state) {
             if (state is UploadProfilePhotoFailure) {
               showDialog(
