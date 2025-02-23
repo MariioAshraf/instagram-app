@@ -15,8 +15,8 @@ abstract class StoryRemoteDataSource {
     required String userId,
   });
 
-  Future<List<StoryModel>> getFriendsStories({
-    required List<String> localStoryIds,
+  Future<Map<String, List<StoryModel>>> getFriendsStories({
+    required Map<String, List<StoryModel>> storiesMap,
     required String userId,
   });
 
@@ -26,14 +26,46 @@ abstract class StoryRemoteDataSource {
 class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
   final storiesCollection =
       FirebaseFirestore.instance.collection(kUsersCollection);
+  final usersCollection =
+      FirebaseFirestore.instance.collection(kUsersCollection);
 
   @override
-  Future<List<StoryModel>> getFriendsStories({
-    required List<String> localStoryIds,
+  Future<Map<String, List<StoryModel>>> getFriendsStories({
+    required Map<String, List<StoryModel>> storiesMap,
     required String userId,
   }) async {
-    // TODO: implement getMyStories
-    throw UnimplementedError();
+    var box = Hive.box<StoryModel>(kStoriesCollection);
+    var usersSnapshots = await usersCollection.get();
+    for (var userDoc in usersSnapshots.docs) {
+      if (userDoc.id == userId) continue;
+      var storiesCollection = userDoc.reference
+          .collection('stories')
+          .orderBy('createdAt', descending: true);
+
+      var storiesSnapshot = await storiesCollection.get();
+
+      List<StoryModel> newStories = [];
+
+      for (var storyDoc in storiesSnapshot.docs) {
+        String storyId = storyDoc.id;
+        if (box.containsKey(storyId)) continue;
+        StoryModel story = StoryModel.fromJson(storyDoc.data()).copyWith(
+          viewersIds: {},
+          viewersModels: {},
+        );
+        newStories.add(story);
+        print('story from firebase${story.toJson()}');
+        await box.put(storyId, story);
+      }
+      if (newStories.isNotEmpty) {
+        if (storiesMap.containsKey(userDoc.id)) {
+          storiesMap[userDoc.id]!.addAll(newStories);
+        } else {
+          storiesMap[userDoc.id] = newStories;
+        }
+      }
+    }
+    return storiesMap;
   }
 
   @override

@@ -72,8 +72,8 @@ class StoryCubit extends Cubit<StoryState> {
       captions: captions,
       videoPlayerControllerList: videoPlayerControllerList,
     );
-    result.fold((l) {
-      emit(UploadStoriesFailure(errMsg: l.message));
+    result.fold((err) {
+      emit(UploadStoriesFailure(errMsg: err.message));
     }, (r) => emit(UploadStoriesSuccess()));
   }
 
@@ -82,12 +82,50 @@ class StoryCubit extends Cubit<StoryState> {
   Future<void> getMyStories(String userId) async {
     emit(GetMyStoriesLoading());
     var result = await storyRepo.getMyStories(userId: userId);
-    result.fold((l) {
-      emit(GetMyStoriesFailure(l.message));
+    result.fold((err) {
+      emit(GetMyStoriesFailure(err.message));
     }, (r) {
       myStories = r;
       emit(GetMyStoriesSuccess());
     });
+  }
+
+  Future<void> getFriendsStories(String userId) async {
+    emit(GetFriendsStoriesLoading());
+    var result = await storyRepo.getFriendsStories(userId);
+    result.fold((err) {
+      emit(GetFriendsStoriesFailure(err.message));
+    }, (storiesMap) {
+      organizeStories(userId, storiesMap);
+      emit(GetFriendsStoriesSuccess());
+    });
+  }
+
+  Map<String, List<StoryModel>> storiesMapSeenBefore = {};
+  Map<String, List<StoryModel>> atLeastOneStoryNotSeenMap = {};
+
+  void organizeStories(
+    String userId,
+    Map<String, List<StoryModel>> storiesMap,
+  ) {
+    storiesMapSeenBefore.clear();
+    atLeastOneStoryNotSeenMap.clear();
+
+    for (var entry in storiesMap.entries) {
+      final List<StoryModel> userStories = entry.value;
+      final String storiesOwnerId = entry.key;
+      bool allViewed =
+          userStories.every((story) => story.viewersIds!.containsKey(userId));
+      if (allViewed) {
+        storiesMapSeenBefore[storiesOwnerId] = userStories;
+        // print('all seen ${storiesMapSeenBefore[storiesOwnerId]}');
+        // print(
+        //     'all seen length ${storiesMapSeenBefore[storiesOwnerId]?.length}');
+      } else {
+        atLeastOneStoryNotSeenMap[storiesOwnerId] = userStories;
+        // print('not seen ${atLeastOneStoryNotSeenMap[storiesOwnerId]}');
+      }
+    }
   }
 
   /// Variables for load story

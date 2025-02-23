@@ -40,6 +40,17 @@ final class GetMyStoriesFailure extends StoryState {
 
 final class GetMyStoriesLoading extends StoryState {}
 
+/// about get friends stories
+final class GetFriendsStoriesLoading extends StoryState {}
+
+final class GetFriendsStoriesSuccess extends StoryState {}
+
+final class GetFriendsStoriesFailure extends StoryState {
+  final String errMsg;
+
+  GetFriendsStoriesFailure(this.errMsg);
+}
+
 /// about display stories
 
 final class LoadStorySuccess extends StoryState {

@@ -7,9 +7,9 @@ import '../../../../auth/login/presentation/manager/login_cubit.dart';
 import '../../manager/story_cubit/story_cubit.dart';
 
 class HomeDisplayMyStoriesCircle extends StatelessWidget {
-  const HomeDisplayMyStoriesCircle({super.key, required this.index});
-
-  final int index;
+  const HomeDisplayMyStoriesCircle({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,6 @@ class HomeDisplayMyStoriesCircle extends StatelessWidget {
         );
       },
       child: StoryCircleItem(
-        index: index,
         name: user.name,
         profileImageUrl: user.profileImageUrl,
       ),
