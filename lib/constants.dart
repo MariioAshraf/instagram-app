@@ -1,4 +1,5 @@
 const String kUsersCollection = 'users';
+const String kViewersCollection = 'viewers';
 const String kStoriesCollection = 'stories';
 const String kPostsCollection = 'posts';
 const String kProfileImage = 'profileImage';
@@ -6,3 +7,4 @@ const String kCoverImage = 'coverImage';
 const String kUserName = 'name';
 const String kUserBio = 'bio';
 const String kIsMyStory = 'isMyStory';
+const String kCreatedAt = 'createdAt';

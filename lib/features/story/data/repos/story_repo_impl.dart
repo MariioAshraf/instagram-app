@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:hive/hive.dart';
 import 'package:instagram_app/core/errors/failure.dart';
 import 'package:instagram_app/core/functions/hive_functions.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
@@ -22,7 +23,9 @@ class StoryRepoImpl implements StoryRepo {
     required this.storyLocalDataSource,
   });
 
-  final firebaseInstance = FirebaseFirestore.instance;
+  final _firebaseInstance = FirebaseFirestore.instance;
+  final _usersCollection =
+      FirebaseFirestore.instance.collection(kUsersCollection);
 
   @override
   Future<Either<Failure, void>> uploadStory({
@@ -32,7 +35,7 @@ class StoryRepoImpl implements StoryRepo {
     required List videoPlayerControllerList,
   }) async {
     try {
-      final batch = firebaseInstance.batch();
+      final batch = _firebaseInstance.batch();
       for (int i = 0; i < media.length; i++) {
         final file = media[i];
         final isVideo = videoPlayerControllerList[i] != null;
@@ -45,7 +48,7 @@ class StoryRepoImpl implements StoryRepo {
 
         final mediaUrl = result.fold((l) => null, (r) => r);
 
-        final DocumentReference docRef = firebaseInstance
+        final DocumentReference docRef = _firebaseInstance
             .collection(kUsersCollection)
             .doc(userModel.uId)
             .collection(kStoriesCollection)
@@ -148,6 +151,36 @@ class StoryRepoImpl implements StoryRepo {
       final newStory =
           await storyRemoteDataSource.downloadStoryFile(storyModel);
       return Right(newStory);
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> setStorySeen(
+    StoryModel storyModel, {
+    required String userId,
+  }) async {
+    try {
+      final docRef = await _usersCollection
+          .doc(storyModel.userId)
+          .collection(kStoriesCollection)
+          .doc(storyModel.storyId)
+          .collection(kViewersCollection)
+          .doc(userId)
+          .get();
+      if (!docRef.exists) {
+        final viewedAt = DateTime.now().toIso8601String();
+        await docRef.reference.set({'viewedAt': viewedAt});
+        var box = Hive.box<StoryModel>(kStoriesCollection);
+        StoryModel? story = box.get(storyModel.storyId);
+        if (story != null && !story.viewersIds!.containsKey(userId)) {
+          story.viewersIds![userId] = viewedAt;
+          await box.put(story.storyId, story);
+        }
+        print('story seen');
+      }
+      return const Right(null);
     } catch (e) {
       return Left(Failure(e.toString()));
     }

@@ -36,13 +36,13 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
     if (story.haslocalFilePath) {
       await _storyCubit.loadOnlineStory(story, userId);
     } else {
-      // await storyCubit.downloadStoryFile(story);
+      await _storyCubit.storyRepo.downloadStoryFile(story);
     }
   }
 
   @override
   void dispose() {
-    // storyCubit.getFriendsStories();
+    _storyCubit.getFriendsStories(userId);
     _storyCubit.closeControllers();
     super.dispose();
   }
@@ -86,7 +86,8 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
         listener: (context, state) async {
           if (state is DownloadingStorySuccess) {
             widget.stories[_currentIndex] = state.story;
-            await _storyCubit.loadOnlineStory(widget.stories[_currentIndex], userId);
+            await _storyCubit.loadOnlineStory(
+                widget.stories[_currentIndex], userId);
           }
         },
         builder: (context, state) {

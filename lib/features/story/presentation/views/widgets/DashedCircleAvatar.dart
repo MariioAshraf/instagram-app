@@ -1,0 +1,178 @@
+import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_app/core/theming/app_colors.dart';
+
+import '../../../../../core/theming/app_styles.dart';
+import '../../../../../core/utils/spacing.dart';
+import '../../../../home/presentation/views/widgets/image_shimmer_loading.dart';
+
+class DashedCircleAvatar extends StatelessWidget {
+  final String imageUrl;
+  final int dashCount;
+  final List<bool>? storiesStates;
+  final String name;
+
+  const DashedCircleAvatar({
+    super.key,
+    required this.imageUrl,
+    required this.dashCount,
+    this.storiesStates,
+    required this.name,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            // Dashed border
+            CustomPaint(
+              size: Size(80.w, 80.h), // Circle size, adjust as needed
+              painter: DashedCirclePainter(dashCount, 45.r,
+                  storiesStates: storiesStates), // Pass radius here
+            ),
+            imageUrl.isNotEmpty
+                ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 40.r,
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        width: 80,
+                        height: 80,
+                        placeholder: (context, url) =>
+                            const ImageShimmerLoading(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
+                  )
+                : CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 40.r,
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.black,
+                    ),
+                  ),
+          ],
+        ),
+        verticalSpacing(10),
+        Text(
+          name,
+          style: AppTextStyles.font14DarkBlueMedium,
+        )
+      ],
+    );
+  }
+}
+
+class DashedCirclePainter extends CustomPainter {
+  final int dashCount;
+  final double radius;
+  List<bool>? storiesStates;
+
+  DashedCirclePainter(this.dashCount, this.radius, {this.storiesStates});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke;
+
+    double angleStep = 2 * pi / dashCount;
+    double dashLength = dashCount == 1 ? angleStep : angleStep * 0.93;
+
+    for (int i = 0; i < dashCount; i++) {
+      // تحديد اللون بناءً على حالة `storiesStates`
+      if (storiesStates != null && i < storiesStates!.length) {
+        // إذا كانت الليست موجودة وداخل الحدود، استخدم حالتها
+        paint.color =
+            storiesStates![i] ? Colors.grey : AppColorsManager.mainBlue;
+      } else {
+        // إذا كانت الليست غير موجودة أو العدد أكبر من الليست، اجعلها رمادية
+        paint.color = Colors.grey;
+      }
+
+      // رسم الداش
+      double startAngle = i * angleStep - pi + 1.8;
+      canvas.drawArc(
+        Rect.fromCircle(
+          center: Offset(size.width / 2, size.height / 2),
+          radius: radius,
+        ),
+        startAngle,
+        dashLength, // Adjusted length of the dash
+        false,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+//////////////////// this code for gradient circles colors //////////////////////////
+//////////////////// this code for gradient circles colors //////////////////////////
+//////////////////// this code for gradient circles colors //////////////////////////
+//////////////////// this code for gradient circles colors //////////////////////////
+
+// class DashedCirclePainter extends CustomPainter {
+//   final int dashCount;
+//   final double radius;
+//
+//   DashedCirclePainter(
+//     this.dashCount,
+//     this.radius,
+//   );
+//
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final paint = Paint()
+//       ..strokeWidth = 2.5
+//       ..style = PaintingStyle.stroke
+//       ..shader = const SweepGradient(
+//         startAngle: 0,
+//         endAngle: 2 * pi,
+//         colors: [
+//           Colors.red,
+//           Colors.amber,
+//           Colors.tealAccent,
+//           Colors.pink,
+//           Colors.deepPurple,
+//         ],
+//       ).createShader(Rect.fromCircle(
+//         center: Offset(size.width / 2, size.height / 2),
+//         radius: radius,
+//       ));
+//
+//     final angleStep = 2 * pi / dashCount;
+//     final dashLength = dashCount == 1 ? angleStep : angleStep * 0.9;
+//
+//     for (int i = 0; i < dashCount; i++) {
+//       final startAngle = i * angleStep;
+//
+//       canvas.drawArc(
+//         Rect.fromCircle(
+//             center: Offset(size.width / 2, size.height / 2), radius: radius),
+//         startAngle,
+//         dashLength,
+//         false,
+//         paint,
+//       );
+//     }
+//   }
+//
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+// }
+//////////////////// this code for gradient circles colors //////////////////////////
+//////////////////// this code for gradient circles colors //////////////////////////
+//////////////////// this code for gradient circles colors //////////////////////////
+//////////////////// this code for gradient circles colors //////////////////////////
