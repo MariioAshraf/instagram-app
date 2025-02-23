@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
-import 'package:instagram_app/features/story/presentation/views/widgets/story_circle_item.dart';
 import '../../../../../constants.dart';
 import '../../../../auth/login/presentation/manager/login_cubit.dart';
 import '../../manager/story_cubit/story_cubit.dart';
+import 'DashedCircleAvatar.dart';
 
 class HomeDisplayMyStoriesCircle extends StatelessWidget {
   const HomeDisplayMyStoriesCircle({
@@ -30,9 +31,10 @@ class HomeDisplayMyStoriesCircle extends StatelessWidget {
           },
         );
       },
-      child: StoryCircleItem(
+      child: DashedCircleAvatar(
+        imageUrl: user.profileImageUrl!,
         name: user.name,
-        profileImageUrl: user.profileImageUrl,
+        dashCount: myStories.length,
       ),
     );
   }

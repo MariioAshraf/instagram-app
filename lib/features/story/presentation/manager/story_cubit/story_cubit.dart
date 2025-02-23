@@ -18,8 +18,7 @@ class StoryCubit extends Cubit<StoryState> {
   final StoryRepo storyRepo;
 
   static StoryCubit get(BuildContext context) => BlocProvider.of(context);
-  final _usersCollection =
-      FirebaseFirestore.instance.collection(kUsersCollection);
+
   List<File> storiesList = [];
 
   List<TextEditingController> textEditingControllersList = [];
@@ -95,11 +94,25 @@ class StoryCubit extends Cubit<StoryState> {
     var result = await storyRepo.getFriendsStories(userId);
     result.fold((err) {
       emit(GetFriendsStoriesFailure(err.message));
-    }, (storiesMap) {
+    }, (storiesMap) async {
       organizeStories(userId, storiesMap);
+      // await storiesOwners();
       emit(GetFriendsStoriesSuccess());
     });
   }
+
+  /// to get stories owners if we don't need to store them in hive
+  /// storing them in hive causes non updatable user data during 1 day (story life time)
+  // final Map<String, UserModel> users = {};
+
+  // Future<Map<String, UserModel>> storiesOwners() async {
+  //   users.clear();
+  //   atLeastOneStoryNotSeenMap.keys.map((key) async {
+  //     var userDoc = await _usersCollection.doc(key).get();
+  //     users[key] = UserModel.fromJson(userDoc.data());
+  //   }).toList();
+  //   return users;
+  // }
 
   Map<String, List<StoryModel>> storiesMapSeenBefore = {};
   Map<String, List<StoryModel>> atLeastOneStoryNotSeenMap = {};
@@ -159,31 +172,10 @@ class StoryCubit extends Cubit<StoryState> {
         await initializeVideoController(storyModel);
       }
       isStoryLoading = false;
-      setStorySeen(storyModel, userId: userId);
+      storyRepo.setStorySeen(storyModel, userId: userId);
       emit(LoadStorySuccess(story: storyModel));
     } catch (e) {
       emit(LoadStoryFailure(errMsg: e.toString()));
-    }
-  }
-
-  setStorySeen(StoryModel storyModel, {required String userId}) async {
-    final docRef = await _usersCollection
-        .doc(storyModel.userId)
-        .collection(kStoriesCollection)
-        .doc(storyModel.storyId)
-        .collection('viewers')
-        .doc(userId)
-        .get();
-    if (!docRef.exists) {
-      final viewedAt = DateTime.now().toIso8601String();
-      await docRef.reference.set({'viewedAt': viewedAt});
-      var box = Hive.box<StoryModel>(kStoriesCollection);
-      StoryModel? story = box.get(storyModel.storyId);
-      if (story != null && !story.viewersIds!.containsKey(userId)) {
-        story.viewersIds![userId] = viewedAt;
-        await box.put(story.storyId, story);
-      }
-      print('story seen');
     }
   }
 

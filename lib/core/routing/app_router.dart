@@ -4,6 +4,7 @@ import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:instagram_app/features/story/presentation/views/display_offline_story_view.dart';
+import 'package:instagram_app/features/story/presentation/views/display_online_story_view.dart';
 import 'package:instagram_app/features/story/presentation/views/story_preview_view.dart';
 import '../../features/auth/login/presentation/views/login_view.dart';
 import '../../features/auth/sign_up/presentation/views/sign_up_view.dart';
@@ -45,6 +46,11 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const SignUpView(),
         );
+      case Routes.displayOnlineStoriesView:
+        return MaterialPageRoute(builder: (_) {
+          final stories = settings.arguments as List<StoryModel>;
+          return DisplayOnlineStoryView(stories: stories);
+        });
       case Routes.displayOfflineStoriesView:
         return MaterialPageRoute(builder: (_) {
           final args = settings.arguments as Map<String, dynamic>;

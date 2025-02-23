@@ -21,4 +21,7 @@ abstract class StoryRepo {
       String userId);
 
   Future<Either<Failure, StoryModel>> downloadStoryFile(StoryModel storyModel);
+
+  Future<Either<Failure, void>> setStorySeen(StoryModel storyModel,
+      {required String userId});
 }

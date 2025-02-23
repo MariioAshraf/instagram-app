@@ -39,8 +39,8 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
     for (var userDoc in usersSnapshots.docs) {
       if (userDoc.id == userId) continue;
       var storiesCollection = userDoc.reference
-          .collection('stories')
-          .orderBy('createdAt', descending: true);
+          .collection(kStoriesCollection)
+          .orderBy(kCreatedAt, descending: true);
 
       var storiesSnapshot = await storiesCollection.get();
 
@@ -54,7 +54,7 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
           viewersModels: {},
         );
         newStories.add(story);
-        print('story from firebase${story.toJson()}');
+        debugPrint('story from firebase${story.toJson()}');
         await box.put(storyId, story);
       }
       if (newStories.isNotEmpty) {
@@ -85,7 +85,7 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
     final List<Future<StoryModel?>> futures =
         storiesSnapShot.docs.map((storyDoc) async {
       final viewersSnapShot =
-          await storyDoc.reference.collection('viewers').get();
+          await storyDoc.reference.collection(kViewersCollection).get();
 
       final StoryModel? localStory = localStoriesMap[storyDoc.id];
       final storyFile = File(localStory?.localFilePath ?? '');
