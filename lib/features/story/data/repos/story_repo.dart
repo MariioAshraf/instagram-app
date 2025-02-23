@@ -17,7 +17,8 @@ abstract class StoryRepo {
   Future<Either<Failure, List<StoryModel>>> getMyStories(
       {required String userId});
 
-  Future<Either<Failure, void>> getFriendsStories();
+  Future<Either<Failure, Map<String, List<StoryModel>>>> getFriendsStories(
+      String userId);
 
   Future<Either<Failure, StoryModel>> downloadStoryFile(StoryModel storyModel);
 }

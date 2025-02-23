@@ -7,15 +7,14 @@ import '../../../../../core/utils/spacing.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
 
 class StoryCircleItem extends StatefulWidget {
-  const StoryCircleItem(
-      {super.key,
-      this.profileImageUrl = AssetsData.defaultOnlineProfileImage,
-      this.name = 'name',
-      required this.index});
+  const StoryCircleItem({
+    super.key,
+    this.profileImageUrl = AssetsData.defaultOnlineProfileImage,
+    this.name = 'name',
+  });
 
   final String? profileImageUrl;
   final String? name;
-  final int index;
 
   @override
   State<StoryCircleItem> createState() => _StoryCircleItemState();
@@ -26,7 +25,7 @@ class _StoryCircleItemState extends State<StoryCircleItem> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: widget.index == 0 ? 0 : 10.w,
+        left: 10.w,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

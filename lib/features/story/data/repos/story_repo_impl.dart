@@ -125,9 +125,20 @@ class StoryRepoImpl implements StoryRepo {
   }
 
   @override
-  Future<Either<Failure, void>> getFriendsStories() {
-    // TODO: implement getFriendsStories
-    throw UnimplementedError();
+  Future<Either<Failure, Map<String, List<StoryModel>>>> getFriendsStories(
+      String userId) async {
+    try {
+      final Map<String, List<StoryModel>> storiesMap =
+          storyLocalDataSource.getFriendsStories(userId: userId);
+
+      final finalMap = await storyRemoteDataSource.getFriendsStories(
+        storiesMap: storiesMap,
+        userId: userId,
+      );
+      return Right(finalMap);
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
   }
 
   @override
