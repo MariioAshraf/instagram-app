@@ -20,7 +20,10 @@ class _StoriesListViewState extends State<StoriesListView> {
   @override
   void initState() {
     storyCubit = StoryCubit.get(context);
-    userId = LoginCubit.get(context).userModel.uId!;
+    userId = LoginCubit
+        .get(context)
+        .userModel
+        .uId!;
     storyCubit.getFriendsStories(userId);
     super.initState();
   }
@@ -43,4 +46,4 @@ class _StoriesListViewState extends State<StoriesListView> {
       ),
     );
   }
-}
+

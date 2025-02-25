@@ -20,6 +20,7 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
   late StoryCubit _storyCubit;
   int _currentIndex = 0;
 
+  // bool _isPaused = false;
   late String userId;
 
   @override
@@ -33,8 +34,10 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
   void _loadCurrentStory() async {
     final story = widget.stories[_currentIndex];
     if (story.haslocalFilePath) {
+      print('hassssssssssssss');
       await _storyCubit.loadOnlineStory(story, userId);
     } else {
+      print('noooooo');
       await _storyCubit.downloadStoryFile(story);
     }
   }
