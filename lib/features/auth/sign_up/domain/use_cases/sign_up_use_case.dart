@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:instagram_app/features/auth/sign_up/domain/repos/sign_up_repo.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/use_cases/use_case.dart';
-import '../../../models/user_model.dart';
 import '../../data/models/register_input_model.dart';
 
 class SignUpUseCase extends UseCase<void, RegisterInputModel> {

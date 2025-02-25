@@ -12,7 +12,6 @@ class PickStoryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = LoginCubit.get(context).userModel;
     final storyCubit = StoryCubit.get(context);
     return IconButton(
       padding: EdgeInsets.zero,
@@ -26,12 +25,12 @@ class PickStoryIcon extends StatelessWidget {
       },
       icon: Stack(
         children: [
-          user.hasProfileImage
+          LoginCubit.get(context).userModel.hasProfileImage
               ? CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 45.r,
                   backgroundImage: NetworkImage(
-                    user.profileImageUrl!,
+                    LoginCubit.get(context).userModel.profileImageUrl!,
                   ),
                 )
               : CircleAvatar(

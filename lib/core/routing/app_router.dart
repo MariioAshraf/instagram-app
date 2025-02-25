@@ -13,9 +13,6 @@ import '../../features/home/presentation/views/home_view.dart';
 import '../../features/post/domain/use_cases/post_use_case.dart';
 import '../../features/post/presentation/manager/post_cubit.dart';
 import '../../features/post/presentation/views/create_post_view.dart';
-import '../../features/profile/data/repos/profile_repo_impl.dart';
-import '../../features/profile/domain/use_cases/profile_use_case.dart';
-import '../../features/profile/presentation/manager/profile_cubit.dart';
 import '../../features/story/data/models/story_model.dart';
 import '../di/dependency_injection.dart';
 

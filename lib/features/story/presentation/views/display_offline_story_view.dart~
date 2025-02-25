@@ -329,6 +329,10 @@ class _DisplayOfflineStoriesStoryViewState
                             textBaseline: TextBaseline.alphabetic,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              Image.asset(
+                                height: 40.h,
+                                AssetsData.storyViewEyeIcon,
+                              ),
                               Text(
                                 '${story.viewersModels!.entries.length} ',
                                 style: TextStyle(
@@ -337,10 +341,6 @@ class _DisplayOfflineStoriesStoryViewState
                                     fontWeight: FontWeight.w400),
                                 textAlign: TextAlign.center,
                               ),
-                              Image.asset(
-                                height: 40.h,
-                                AssetsData.storyViewEyeIcon,
-                              )
                             ],
                           ),
                         ),

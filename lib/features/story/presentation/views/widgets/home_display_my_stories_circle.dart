@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
 import '../../../../../constants.dart';

@@ -80,3 +80,8 @@ final class DownloadingStorySuccess extends StoryState {
 }
 
 final class DownloadingStoryLoading extends StoryState {}
+final class DownloadingStoryFailure extends StoryState {
+  final String errMsg;
+
+  DownloadingStoryFailure({required this.errMsg});
+}

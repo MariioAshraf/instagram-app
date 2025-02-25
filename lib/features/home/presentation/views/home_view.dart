@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
-import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'package:instagram_app/features/home/presentation/views/widgets/gradient_background.dart';
-import '../../../../core/di/dependency_injection.dart';
-import '../../../profile/data/repos/profile_repo_impl.dart';
-import '../../../profile/domain/use_cases/profile_use_case.dart';
 import '../../../profile/presentation/manager/profile_cubit.dart';
 import '../../../profile/presentation/views/widgets/build_drawer.dart';
 import '../manager/bottom_nav_cubit.dart';

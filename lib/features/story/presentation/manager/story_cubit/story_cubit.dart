@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/story/data/models/story_model.dart';
 import 'package:instagram_app/features/story/data/repos/story_repo.dart';
@@ -86,6 +83,16 @@ class StoryCubit extends Cubit<StoryState> {
     }, (r) {
       myStories = r;
       emit(GetMyStoriesSuccess());
+    });
+  }
+
+  downloadStoryFile(StoryModel storyModel) async {
+    emit(DownloadingStoryLoading());
+    var result = await storyRepo.downloadStoryFile(storyModel);
+    result.fold((err) {
+      emit(DownloadingStoryFailure(errMsg: err.message));
+    }, (storyModel) {
+      emit(DownloadingStorySuccess(story: storyModel));
     });
   }
 

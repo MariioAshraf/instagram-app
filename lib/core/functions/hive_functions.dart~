@@ -13,8 +13,7 @@ class HiveFunctions {
 
   static Future<List<StoryModel>> getMyStories(String userId) async {
     var box = Hive.box<StoryModel>(kStoriesCollection);
-    return box.values.where((story) => story.userId == userId).toList()
-      ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    return box.values.where((story) => story.userId == userId).toList();
   }
 
   static Future<void> saveStory(
