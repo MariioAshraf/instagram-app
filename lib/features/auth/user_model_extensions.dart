@@ -4,6 +4,8 @@ extension UserModelExtension on UserModel {
   bool get hasProfileImage =>
       profileImageUrl != null && profileImageUrl!.isNotEmpty;
 
+  bool get hasCoverImage => coverImageUrl != null && coverImageUrl!.isNotEmpty;
+
   bool get hasBio => bio != null && bio!.isNotEmpty;
 
   UserModel copyWith({

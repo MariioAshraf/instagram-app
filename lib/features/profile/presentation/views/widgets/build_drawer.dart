@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import '../../../../../core/theming/app_styles.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
+import '../../../../home/presentation/manager/home_cubit.dart';
 import 'drawer_item_builder.dart';
 
 class BuildDrawer extends StatelessWidget {
@@ -10,7 +10,7 @@ class BuildDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel userModel = LoginCubit.get(context).userModel;
+    final UserModel userModel = HomeCubit.get(context).userModel;
     return Drawer(
       elevation: 0,
       backgroundColor: Colors.white.withAlpha(230),

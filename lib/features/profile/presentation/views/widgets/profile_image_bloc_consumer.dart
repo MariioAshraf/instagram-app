@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
 import '../../../../home/presentation/views/widgets/image_shimmer_loading.dart';
 import '../../manager/profile_cubit.dart';

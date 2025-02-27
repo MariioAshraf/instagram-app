@@ -46,3 +46,5 @@ final class UploadCoverPhotoFailure extends ProfileState {
 
   UploadCoverPhotoFailure(this.errMessage);
 }
+
+final class UpdateProfileUserSuccess extends ProfileState {}

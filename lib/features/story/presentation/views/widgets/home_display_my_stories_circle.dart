@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
 import '../../../../../constants.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
+import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../manager/story_cubit/story_cubit.dart';
 import 'DashedCircleAvatar.dart';
 
@@ -13,7 +13,7 @@ class HomeDisplayMyStoriesCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = LoginCubit.get(context).userModel;
+    final user = HomeCubit.get(context).userModel;
     final myStories = StoryCubit.get(context).myStories;
     return TextButton(
       style: ButtonStyle(

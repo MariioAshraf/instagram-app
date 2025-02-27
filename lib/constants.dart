@@ -8,3 +8,4 @@ const String kUserName = 'name';
 const String kUserBio = 'bio';
 const String kIsMyStory = 'isMyStory';
 const String kCreatedAt = 'createdAt';
+const String kUserModelBox= 'userModel';

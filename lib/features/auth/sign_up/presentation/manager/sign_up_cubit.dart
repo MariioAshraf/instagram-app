@@ -1,11 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/features/auth/sign_up/domain/use_cases/sign_up_use_case.dart';
-import 'package:meta/meta.dart';
-
 import '../../data/models/register_input_model.dart';
-
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {

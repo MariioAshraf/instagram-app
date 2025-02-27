@@ -1,5 +1,6 @@
 class Routes {
   static const String loginView = '/loginView';
+  static const String initialRoute = '/';
   static const String homeView = '/homeView';
   static const String signUpView = '/signUpView';
   static const String createPostView = '/createPostView';
@@ -7,4 +8,5 @@ class Routes {
   static const String storyPreviewView = '/storyPreviewView';
   static const displayOfflineStoriesView = '/displayOfflineStoriesStoryView';
   static const displayOnlineStoriesView = '/displayOnlineStoriesStoryView';
+  static const splashView = '/splashView';
 }

@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'package:instagram_app/features/story/data/extensions/story_model_extension.dart';
 import 'package:video_player/video_player.dart';
+import '../../../home/presentation/manager/home_cubit.dart';
 import '../../data/models/story_model.dart';
 import '../manager/story_cubit/story_cubit.dart';
 
@@ -24,7 +24,7 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
 
   @override
   void initState() {
-    userId = LoginCubit.get(context).userModel.uId!;
+    userId = HomeCubit.get(context).userModel.uId!;
     super.initState();
     _storyCubit = StoryCubit.get(context);
     _loadCurrentStory();

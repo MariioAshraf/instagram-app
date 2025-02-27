@@ -4,7 +4,7 @@ import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/features/home/presentation/views/widgets/gradient_background.dart';
 import '../../../profile/presentation/manager/profile_cubit.dart';
 import '../../../profile/presentation/views/widgets/build_drawer.dart';
-import '../manager/bottom_nav_cubit.dart';
+import '../manager/home_cubit.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -24,9 +24,9 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavCubit bottomNavCubit = BottomNavCubit.get(context);
+    HomeCubit bottomNavCubit = HomeCubit.get(context);
     return ScaffoldGradientBackgroundContainer(
-      child: BlocBuilder<BottomNavCubit, BottomNavState>(
+      child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           return Scaffold(
             key: profileCubit.scaffoldKey,
@@ -41,7 +41,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Theme _buildBottomNavBar(
-      BottomNavCubit bottomNavCubit, BuildContext context) {
+      HomeCubit bottomNavCubit, BuildContext context) {
     return Theme(
       data: ThemeData(
         splashColor: Colors.transparent,

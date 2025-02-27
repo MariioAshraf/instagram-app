@@ -4,6 +4,7 @@ import 'package:instagram_app/features/auth/login/presentation/manager/login_cub
 import 'package:instagram_app/features/auth/user_model_extensions.dart';
 import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import '../../../../../core/theming/app_colors.dart';
+import '../../../../home/presentation/manager/home_cubit.dart';
 
 class PickStoryIcon extends StatelessWidget {
   const PickStoryIcon({
@@ -12,7 +13,7 @@ class PickStoryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = LoginCubit.get(context).userModel;
+    final user = HomeCubit.get(context).userModel;
     final storyCubit = StoryCubit.get(context);
     return IconButton(
       padding: EdgeInsets.zero,

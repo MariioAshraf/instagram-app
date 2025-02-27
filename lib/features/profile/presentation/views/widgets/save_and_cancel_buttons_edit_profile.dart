@@ -6,7 +6,7 @@ import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
 
 import '../../../../../core/theming/app_styles.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
+import '../../../../home/presentation/manager/home_cubit.dart';
 
 class SaveAndCancelButtonsEditProfile extends StatelessWidget {
   const SaveAndCancelButtonsEditProfile({
@@ -15,7 +15,7 @@ class SaveAndCancelButtonsEditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel userModel = LoginCubit.get(context).userModel;
+    final UserModel userModel = HomeCubit.get(context).userModel;
     final ProfileCubit profileCubit = ProfileCubit.get(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

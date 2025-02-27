@@ -1,15 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
+import 'package:instagram_app/features/auth/user_model_extensions.dart';
 import 'package:instagram_app/features/profile/domain/repos/profile_repo.dart';
 import 'package:instagram_app/features/profile/domain/use_cases/profile_use_case.dart';
+import '../../../../core/functions/hive_functions.dart';
 
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
+  // late UserModel userModel;
+
   ProfileCubit(this.profileRepo, this.profileUseCase) : super(ProfileInitial());
   final ProfileRepo profileRepo;
   final ProfileUseCase profileUseCase;
@@ -30,6 +33,16 @@ class ProfileCubit extends Cubit<ProfileState> {
     result.fold((failure) => emit(UpdateUserFailure(failure.message)),
         (userModel) => emit(UpdateUserSuccess()));
   }
+
+  // Future<void> getUser() async {
+  //   // emit(GetUserLoading());
+  //   final userModel = await HiveFunctions.getUserModel();
+  //   if (userModel != null) {
+  //     this.userModel = userModel;
+  //     // userId = userModel.uId;
+  //     emit(UpdateProfileUserSuccess());
+  //   }
+  // }
 
   Future<void> pickProfilePhoto() async {
     final picker = ImagePicker();
@@ -58,7 +71,9 @@ class ProfileCubit extends Cubit<ProfileState> {
       kProfileImage,
     );
     result.fold((failure) => emit(UploadProfilePhotoFailure(failure.message)),
-        (fileUrl) => emit(UploadProfilePhotoSuccess()));
+        (fileUrl) async {
+      emit(UploadProfilePhotoSuccess());
+    });
   }
 
   Future<void> uploadCoverPhoto({
@@ -72,7 +87,9 @@ class ProfileCubit extends Cubit<ProfileState> {
       kCoverImage,
     );
     result.fold((failure) => emit(UploadCoverPhotoFailure(failure.message)),
-        (fileUrl) => emit(UploadCoverPhotoSuccess()));
+        (fileUrl) async {
+      emit(UploadCoverPhotoSuccess());
+    });
   }
 
   disposeControllers() {
