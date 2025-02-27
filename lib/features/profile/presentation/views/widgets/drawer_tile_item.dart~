@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
-import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
+import 'package:instagram_app/features/home/presentation/manager/Home_cubit.dart';
 import '../../../../../core/theming/app_styles.dart';
 
 class DrawerTileItem extends StatelessWidget {

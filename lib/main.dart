@@ -16,6 +16,7 @@ import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
 import 'features/auth/login/domain/use_cases/login_use_case.dart';
 import 'features/auth/models/user_model.dart';
+import 'features/home/presentation/manager/home_cubit.dart';
 import 'features/profile/presentation/manager/profile_cubit.dart';
 import 'features/story/data/models/story_model.dart';
 import 'firebase_options.dart';
@@ -31,6 +32,7 @@ void main() async {
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(MediaTypeAdapter());
   await Hive.openBox<StoryModel>(kStoriesCollection);
+  await Hive.openBox<UserModel>(kUserModelBox);
   setupServiceLocator();
   Bloc.observer = AppBlocObserver();
 
@@ -47,8 +49,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<LoginCubit>(
-            create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
+          BlocProvider<HomeCubit>(
+            create: (context) => HomeCubit()..getUser(),
           ),
           BlocProvider(
             create: (context) => ProfileCubit(
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          initialRoute: Routes.loginView,
+          initialRoute: Routes.splashView,
           onGenerateRoute: AppRouter().generateRoute,
           debugShowCheckedModeBanner: false,
         ),

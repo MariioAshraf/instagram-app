@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
-
+import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../manager/story_cubit/story_cubit.dart';
 
 class StoryCaptionAndUploadButton extends StatelessWidget {
@@ -11,7 +10,7 @@ class StoryCaptionAndUploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userModel = LoginCubit.get(context).userModel;
+    final userModel = HomeCubit.get(context).userModel;
     final storyCubit = StoryCubit.get(context);
     return Positioned(
       right: 0,

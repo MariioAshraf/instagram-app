@@ -9,6 +9,7 @@ import 'package:instagram_app/features/profile/presentation/views/widgets/update
 import 'package:instagram_app/features/profile/presentation/views/widgets/update_profile_bloc_listener.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_profile_and_cover_images.dart';
 import '../../../../auth/login/presentation/manager/login_cubit.dart';
+import '../../../../home/presentation/manager/home_cubit.dart';
 
 class EditProfileViewBody extends StatefulWidget {
   const EditProfileViewBody({super.key, required this.size});
@@ -102,7 +103,7 @@ class ChangeImagesBlocListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String uId = LoginCubit.get(context).userModel.uId!;
+    final String uId = HomeCubit.get(context).userModel.uId!;
     ProfileCubit profileCubit = ProfileCubit.get(context);
     return BlocListener<ProfileCubit, ProfileState>(
         child: const SizedBox.shrink(),

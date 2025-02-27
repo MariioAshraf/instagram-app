@@ -9,17 +9,18 @@ class ProfileUseCase extends UseCase<void, String> {
   ProfileUseCase(this.profileRepo);
 
   @override
-  Future<Either<Failure, void>> call(
+  Future<Either<Failure, String>> call(
       [String? param, String? uId, String? type]) async {
-    var result =
-        await profileRepo.uploadUserProfileAndCoverImagesAndGetUrl(param!, uId!);
+    var result = await profileRepo.uploadUserProfileAndCoverImagesAndGetUrl(
+        param!, uId!);
     return result.fold((failure) => Left(failure), (fileUrl) async {
       var result = await profileRepo.saveProfileAndCoverImagesUrl(
         imageUrl: fileUrl,
         uId: uId,
         type: type!,
       );
-      return result.fold((failure) => Left(failure), (r) => const Right(null));
+      print('rrrrrrrrrrrrrrrrrrrrrrrrr$fileUrl');
+      return result.fold((failure) => Left(failure), (r) => Right(fileUrl));
     });
   }
 }

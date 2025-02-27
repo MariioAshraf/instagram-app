@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/theming/app_styles.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
 import '../../../../../core/theming/app_colors.dart';
 import '../../../../auth/login/presentation/manager/login_cubit.dart';
@@ -11,7 +13,7 @@ class UpdateProfileBlocListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginCubit loginCubit = LoginCubit.get(context);
+    HomeCubit profileCubit = HomeCubit.get(context);
     return BlocListener<ProfileCubit, ProfileState>(
       child: const SizedBox.shrink(),
       listener: (context, state) {
@@ -39,10 +41,10 @@ class UpdateProfileBlocListener extends StatelessWidget {
         }
         if (state is UploadProfilePhotoSuccess ||
             state is UploadCoverPhotoSuccess) {
-          loginCubit.getUser();
+          profileCubit.getUser();
         }
         if (state is UpdateUserSuccess) {
-          loginCubit.getUser();
+          profileCubit.getUser();
           context.pop();
           context.pop();
         }

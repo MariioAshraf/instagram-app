@@ -25,7 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   String? userId;
 
-  late UserModel userModel;
+  // late UserModel userModel;
 
   final usersCollection =
       FirebaseFirestore.instance.collection(kUsersCollection);

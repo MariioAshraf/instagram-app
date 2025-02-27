@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/features/profile/presentation/views/edit_profile_view.dart';
+import 'package:instagram_app/features/splash/splash_view.dart';
 import 'package:instagram_app/features/story/presentation/views/display_offline_story_view.dart';
 import 'package:instagram_app/features/story/presentation/views/display_online_story_view.dart';
 import 'package:instagram_app/features/story/presentation/views/story_preview_view.dart';
+import '../../features/auth/login/domain/use_cases/login_use_case.dart';
+import '../../features/auth/login/presentation/manager/login_cubit.dart';
 import '../../features/auth/login/presentation/views/login_view.dart';
 import '../../features/auth/sign_up/presentation/views/sign_up_view.dart';
-import '../../features/home/presentation/manager/bottom_nav_cubit.dart';
 import '../../features/home/presentation/views/home_view.dart';
 import '../../features/post/domain/use_cases/post_use_case.dart';
 import '../../features/post/presentation/manager/post_cubit.dart';
@@ -21,14 +23,14 @@ class AppRouter {
     switch (settings.name) {
       case Routes.loginView:
         return MaterialPageRoute(
-          builder: (_) => const LoginView(),
+          builder: (_) => BlocProvider(
+            create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
+            child: const LoginView(),
+          ),
         );
       case Routes.homeView:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => BottomNavCubit(),
-            child: const HomeView(),
-          ),
+          builder: (_) => const HomeView(),
         );
       case Routes.createPostView:
         return MaterialPageRoute(
@@ -61,6 +63,10 @@ class AppRouter {
       case Routes.storyPreviewView:
         return MaterialPageRoute(
           builder: (_) => const StoryPreviewView(),
+        );
+      case Routes.splashView:
+        return MaterialPageRoute(
+          builder: (_) => const SplashView(),
         );
       case Routes.editProfileView:
         return MaterialPageRoute(

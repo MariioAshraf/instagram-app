@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 
 import '../../../../../core/theming/app_styles.dart';
 import '../../../../../core/utils/spacing.dart';
@@ -20,7 +21,7 @@ class CreatePostTopBar extends StatefulWidget {
 class _CreatePostTopBarState extends State<CreatePostTopBar> {
   @override
   Widget build(BuildContext context) {
-    UserModel userModel = LoginCubit.get(context).userModel;
+    UserModel userModel = HomeCubit.get(context).userModel;
     PostCubit postCubit = PostCubit.get(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

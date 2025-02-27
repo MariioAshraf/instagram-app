@@ -32,9 +32,6 @@ class HiveFunctions {
       createdAt: story.createdAt,
       localFilePath: localPath,
       storyId: story.storyId,
-      fileUrl: story.fileUrl,
-      // save fileUrl cause if the user opened his acc from another device
-
       viewersIds: <String, String>{},
       viewersModels: <String, UserModel>{},
     );
@@ -48,5 +45,16 @@ class HiveFunctions {
       for (var story in stories) story.storyId: story
     };
     box.putAll(storiesMap);
+  }
+
+  static Future<UserModel> saveUserModel(UserModel userModel) async {
+    var box = Hive.box<UserModel>(kUserModelBox);
+    await box.put(kUserModelBox, userModel);
+    return userModel;
+  }
+
+  static Future<UserModel?> getUserModel() async {
+    var box = Hive.box<UserModel>(kUserModelBox);
+    return box.get(kUserModelBox);
   }
 }

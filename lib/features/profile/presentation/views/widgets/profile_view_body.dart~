@@ -7,7 +7,7 @@ import 'package:instagram_app/features/profile/presentation/views/widgets/user_n
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_profile_and_cover_images.dart';
 import '../../../../../core/utils/spacing.dart';
 import '../../../../auth/login/presentation/manager/login_cubit.dart';
-import '../../../../home/presentation/manager/home_cubit.dart';
+import '../../../../home/presentation/manager/Home_cubit.dart';
 import 'edit_profile_row.dart';
 
 class ProfileViewBody extends StatefulWidget {
