@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
-import 'package:instagram_app/features/home/presentation/views/widgets/image_shimmer_loading.dart';
-import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
-import '../../../../../core/widgets/build_user_cover_image.dart';
-import '../../../../../core/widgets/build_user_profile_image.dart';
+import 'package:instagram_app/features/profile/presentation/views/widgets/profile_image_bloc_consumer.dart';
+import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
+import 'cover_image_bloc_consumer.dart';
 
 class UserProfileAndCoverImages extends StatelessWidget {
   const UserProfileAndCoverImages({
@@ -17,72 +15,27 @@ class UserProfileAndCoverImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userModel = HomeCubit.get(context).userModel;
-    return SizedBox(
-      height: size.height * 0.32,
-      width: size.width,
-      child: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, state) {
-          if (state is UploadProfilePhotoFailure) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                icon: const Icon(
-                  Icons.error,
-                  color: Colors.red,
-                  size: 32,
-                ),
-                content: Text(state.errMessage),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      'Got it',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Stack(
+    final bool hasStories = StoryCubit.get(context).myStories.isNotEmpty;
+    final height = MediaQuery.of(context).size.height;
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (previous, current) => current is GetUserSuccess,
+      builder: (context, state) {
+        return SizedBox(
+          height: size.height * 0.32,
+          width: size.width,
+          child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              state is UploadCoverPhotoLoading ||
-                      state is UploadCoverPhotoSuccess
-                  ? SizedBox(
-                      height: size.height * 0.27,
-                      child: const ImageShimmerLoading(),
-                    )
-                  : buildUserCoverImage(
-                      coverImageUrl: userModel.coverImageUrl!,
-                      context,
-                    ),
-              Positioned(
-                bottom: 0,
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 66.r,
-                  child: state is UploadProfilePhotoLoading
-                      ? const ClipOval(child: ImageShimmerLoading())
-                      : buildUserProfileImage(
-                          context,
-                          radius: 66,
-                        ),
-                ),
+              CoverImageBlocConsumer(
+                height: height,
+              ),
+              ProfileImageBlocConsumer(
+                hasStories: hasStories,
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

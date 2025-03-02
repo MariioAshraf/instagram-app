@@ -1,8 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meta/meta.dart';
 import '../../../auth/models/user_model.dart';
 import '../../domain/use_cases/post_use_case.dart';
 
@@ -33,8 +31,19 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
   Future<void> createPost(UserModel userModel) async {
+<<<<<<< Updated upstream
     emit(CreatePostLoading());
+=======
+=======
+=======
+>>>>>>> Stashed changes
+  Future<void> createPost(UserModel? userModel) async {
+    emit(CreatePostLoading());
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     var result =
         await postUseCase.call(userModel, media, postTitleController.text);
     result.fold((failure) {

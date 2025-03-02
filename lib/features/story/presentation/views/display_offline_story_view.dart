@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/assets.dart';
-import 'package:instagram_app/features/home/presentation/views/widgets/home_create_post_gradient_container.dart';
 import 'package:instagram_app/features/story/presentation/views/widgets/story_viewer_item.dart';
 import 'package:video_player/video_player.dart';
 import '../../data/models/story_model.dart';

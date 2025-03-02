@@ -161,8 +161,8 @@ class StoryCubit extends Cubit<StoryState> {
 
   /// for load story and download story file
   Future<void> loadOnlineStory(StoryModel storyModel, String userId) async {
-    emit(LoadStoryLoading());
     isStoryLoading = true;
+    emit(LoadStoryLoading());
     try {
       isImage = storyModel.mediaType == MediaType.image;
       if (isVideoInitialized) {

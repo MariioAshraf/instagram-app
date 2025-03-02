@@ -19,7 +19,6 @@ class ProfileUseCase extends UseCase<void, String> {
         uId: uId,
         type: type!,
       );
-      print('rrrrrrrrrrrrrrrrrrrrrrrrr$fileUrl');
       return result.fold((failure) => Left(failure), (r) => Right(fileUrl));
     });
   }

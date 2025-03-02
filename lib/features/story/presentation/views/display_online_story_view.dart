@@ -90,19 +90,11 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
           }
         },
         builder: (context, state) {
-          if (state is DownloadingStoryLoading) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.red,
-                strokeWidth: .7,
-              ),
-            );
-          }
-          if (_storyCubit.isStoryLoading) {
+          if (_storyCubit.isStoryLoading || state is DownloadingStoryLoading) {
             return const Center(
               child: CircularProgressIndicator(
                 color: Colors.white,
-                strokeWidth: .7,
+                strokeWidth: 1.5,
               ),
             );
           }

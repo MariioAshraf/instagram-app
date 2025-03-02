@@ -8,7 +8,6 @@ import 'package:instagram_app/features/profile/presentation/views/widgets/save_a
 import 'package:instagram_app/features/profile/presentation/views/widgets/update_name_and_bio_text_fields.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/update_profile_bloc_listener.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_profile_and_cover_images.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 
 class EditProfileViewBody extends StatefulWidget {
@@ -21,6 +20,7 @@ class EditProfileViewBody extends StatefulWidget {
 }
 
 class _EditProfileViewBodyState extends State<EditProfileViewBody> {
+
   @override
   Widget build(BuildContext context) {
     final ProfileCubit profileCubit = ProfileCubit.get(context);
@@ -103,21 +103,21 @@ class ChangeImagesBlocListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String uId = HomeCubit.get(context).userModel.uId!;
+    final userModel = HomeCubit.get(context).userModel;
     ProfileCubit profileCubit = ProfileCubit.get(context);
     return BlocListener<ProfileCubit, ProfileState>(
         child: const SizedBox.shrink(),
         listener: (context, state) {
           if (state is PickProfilePhotoSuccess) {
             profileCubit.uploadProfilePhoto(
-              path: state.profilePath,
-              uId: uId,
+              userModel: userModel,
+              path: state.profileImagePath,
             );
           }
           if (state is PickCoverPhotoSuccess) {
             profileCubit.uploadCoverPhoto(
-              path: state.profilePath,
-              uId: uId,
+              userModel: userModel,
+              path: state.coverImagePath,
             );
           }
         });

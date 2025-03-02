@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,9 +39,9 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold((failure) => emit(LoginFailure(errMessage: failure.message)),
         (userModel) async {
       userId = userModel.uId;
-      await HiveFunctions.saveUserModel(userModel);
+      await HiveFunctions.saveUserId(userModel.uId!);
       this.userModel = userModel;
-      emit(LoginSuccess());
+      emit(LoginSuccess(userModel));
     });
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import '../../../../../../core/routing/routes.dart';
 import '../../../../../../core/theming/app_colors.dart';
 import '../../../../../../core/theming/app_styles.dart';
@@ -11,6 +12,7 @@ class LoginBlocListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomeCubit homeCubit = HomeCubit.get(context);
     return BlocListener<LoginCubit, LoginState>(
       child: const SizedBox.shrink(),
       listener: (context, state) {
@@ -40,6 +42,8 @@ class LoginBlocListener extends StatelessWidget {
           );
         }
         if (state is LoginSuccess) {
+          homeCubit.userModel = state.userModel;
+          homeCubit.userId = state.userModel.uId!;
           context.pop();
           context.pushReplacementNamed(Routes.homeView);
         }

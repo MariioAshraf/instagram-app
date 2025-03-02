@@ -6,7 +6,6 @@ import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_name_and_bio.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/user_profile_and_cover_images.dart';
 import '../../../../../core/utils/spacing.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import 'edit_profile_row.dart';
 

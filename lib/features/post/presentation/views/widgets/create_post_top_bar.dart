@@ -6,7 +6,6 @@ import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart
 
 import '../../../../../core/theming/app_styles.dart';
 import '../../../../../core/utils/spacing.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
 import '../../manager/post_cubit.dart';
 
 class CreatePostTopBar extends StatefulWidget {

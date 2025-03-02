@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:instagram_app/core/functions/hive_functions.dart';
+import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/widgets/build_user_profile_image.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import '../../../profile/presentation/views/profile_view.dart';
@@ -17,8 +19,10 @@ class HomeCubit extends Cubit<HomeState> {
   static HomeCubit get(BuildContext context) => BlocProvider.of(context);
 
   int currentIndex = 0;
-
+  late String userId;
   late UserModel userModel;
+  final CollectionReference _usersCollection =
+      FirebaseFirestore.instance.collection(kUsersCollection);
 
   List<BottomNavigationBarItem> buildBottomNavItems(BuildContext context) {
     return [
@@ -38,7 +42,11 @@ class HomeCubit extends Cubit<HomeState> {
           child: BlocBuilder<HomeCubit, HomeState>(
             buildWhen: (_, current) => current is GetUserSuccess,
             builder: (context, state) {
-              return buildUserProfileImage(context, radius: 14);
+              return buildUserProfileImage(
+                context,
+                radius: 14,
+                profileImage: userModel.profileImageUrl!,
+              );
             },
           ),
         ),
@@ -47,13 +55,24 @@ class HomeCubit extends Cubit<HomeState> {
     ];
   }
 
-  getUser() async {
-    final userModel = await HiveFunctions.getUserModel();
-    if (userModel != null) {
-      this.userModel = userModel;
+  Future<void> getUser() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      emit(GetUserLoading());
+      final uId = FirebaseAuth.instance.currentUser!.uid;
+      final docSnapShot = await _usersCollection.doc(uId).get();
+      userModel = UserModel.fromJson(docSnapShot);
+      // print('userModel: ${userModel.toJson()}');
       emit(GetUserSuccess());
     }
   }
+
+  // getUser() async {
+  //   final userModel = await HiveFunctions.getUserModel();
+  //   if (userModel != null) {
+  //     this.userModel = userModel;
+  //     emit(GetUserSuccess());
+  //   }
+  // }
 
   List<Widget> screens(BuildContext context) {
     return [

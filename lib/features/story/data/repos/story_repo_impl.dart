@@ -149,7 +149,6 @@ class StoryRepoImpl implements StoryRepo {
     try {
       final Map<String, List<StoryModel>> storiesMap =
           storyLocalDataSource.getFriendsStories(userId: userId);
-
       final finalMap = await storyRemoteDataSource.getFriendsStories(
         storiesMap: storiesMap,
         userId: userId,
@@ -194,7 +193,6 @@ class StoryRepoImpl implements StoryRepo {
           story.viewersIds![userId] = viewedAt;
           await box.put(story.storyId, story);
         }
-        print('story seen');
       }
       return const Right(null);
     } catch (e) {

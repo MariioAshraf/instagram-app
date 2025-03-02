@@ -1,18 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:instagram_app/features/auth/user_model_extensions.dart';
-import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import '../../features/home/presentation/views/widgets/image_shimmer_loading.dart';
 
 Widget buildUserProfileImage(
   BuildContext context, {
   double radius = 24,
+  required String profileImage,
 }) {
-  final userModel = HomeCubit.get(context).userModel;
-  return userModel.hasProfileImage
+  return profileImage.isNotEmpty
       ? UserCircleProfileImage(
-          imageUrl: userModel.profileImageUrl!,
+          imageUrl: profileImage,
           radius: radius,
         )
       : UserDefaultProfileCircleAvatar(
@@ -38,6 +36,7 @@ class UserCircleProfileImage extends StatelessWidget {
           width: radius.r * 2,
           imageUrl: imageUrl,
           fit: BoxFit.fitHeight,
+          useOldImageOnUrlChange: true,
           placeholder: (context, url) => const ImageShimmerLoading(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
         ),

@@ -12,12 +12,14 @@ class ProfileRepoImpl implements ProfileRepo {
       FirebaseFirestore.instance.collection(kUsersCollection);
 
   @override
-  Future<Either<Failure, void>> updateUserNameAndBio({
+  Future<Either<Failure, void>> updateUserProfile({
     String? name,
     String? bio,
     required UserModel userModel,
   }) async {
+
     try {
+
       final userDocRef = usersCollection.doc(userModel.uId);
       final updatedName =
           (name != null && name.isNotEmpty) ? name : userModel.name;
