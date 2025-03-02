@@ -10,16 +10,17 @@ class UserNameAndBio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Text(
-          '${name[0].toUpperCase()}${name.substring(1)}',
+          textAlign: TextAlign.center,
+          // '${name[0].toUpperCase()}${name.substring(1)}',
+          name,
           style: AppTextStyles.font18DarkBlueBold.copyWith(fontSize: 28),
         ),
         verticalSpacing(6),
         Text(
-          textAlign:  TextAlign.center,
+          textAlign: TextAlign.center,
           bio.isNotEmpty ? bio : 'Write you Bio...',
           style: AppTextStyles.font13GreyRegular,
         ),

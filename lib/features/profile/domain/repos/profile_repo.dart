@@ -3,7 +3,7 @@ import 'package:instagram_app/features/auth/models/user_model.dart';
 import '../../../../core/errors/failure.dart';
 
 abstract class ProfileRepo {
-  Future<Either<Failure, void>> updateUserNameAndBio({
+  Future<Either<Failure, void>> updateUserProfile({
     String? name,
     String? bio,
     required UserModel userModel,

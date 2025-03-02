@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_app/core/theming/app_colors.dart';
+import '../../../../../core/theming/app_styles.dart';
+import '../../../../../core/utils/assets.dart';
+import '../../../../../core/utils/spacing.dart';
+import '../../../../../core/widgets/build_user_profile_image.dart';
+
+class StoryCircleItem extends StatefulWidget {
+  const StoryCircleItem({
+    super.key,
+    this.profileImageUrl = AssetsData.defaultOnlineProfileImage,
+    this.name = 'name',
+  });
+
+  final String? profileImageUrl;
+  final String? name;
+
+  @override
+  State<StoryCircleItem> createState() => _StoryCircleItemState();
+}
+
+class _StoryCircleItemState extends State<StoryCircleItem> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 10.w,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundColor: AppColorsManager.mainBlue,
+            radius: 45.r,
+            child: PickedProfileImage(
+              radius: 42.5.r,
+              imageUrl: widget.profileImageUrl!,
+            ),
+          ),
+          verticalSpacing(10),
+          Text(
+            widget.name!,
+            style: AppTextStyles.font14DarkBlueMedium,
+          ),
+        ],
+      ),
+    );
+  }
+}

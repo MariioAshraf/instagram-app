@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_app/core/functions/hive_functions.dart';
-import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import '../../core/routing/routes.dart';
 import '../../core/utils/assets.dart';
-import '../auth/login/presentation/manager/login_cubit.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -23,10 +21,13 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> _navigateBasedOnToken() async {
-    final UserModel? user = await HiveFunctions.getUserModel();
+    final String? userId = await HiveFunctions.getUserId();
+    // await HomeCubit.get(context).getUser();
     await Future.delayed(const Duration(seconds: 2));
-    if (user != null) {
-      HomeCubit.get(context).userModel = user;
+    if (userId != null) {
+      if (mounted) {
+        HomeCubit.get(context).userId = userId;
+      }
       if (mounted) {
         Navigator.pushReplacementNamed(context, Routes.homeView);
       }

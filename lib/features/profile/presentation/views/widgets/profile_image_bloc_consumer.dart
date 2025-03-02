@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
-import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
+import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../../../home/presentation/views/widgets/image_shimmer_loading.dart';
 import '../../manager/profile_cubit.dart';
 
 class ProfileImageBlocConsumer extends StatelessWidget {
   const ProfileImageBlocConsumer({
     super.key,
-    required this.radius,
+    required this.hasStories,
   });
 
-  final bool hasStories = false;
-
-  /// i've sent this radius to make the widget not const cause of rebuild issue
-  final double radius;
+  final bool hasStories;
 
   @override
   Widget build(BuildContext context) {
+    final profileImage = HomeCubit.get(context).userModel.profileImageUrl;
     return Positioned(
       bottom: 0,
       child: CircleAvatar(
-        radius: radius,
+        radius: 69.r,
         backgroundColor: hasStories ? AppColorsManager.mainBlue : Colors.white,
         child: BlocConsumer<ProfileCubit, ProfileState>(
+          buildWhen: (_, current) =>
+              current is UploadProfilePhotoSuccess ||
+              current is UploadProfilePhotoFailure ||
+              current is UploadProfilePhotoLoading,
           listener: (context, state) {
             if (state is UploadProfilePhotoFailure) {
               showDialog(
@@ -59,6 +62,7 @@ class ProfileImageBlocConsumer extends StatelessWidget {
             return state is UploadProfilePhotoLoading
                 ? const ClipOval(child: ImageShimmerLoading())
                 : buildUserProfileImage(
+                    profileImage: profileImage!,
                     context,
                     radius: 66,
                   );

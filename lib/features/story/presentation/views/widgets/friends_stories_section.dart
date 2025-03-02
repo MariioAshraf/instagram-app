@@ -5,7 +5,6 @@ import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
 import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import '../../../../../constants.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../../data/models/story_model.dart';
 import 'DashedCircleAvatar.dart';

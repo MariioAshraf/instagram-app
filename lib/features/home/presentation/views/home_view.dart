@@ -28,20 +28,27 @@ class _HomeViewState extends State<HomeView> {
     return ScaffoldGradientBackgroundContainer(
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          return Scaffold(
-            key: profileCubit.scaffoldKey,
-            drawer: const BuildDrawer(),
-            backgroundColor: Colors.transparent,
-            bottomNavigationBar: _buildBottomNavBar(bottomNavCubit, context),
-            body: bottomNavCubit.screens(context)[bottomNavCubit.currentIndex],
+          return BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              return state is GetUserLoading || state is BottomNavInitial
+                  ? const Center(child: CircularProgressIndicator())
+                  : Scaffold(
+                      key: profileCubit.scaffoldKey,
+                      drawer: const BuildDrawer(),
+                      backgroundColor: Colors.transparent,
+                      bottomNavigationBar:
+                          _buildBottomNavBar(bottomNavCubit, context),
+                      body: bottomNavCubit
+                          .screens(context)[bottomNavCubit.currentIndex],
+                    );
+            },
           );
         },
       ),
     );
   }
 
-  Theme _buildBottomNavBar(
-      HomeCubit bottomNavCubit, BuildContext context) {
+  Theme _buildBottomNavBar(HomeCubit bottomNavCubit, BuildContext context) {
     return Theme(
       data: ThemeData(
         splashColor: Colors.transparent,

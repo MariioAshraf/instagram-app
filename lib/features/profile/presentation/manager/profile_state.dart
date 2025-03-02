@@ -16,15 +16,15 @@ final class UpdateUserFailure extends ProfileState {
 }
 
 final class PickProfilePhotoSuccess extends ProfileState {
-  final String profilePath;
+  final String profileImagePath;
 
-  PickProfilePhotoSuccess(this.profilePath);
+  PickProfilePhotoSuccess(this.profileImagePath);
 }
 
 final class PickCoverPhotoSuccess extends ProfileState {
-  final String profilePath;
+  final String coverImagePath;
 
-  PickCoverPhotoSuccess(this.profilePath);
+  PickCoverPhotoSuccess(this.coverImagePath);
 }
 
 final class UploadProfilePhotoLoading extends ProfileState {}

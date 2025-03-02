@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_app/features/auth/models/user_model.dart';
 import '../../../../../core/theming/app_styles.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
@@ -10,7 +9,7 @@ class BuildDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel userModel = HomeCubit.get(context).userModel;
+    final user = HomeCubit.get(context).userModel;
     return Drawer(
       elevation: 0,
       backgroundColor: Colors.white.withAlpha(230),
@@ -21,11 +20,12 @@ class BuildDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildUserProfileImage(
+                  profileImage: user.profileImageUrl!,
                   context,
                   radius: 38,
                 ),
                 Text(
-                  userModel.name,
+                  user.name,
                   style: AppTextStyles.font18DarkBlueBold,
                 ),
               ],

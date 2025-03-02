@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import 'package:instagram_app/features/story/presentation/views/widgets/my_stories_section.dart';
-import '../../../../auth/login/presentation/manager/login_cubit.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import 'friends_stories_section.dart';
 
@@ -21,7 +20,7 @@ class _StoriesListViewState extends State<StoriesListView> {
   @override
   void initState() {
     storyCubit = StoryCubit.get(context);
-    userId = HomeCubit.get(context).userModel.uId!;
+    userId = HomeCubit.get(context).userId;
     storyCubit.getFriendsStories(userId);
     super.initState();
   }

@@ -47,14 +47,14 @@ class HiveFunctions {
     box.putAll(storiesMap);
   }
 
-  static Future<UserModel> saveUserModel(UserModel userModel) async {
-    var box = Hive.box<UserModel>(kUserModelBox);
-    await box.put(kUserModelBox, userModel);
-    return userModel;
+  static Future<String> saveUserId(String userId) async {
+    var box = Hive.box<String>(kUserId);
+    await box.put(kUserId, userId);
+    return userId;
   }
 
-  static Future<UserModel?> getUserModel() async {
-    var box = Hive.box<UserModel>(kUserModelBox);
-    return box.get(kUserModelBox);
+  static Future<String?> getUserId() async {
+    var box = Hive.box<String>(kUserId);
+    return box.get(kUserId);
   }
 }

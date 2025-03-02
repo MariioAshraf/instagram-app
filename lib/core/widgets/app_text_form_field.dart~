@@ -42,7 +42,9 @@ class AppTextFormField extends StatelessWidget {
     return TextFormField(
       onChanged: onChanged,
       validator: (value) {
-        return validator(value);
+        if (validator ==  null){
+          return null;
+        }return validator!(value);
       },
       controller: controller,
       cursorOpacityAnimates: true,

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:instagram_app/core/routing/app_router.dart';
-import 'package:instagram_app/features/auth/login/presentation/manager/login_cubit.dart';
 import 'package:instagram_app/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:instagram_app/features/profile/domain/use_cases/profile_use_case.dart';
 import 'package:instagram_app/features/story/data/repos/story_repo_impl.dart';
@@ -14,7 +13,6 @@ import 'core/di/dependency_injection.dart';
 import 'core/utils/bloc_observer.dart';
 import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
-import 'features/auth/login/domain/use_cases/login_use_case.dart';
 import 'features/auth/models/user_model.dart';
 import 'features/home/presentation/manager/home_cubit.dart';
 import 'features/profile/presentation/manager/profile_cubit.dart';
@@ -32,7 +30,7 @@ void main() async {
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(MediaTypeAdapter());
   await Hive.openBox<StoryModel>(kStoriesCollection);
-  await Hive.openBox<UserModel>(kUserModelBox);
+  await Hive.openBox<String>(kUserId);
   setupServiceLocator();
   Bloc.observer = AppBlocObserver();
 
