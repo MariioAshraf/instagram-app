@@ -5,10 +5,10 @@ import 'package:instagram_app/core/use_cases/use_case.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/post/domain/repos/post_repo.dart';
 
-class PostUseCase extends UseCase<void, UserModel> {
+class CreatePostUseCase extends UseCase<void, UserModel> {
   final PostRepo postRepo;
 
-  PostUseCase(this.postRepo);
+  CreatePostUseCase(this.postRepo);
 
   @override
   Future<Either<Failure, void>> call(

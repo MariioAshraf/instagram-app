@@ -67,7 +67,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                   await loginCubit.login();
                 }
               },
-              childWidget: Text(
+              child: Text(
                 'Login',
                 style: AppTextStyles.font16WhiteSemiBold,
               ),

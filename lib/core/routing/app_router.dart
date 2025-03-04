@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/routing/routes.dart';
+import 'package:instagram_app/features/post/data/repos/post_repo_impl.dart';
 import 'package:instagram_app/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:instagram_app/features/splash/splash_view.dart';
 import 'package:instagram_app/features/story/presentation/views/display_offline_story_view.dart';
@@ -12,7 +13,7 @@ import '../../features/auth/login/presentation/manager/login_cubit.dart';
 import '../../features/auth/login/presentation/views/login_view.dart';
 import '../../features/auth/sign_up/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
-import '../../features/post/domain/use_cases/post_use_case.dart';
+import '../../features/post/domain/use_cases/create_post_use_case.dart';
 import '../../features/post/presentation/manager/post_cubit.dart';
 import '../../features/post/presentation/views/create_post_view.dart';
 import '../../features/story/data/models/story_model.dart';
@@ -30,16 +31,17 @@ class AppRouter {
         );
       case Routes.homeView:
         return MaterialPageRoute(
-          builder: (_) => const HomeView(),
+          builder: (_) => BlocProvider(
+            create: (context) => PostCubit(
+              getIt.get<CreatePostUseCase>(),
+              getIt.get<PostRepoImpl>(),
+            ),
+            child: const HomeView(),
+          ),
         );
       case Routes.createPostView:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => PostCubit(
-              getIt.get<PostUseCase>(),
-            ),
-            child: const CreatePostView(),
-          ),
+          builder: (_) => const CreatePostView(),
         );
       case Routes.signUpView:
         return MaterialPageRoute(

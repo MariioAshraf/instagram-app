@@ -53,7 +53,7 @@ class SignUpBlocConsumer extends StatelessWidget {
               await signUpCubit.signUp();
             }
           },
-          childWidget: state is SignUpLoading
+          child: state is SignUpLoading
               ? Center(
             child: CircularProgressIndicator(
               color: Colors.white,

@@ -4,4 +4,5 @@ class AssetsData {
   static const storyViewEyeIcon = 'assets/images/story_view_eye_icon.png';
   static const defaultOnlineProfileImage =
       'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg';
+  static const shareIcon = 'assets/images/post_share_icon.png';
 }
