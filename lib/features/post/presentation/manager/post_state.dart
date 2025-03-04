@@ -14,6 +14,7 @@ final class PostFilesPickedFailure extends PostState {
 }
 
 final class CreatePostSuccess extends PostState {}
+
 final class CreatePostLoading extends PostState {}
 
 final class CreatePostFailure extends PostState {
@@ -25,3 +26,17 @@ final class CreatePostFailure extends PostState {
 final class CanUploadPost extends PostState {}
 
 final class CanNotUploadPost extends PostState {}
+
+final class GetPostsLoading extends PostState {}
+
+final class GetPostsFailure extends PostState {
+  final String errMessage;
+
+  GetPostsFailure(this.errMessage);
+}
+
+final class GetPostsSuccess extends PostState {
+  final List<PostModel> posts;
+
+  GetPostsSuccess(this.posts);
+}

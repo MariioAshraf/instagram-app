@@ -7,7 +7,7 @@ class AppTextButton extends StatelessWidget {
       {super.key,
       this.onPressed,
       this.borderRadius,
-      required this.childWidget,
+      required this.child,
       // this.textStyle,
       this.buttonWidth,
       this.buttonHeight,
@@ -17,7 +17,7 @@ class AppTextButton extends StatelessWidget {
 
   final BorderRadiusGeometry? borderRadius;
   final VoidCallback? onPressed;
-  final Widget childWidget;
+  final Widget child;
   final double? buttonWidth;
   final double? buttonHeight;
   final double? horizontalPadding;
@@ -51,7 +51,7 @@ class AppTextButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: childWidget,
+      child: child,
     );
   }
 }
