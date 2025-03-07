@@ -16,27 +16,28 @@ class HomeViewBody extends StatefulWidget {
   State<HomeViewBody> createState() => _HomeViewBodyState();
 }
 
-late String userId;
-
 class _HomeViewBodyState extends State<HomeViewBody> {
+  late ScrollController scrollController;
+
   @override
   void initState() {
-    userId = HomeCubit.get(context).userId;
-    PostCubit.get(context).fetchPosts(limit: 1);
+    scrollController = HomeCubit.get(context).scrollController;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final PostCubit postCubit = PostCubit.get(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      child: const CustomScrollView(
+      child: CustomScrollView(
+        controller: scrollController,
         slivers: [
-          HomeViewTopBar(),
-          HomeCreatePostContainer(),
-          StoriesListView(),
-          PostBlocConsumer(),
+          const HomeViewTopBar(),
+          const HomeCreatePostContainer(),
+          const StoriesListView(),
+          PostBlocConsumer(
+            scrollController: scrollController,
+          ),
         ],
       ),
     );

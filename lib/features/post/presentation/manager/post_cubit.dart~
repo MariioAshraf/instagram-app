@@ -63,7 +63,6 @@ class PostCubit extends Cubit<PostState> {
     });
   }
 
-  /// for better user experience
   void _fastToggleLike(String postId) {
     likedPostsMap[postId] != null
         ? likedPostsMap.remove(postId)

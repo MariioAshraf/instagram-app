@@ -39,23 +39,23 @@ class StoryViewersItem extends StatelessWidget {
               )),
             ),
       title: Text(friend!.name),
-      subtitle: Text(formatViewedAt(friend!.viewStoryAt!)),
+      subtitle: Text(_formatViewedAt(friend!.viewStoryAt!)),
     );
   }
-}
 
-String formatViewedAt(
-  String viewedAt,
-) {
-  final DateTime dateTimeViewedAt = DateTime.parse(viewedAt);
-  final now = DateTime.now();
-  final durationSinceViewed = now.difference(dateTimeViewedAt);
+  String _formatViewedAt(
+    String viewedAt,
+  ) {
+    final DateTime dateTimeViewedAt = DateTime.parse(viewedAt);
+    final now = DateTime.now();
+    final durationSinceViewed = now.difference(dateTimeViewedAt);
 
-  if (durationSinceViewed.inHours < 24 && dateTimeViewedAt.day == now.day) {
-    return "Today, ${DateFormat('hh:mm a').format(dateTimeViewedAt)}";
-  } else if (durationSinceViewed.inHours < 24) {
-    return "Yesterday, ${DateFormat('hh:mm a').format(dateTimeViewedAt)}";
-  } else {
-    return DateFormat('yyyy/MM/dd, hh:mm a').format(dateTimeViewedAt);
+    if (durationSinceViewed.inHours < 24 && dateTimeViewedAt.day == now.day) {
+      return "Today, ${DateFormat('hh:mm a').format(dateTimeViewedAt)}";
+    } else if (durationSinceViewed.inHours < 24) {
+      return "Yesterday, ${DateFormat('hh:mm a').format(dateTimeViewedAt)}";
+    } else {
+      return DateFormat('yyyy/MM/dd, hh:mm a').format(dateTimeViewedAt);
+    }
   }
 }

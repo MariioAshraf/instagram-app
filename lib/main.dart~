@@ -15,9 +15,6 @@ import 'core/routing/routes.dart';
 import 'core/utils/supabase_initialization.dart';
 import 'features/auth/models/user_model.dart';
 import 'features/home/presentation/manager/home_cubit.dart';
-import 'features/post/data/repos/post_repo_impl.dart';
-import 'features/post/domain/use_cases/create_post_use_case.dart';
-import 'features/post/presentation/manager/post_cubit.dart';
 import 'features/profile/presentation/manager/profile_cubit.dart';
 import 'features/story/data/models/story_model.dart';
 import 'firebase_options.dart';
@@ -52,12 +49,6 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<HomeCubit>(
             create: (context) => HomeCubit()..getUser(),
-          ),
-          BlocProvider(
-            create: (context) => PostCubit(
-              getIt.get<CreatePostUseCase>(),
-              getIt.get<PostRepoImpl>(),
-            ),
           ),
           BlocProvider(
             create: (context) => ProfileCubit(

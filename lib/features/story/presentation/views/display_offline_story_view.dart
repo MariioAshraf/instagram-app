@@ -180,9 +180,9 @@ class _DisplayOfflineStoriesStoryViewState
     final List<StoryModel> stories = widget.stories;
     return GestureDetector(
       onVerticalDragEnd: (details) {
-        if (details.primaryVelocity! < -500) {
-          _pauseStory();
-          if (widget.isMyStory) {
+        if (widget.isMyStory) {
+          if (details.primaryVelocity! < -500) {
+            _pauseStory();
             _buildBottomSheet(context, widget.stories[_currentIndex]);
           }
         }
@@ -351,6 +351,7 @@ class _DisplayOfflineStoriesStoryViewState
                           child: ListView(
                             children: [
                               ...story.viewersModels!.entries.map((entry) {
+                                // story.seenStoryDate![entry.key] = DateTime.now().toIso8601String();
                                 return Padding(
                                   padding: EdgeInsets.only(top: 5.h),
                                   child: StoryViewersItem(friend: entry.value),

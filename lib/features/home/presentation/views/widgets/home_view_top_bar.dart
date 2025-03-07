@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/assets.dart';
-import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 
 class HomeViewTopBar extends StatelessWidget {
   const HomeViewTopBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final scaffoldKey = ProfileCubit.get(context).scaffoldKey;
+    final scaffoldKey = HomeCubit.get(context).scaffoldKey;
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(

@@ -189,8 +189,8 @@ class StoryRepoImpl implements StoryRepo {
         await docRef.reference.set({'viewedAt': viewedAt});
         var box = Hive.box<StoryModel>(kStoriesCollection);
         StoryModel? story = box.get(storyModel.storyId);
-        if (story != null && !story.viewersIds!.containsKey(userId)) {
-          story.viewersIds![userId] = viewedAt;
+        if (story != null && !story.seenStoryDate!.containsKey(userId)) {
+          story.seenStoryDate![userId] = viewedAt;
           await box.put(story.storyId, story);
         }
       }

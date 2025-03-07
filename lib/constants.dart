@@ -18,3 +18,4 @@ const String kCreatedAt = 'createdAt';
 const String kUserModelBox = 'userModel';
 const String kLikesCount = 'likesCount';
 const String kLiked = 'liked';
+const String kIsLiked = 'isLiked';

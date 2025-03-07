@@ -25,7 +25,6 @@ class PostRepoImpl extends PostRepo {
       final docRef = _postsCollection.doc();
       final postModel = PostModel(
         postId: docRef.id,
-        userProfileImage: userModel.profileImageUrl,
         postFileUrl: postMediaUrl ?? [],
         postTitle: postTitle ?? '',
         userName: userModel.name,
@@ -42,18 +41,25 @@ class PostRepoImpl extends PostRepo {
   // waiting for creating followings collection and for data sources classes to be implemented
   @override
   Future<Either<Failure, List<PostModel>>> fetchPosts({
-    int limit = 5,
+    int limit = 10,
+    bool reset = false,
   }) async {
     try {
+      if (reset) {
+        _lastDocument = null;
+      }
+
       Query query =
           _postsCollection.orderBy(kCreatedAt, descending: true).limit(limit);
 
       if (_lastDocument != null) {
         query = query.startAfterDocument(_lastDocument!);
       }
+
       final querySnapshot = await query.get();
+
       if (querySnapshot.docs.isNotEmpty) {
-        _lastDocument = querySnapshot.docs.last; // update last document
+        _lastDocument = querySnapshot.docs.last;
       }
 
       return Right(querySnapshot.docs
@@ -65,7 +71,8 @@ class PostRepoImpl extends PostRepo {
   }
 
   @override
-  Future<Either<Failure, void>> toggleLike(String postId, String userId) async {
+  Future<Either<Failure, bool>> toggleLike(String postId, String userId) async {
+    late bool like; // this bool not used but it still a good approach
     try {
       final likeRef =
           _postsCollection.doc(postId).collection(kLikesCollection).doc(userId);
@@ -74,11 +81,12 @@ class PostRepoImpl extends PostRepo {
 
       if (likeDoc.exists) {
         await _unLikePost(likeRef, postId);
+        like = false;
       } else {
         await _likePost(likeRef, postId);
+        like = true;
       }
-
-      return right(null);
+      return right(like);
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -87,17 +95,17 @@ class PostRepoImpl extends PostRepo {
   Future<void> _unLikePost(
       DocumentReference<Map<String, dynamic>> likeRef, String postId) async {
     await likeRef.delete();
-    await _postsCollection.doc(postId).update({
-      kLikesCount: FieldValue.increment(-1),
-    });
+    await _postsCollection
+        .doc(postId)
+        .update({kLikesCount: FieldValue.increment(-1), kIsLiked: false});
   }
 
   Future<void> _likePost(
       DocumentReference<Map<String, dynamic>> likeRef, String postId) async {
     await likeRef.set({kLiked: true});
-    await _postsCollection.doc(postId).update({
-      kLikesCount: FieldValue.increment(1),
-    });
+    await _postsCollection
+        .doc(postId)
+        .update({kLikesCount: FieldValue.increment(1), kIsLiked: true});
   }
 
   @override

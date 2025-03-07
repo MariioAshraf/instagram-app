@@ -6,21 +6,8 @@ import '../../../profile/presentation/manager/profile_cubit.dart';
 import '../../../profile/presentation/views/widgets/build_drawer.dart';
 import '../manager/home_cubit.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
-
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  late ProfileCubit profileCubit;
-
-  @override
-  void initState() {
-    profileCubit = ProfileCubit.get(context);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,27 +15,26 @@ class _HomeViewState extends State<HomeView> {
     return ScaffoldGradientBackgroundContainer(
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          return BlocBuilder<HomeCubit, HomeState>(
-            builder: (context, state) {
-              return state is GetUserLoading || state is BottomNavInitial
-                  ? const Center(child: CircularProgressIndicator())
-                  : Scaffold(
-                      key: profileCubit.scaffoldKey,
-                      drawer: const BuildDrawer(),
-                      backgroundColor: Colors.transparent,
-                      bottomNavigationBar:
-                          _buildBottomNavBar(bottomNavCubit, context),
-                      body: bottomNavCubit
-                          .screens(context)[bottomNavCubit.currentIndex],
-                    );
-            },
-          );
+          return state is GetUserLoading || state is BottomNavInitial
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  color: AppColorsManager.mainBlue,
+                ))
+              : Scaffold(
+                  key: HomeCubit.get(context).scaffoldKey,
+                  drawer: const BuildDrawer(),
+                  backgroundColor: Colors.transparent,
+                  bottomNavigationBar:
+                      _buildBottomNavBar(bottomNavCubit, context),
+                  body: bottomNavCubit
+                      .screens(context)[bottomNavCubit.currentIndex],
+                );
         },
       ),
     );
   }
 
-  Theme _buildBottomNavBar(HomeCubit bottomNavCubit, BuildContext context) {
+  Theme _buildBottomNavBar(HomeCubit homeCubit, BuildContext context) {
     return Theme(
       data: ThemeData(
         splashColor: Colors.transparent,
@@ -59,10 +45,10 @@ class _HomeViewState extends State<HomeView> {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: bottomNavCubit.buildBottomNavItems(context),
-        currentIndex: bottomNavCubit.currentIndex,
+        items: homeCubit.buildBottomNavItems(context),
+        currentIndex: homeCubit.currentIndex,
         onTap: (index) {
-          bottomNavCubit.changeBottomNav(index);
+          homeCubit.changeBottomNav(index);
         },
         backgroundColor: Colors.transparent,
         elevation: 0,

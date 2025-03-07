@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_app/features/home/presentation/views/widgets/image_shimmer_loading.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class PostImageContainer extends StatefulWidget {
@@ -38,10 +40,16 @@ class _PostImageContainerState extends State<PostImageContainer> {
                   itemBuilder: (context, index) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(6),
-                      child: Image.network(
-                        widget.postImages[index],
+                      child: CachedNetworkImage(
+                        imageUrl: widget.postImages[index],
                         fit: BoxFit.cover,
                         width: double.infinity,
+                        placeholder: (context, url) =>
+                            const Center(child: ImageShimmerLoading()),
+                        errorWidget: (context, url, error) => const Icon(
+                            Icons.error,
+                            size: 50,
+                            color: Colors.red),
                       ),
                     );
                   },
@@ -93,3 +101,4 @@ class _PostImageContainerState extends State<PostImageContainer> {
     return widget.postImages.length;
   }
 }
+
