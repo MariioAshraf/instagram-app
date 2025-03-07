@@ -14,7 +14,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   final ProfileUseCase profileUseCase;
   final nameController = TextEditingController();
   final bioController = TextEditingController();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
 
   static ProfileCubit get(context) => BlocProvider.of(context);
 

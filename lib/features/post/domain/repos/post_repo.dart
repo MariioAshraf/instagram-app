@@ -12,10 +12,12 @@ abstract class PostRepo {
     String? postTitle,
   });
 
-  Future<Either<Failure, List<PostModel>>> fetchPosts(
-      {int limit = 10});
+  Future<Either<Failure, List<PostModel>>> fetchPosts({
+    int limit = 10,
+    bool reset = false,
+  });
 
-  Future<Either<Failure, void>> toggleLike(String postId, String userId);
+  Future<Either<Failure, bool>> toggleLike(String postId, String userId);
 
   Future<Either<Failure, List<String>>> uploadPostMedia({
     required String userId,

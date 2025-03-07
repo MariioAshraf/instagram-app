@@ -17,7 +17,6 @@ class CreatePostView extends StatelessWidget {
           backgroundColor: Colors.transparent,
           floatingActionButton: _buildPickImagesFloatingButton(context),
           body: const CreatePostBlocConsumer(),
-          
         ),
       ),
     );
@@ -38,5 +37,3 @@ class CreatePostView extends StatelessWidget {
     );
   }
 }
-
-

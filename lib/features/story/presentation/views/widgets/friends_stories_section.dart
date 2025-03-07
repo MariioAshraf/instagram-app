@@ -28,7 +28,7 @@ class FriendsStoriesSection extends StatelessWidget {
               final storiesOwner =
                   storiesListAtLeastOneNotSeen.first.storyUserModel;
               final isStorySeen = storiesListAtLeastOneNotSeen
-                  .map((story) => story.viewersIds!.containsKey(userId))
+                  .map((story) => story.seenStoryDate!.containsKey(userId))
                   .toList();
               return Padding(
                 padding: EdgeInsets.only(left: 12.w),

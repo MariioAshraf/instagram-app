@@ -56,7 +56,7 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
           viewersModels: {},
         );
         newStories.add(story);
-        debugPrint('story from firebase${story.toJson()}');
+        // debugPrint('story from firebase${story.toJson()}');
         await box.put(storyId, story);
       }
       if (newStories.isNotEmpty) {
@@ -109,7 +109,7 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
         final updatedViewers =
             Map<String, UserModel>.from(localStory.viewersModels ?? {});
         final updatedViewersIds =
-            Map<String, String>.from(localStory.viewersIds ?? {});
+            Map<String, String>.from(localStory.seenStoryDate ?? {});
         for (var viewerDoc in viewersSnapShot.docs) {
           final viewerId = viewerDoc.id;
           final viewedAt = viewerDoc.get('viewedAt');

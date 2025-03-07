@@ -25,7 +25,7 @@ class StoryModelAdapter extends TypeAdapter<StoryModel> {
       createdAt: fields[5] as DateTime,
       localFilePath: fields[6] as String?,
       viewersModels: (fields[9] as Map?)?.cast<String, UserModel>(),
-      viewersIds: (fields[8] as Map?)?.cast<String, String>(),
+      seenStoryDate: (fields[8] as Map?)?.cast<String, String>(),
       storyId: fields[7] as String,
       storyUserModel: fields[10] as UserModel?,
     );
@@ -52,7 +52,7 @@ class StoryModelAdapter extends TypeAdapter<StoryModel> {
       ..writeByte(7)
       ..write(obj.storyId)
       ..writeByte(8)
-      ..write(obj.viewersIds)
+      ..write(obj.seenStoryDate)
       ..writeByte(9)
       ..write(obj.viewersModels)
       ..writeByte(10)

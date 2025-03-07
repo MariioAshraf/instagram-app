@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/features/auth/sign_up/data/models/register_input_model.dart';
 import 'package:instagram_app/features/auth/sign_up/domain/repos/sign_up_repo.dart';
 import '../../../../../core/errors/failure.dart';
@@ -27,7 +28,7 @@ class SignUpRepoImpl implements SignUpRepo {
   @override
   Future<void> saveUserData(String name, String userId) async {
     CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
+        FirebaseFirestore.instance.collection(kUsersCollection);
     final userModel = UserModel(
       name: name,
       uId: userId,

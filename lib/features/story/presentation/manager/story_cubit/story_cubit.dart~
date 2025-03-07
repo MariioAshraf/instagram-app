@@ -135,7 +135,7 @@ class StoryCubit extends Cubit<StoryState> {
       final List<StoryModel> userStories = entry.value;
       final String storiesOwnerId = entry.key;
       bool allViewed =
-          userStories.every((story) => story.seenStoryDate!.containsKey(userId));
+          userStories.every((story) => story.viewersIds!.containsKey(userId));
       if (allViewed) {
         storiesMapSeenBefore[storiesOwnerId] = userStories;
         // print('all seen ${storiesMapSeenBefore[storiesOwnerId]}');

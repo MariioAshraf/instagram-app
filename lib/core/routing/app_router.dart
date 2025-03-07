@@ -31,13 +31,7 @@ class AppRouter {
         );
       case Routes.homeView:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => PostCubit(
-              getIt.get<CreatePostUseCase>(),
-              getIt.get<PostRepoImpl>(),
-            ),
-            child: const HomeView(),
-          ),
+          builder: (_) => const HomeView(),
         );
       case Routes.createPostView:
         return MaterialPageRoute(

@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../../constants.dart';
 import '../../features/auth/models/user_model.dart';
+import '../../features/post/data/models/post_model.dart';
 import '../../features/story/data/models/story_model.dart';
 
 class HiveFunctions {
   static Future<StoryModel?> getStory(String storyId) async {
-    var box = Hive.box<StoryModel>(kStoriesCollection);
+    final box = Hive.box<StoryModel>(kStoriesCollection);
     StoryModel? story = box.get(storyId);
     return story;
   }
 
   static Future<List<StoryModel>> getMyStories(String userId) async {
-    var box = Hive.box<StoryModel>(kStoriesCollection);
+    final box = Hive.box<StoryModel>(kStoriesCollection);
     return box.values.where((story) => story.userId == userId).toList()
       ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
   }
@@ -22,7 +23,7 @@ class HiveFunctions {
     StoryModel story,
     UserModel userModel,
   ) async {
-    var box = Hive.box<StoryModel>(kStoriesCollection);
+    final box = Hive.box<StoryModel>(kStoriesCollection);
     StoryModel localStory = StoryModel(
       storyUserModel: userModel,
       caption: story.caption,
@@ -32,7 +33,7 @@ class HiveFunctions {
       createdAt: story.createdAt,
       localFilePath: localPath,
       storyId: story.storyId,
-      viewersIds: <String, String>{},
+      seenStoryDate: <String, String>{},
       viewersModels: <String, UserModel>{},
     );
     await box.put(story.storyId, localStory);
@@ -40,7 +41,7 @@ class HiveFunctions {
   }
 
   static saveStories(List<StoryModel> stories) {
-    var box = Hive.box<StoryModel>(kStoriesCollection);
+    final box = Hive.box<StoryModel>(kStoriesCollection);
     Map<String, StoryModel> storiesMap = {
       for (var story in stories) story.storyId: story
     };
@@ -48,13 +49,21 @@ class HiveFunctions {
   }
 
   static Future<String> saveUserId(String userId) async {
-    var box = Hive.box<String>(kUserId);
+    final box = Hive.box<String>(kUserId);
     await box.put(kUserId, userId);
     return userId;
   }
 
   static Future<String?> getUserId() async {
-    var box = Hive.box<String>(kUserId);
+    final box = Hive.box<String>(kUserId);
     return box.get(kUserId);
+  }
+
+  static Future<void> savePosts(List<PostModel> posts) async {
+    final box = Hive.box<PostModel>(kPostsCollection);
+    Map<String, PostModel> postsMap = {
+      for (var post in posts) post.postId: post
+    };
+    box.putAll(postsMap);
   }
 }

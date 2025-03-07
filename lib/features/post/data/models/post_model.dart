@@ -3,19 +3,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class PostModel {
   String userName;
   String uId;
-  String? userProfileImage;
   List<String>? postFileUrl;
   String? postTitle;
   DateTime createdAt;
   String postId;
+  bool isLiked;
+
+  int likesCount;
+  int commentsCount;
 
   PostModel({
     required this.postId,
     required this.userName,
     required this.uId,
-    this.userProfileImage,
+    this.isLiked = false,
     this.postFileUrl,
     this.postTitle,
+    this.likesCount = 0,
+    this.commentsCount = 0,
     required this.createdAt,
   });
 
@@ -24,9 +29,10 @@ class PostModel {
     return PostModel(
       postId: json['postId'],
       userName: json['name'],
+      isLiked: json['isLiked'],
       uId: json['uId'],
-      userProfileImage: json['userProfileImage'],
-      // Ensure postFileUrl is a List<String>
+      likesCount: json['likesCount'],
+      commentsCount: json['commentsCount'],
       postFileUrl: (json['postFileUrls'] as List<dynamic>?)
           ?.map((item) => item as String)
           .toList(),
@@ -40,8 +46,10 @@ class PostModel {
     return {
       'postId': postId,
       'name': userName,
+      'likesCount': likesCount,
+      'isLiked': isLiked,
+      'commentsCount': commentsCount,
       'uId': uId,
-      'userProfileImage': userProfileImage,
       'postFileUrls': postFileUrl,
       'postTitle': postTitle,
       'createdAt': createdAt,

@@ -31,7 +31,7 @@ class StoryModel {
   @HiveField(7)
   final String storyId;
   @HiveField(8)
-  Map<String, String>? viewersIds;
+  Map<String, String>? seenStoryDate;
   @HiveField(9)
   Map<String, UserModel>? viewersModels;
   @HiveField(10)
@@ -46,7 +46,7 @@ class StoryModel {
     required this.createdAt,
     this.localFilePath,
     this.viewersModels,
-    this.viewersIds,
+    this.seenStoryDate,
     required this.storyId,
     this.storyUserModel,
   });

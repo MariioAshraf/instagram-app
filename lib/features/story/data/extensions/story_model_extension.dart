@@ -24,7 +24,7 @@ extension StoryModelExtension on StoryModel {
       userId: userId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
       storyId: storyId ?? this.storyId,
-      viewersIds: viewersIds ?? this.viewersIds,
+      seenStoryDate: viewersIds ?? this.seenStoryDate,
       viewersModels: viewersModels ?? this.viewersModels,
       localFilePath: localFilePath ?? this.localFilePath,
     );
