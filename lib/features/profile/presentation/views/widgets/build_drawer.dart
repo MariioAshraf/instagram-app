@@ -25,7 +25,7 @@ class BuildDrawer extends StatelessWidget {
                   radius: 38,
                 ),
                 Text(
-                  user.name,
+                  '${user.name[0].toUpperCase()}${user.name.substring(1)}',
                   style: AppTextStyles.font18DarkBlueBold,
                 ),
               ],

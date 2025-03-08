@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class ScaffoldGradientBackgroundContainer extends StatelessWidget {
+class AppMainGradientBackgroundContainer extends StatelessWidget {
   final Widget child;
 
-  const ScaffoldGradientBackgroundContainer({super.key, required this.child});
+  const AppMainGradientBackgroundContainer({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

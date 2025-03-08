@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_app/features/home/presentation/views/widgets/gradient_background.dart';
+import 'package:instagram_app/features/home/presentation/views/widgets/app_main_gradient_background_container.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/edit_profile_view_body.dart';
 import '../../../../core/theming/app_styles.dart';
 
@@ -9,7 +9,7 @@ class EditProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return ScaffoldGradientBackgroundContainer(
+    return AppMainGradientBackgroundContainer(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(

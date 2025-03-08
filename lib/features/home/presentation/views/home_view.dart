@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
-import 'package:instagram_app/features/home/presentation/views/widgets/gradient_background.dart';
+import 'package:instagram_app/features/home/presentation/views/widgets/app_main_gradient_background_container.dart';
 import '../../../profile/presentation/manager/profile_cubit.dart';
 import '../../../profile/presentation/views/widgets/build_drawer.dart';
 import '../manager/home_cubit.dart';
@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeCubit bottomNavCubit = HomeCubit.get(context);
-    return ScaffoldGradientBackgroundContainer(
+    return AppMainGradientBackgroundContainer(
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           return state is GetUserLoading || state is BottomNavInitial

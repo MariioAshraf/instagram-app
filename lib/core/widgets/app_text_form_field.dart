@@ -17,7 +17,7 @@ class AppTextFormField extends StatelessWidget {
     this.backGroundColor,
     this.courserColor,
     this.controller,
-     this.validator,
+    this.validator,
     this.onChanged,
   });
 
@@ -40,9 +40,10 @@ class AppTextFormField extends StatelessWidget {
     return TextFormField(
       onChanged: onChanged,
       validator: (value) {
-        if (validator ==  null){
+        if (validator == null) {
           return null;
-        }return validator!(value);
+        }
+        return validator!(value);
       },
       controller: controller,
       cursorOpacityAnimates: true,
@@ -67,8 +68,8 @@ class AppTextFormField extends StatelessWidget {
         isDense: true,
         contentPadding: contentPadding ??
             EdgeInsets.symmetric(
-              horizontal: 20.w,
-              vertical: 18.h,
+              horizontal: 18.w,
+              vertical: 10.h,
             ),
         focusedBorder: focusedBorder ??
             OutlineInputBorder(
@@ -79,11 +80,12 @@ class AppTextFormField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16)),
         enabledBorder: enabledBorder ??
             OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: AppColorsManager.lighterGrey,
-                  width: 1.3,
-                ),
-                borderRadius: BorderRadius.circular(16)),
+              borderSide: const BorderSide(
+                color: AppColorsManager.lighterGrey,
+                width: 1.3,
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
         hintStyle: hintStyle ?? AppTextStyles.font14LightGreyRegular,
         hintText: hintText,
         suffixIcon: suffixIcon,

@@ -76,9 +76,8 @@ class _PostBlocConsumerState extends State<PostBlocConsumer> {
             final post = postCubit.allPostsMap.values.toList()[index];
             final user = postCubit.postsUsers[post.uId];
             return PostItem(
-              index: index,
               user: user!,
-              postModel: post,
+              post: post,
             );
           }),
         );

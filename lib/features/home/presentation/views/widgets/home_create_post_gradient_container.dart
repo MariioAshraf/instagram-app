@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeCreatePostGradientContainer extends StatelessWidget {
   final Widget child;
+  final double? height;
+  final EdgeInsetsGeometry? padding;
 
-  const HomeCreatePostGradientContainer({super.key, required this.child});
+  const HomeCreatePostGradientContainer(
+      {super.key, required this.child, this.height, this.padding});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120.h,
-      width: double.maxFinite,
+      padding: padding,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         gradient: LinearGradient(

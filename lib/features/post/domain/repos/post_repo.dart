@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/core/errors/failure.dart';
 
 import '../../../auth/models/user_model.dart';
+import '../../data/models/comment_model.dart';
 import '../../data/models/post_model.dart';
 
 abstract class PostRepo {
@@ -18,6 +19,13 @@ abstract class PostRepo {
   });
 
   Future<Either<Failure, bool>> toggleLike(String postId, String userId);
+
+  Future<Either<Failure, String>> createComment(
+      {required String postId,
+      required String userId,
+      required String comment});
+
+  Future<Either<Failure, List<CommentModel>>> fetchComments(String postId);
 
   Future<Either<Failure, List<String>>> uploadPostMedia({
     required String userId,
