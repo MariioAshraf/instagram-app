@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/features/post/domain/repos/post_repo.dart';
 import '../../../../constants.dart';
 import '../../../auth/models/user_model.dart';
+import '../../data/models/comment_model.dart';
 import '../../data/models/post_model.dart';
 import '../../domain/use_cases/create_post_use_case.dart';
 
@@ -112,6 +113,43 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  final TextEditingController commentController = TextEditingController();
+
+  Future<void> createComment({
+    required String postId,
+    required String userId,
+  }) async {
+    emit(CreateCommentLoading());
+    final result = await postRepo.createComment(
+        postId: postId, userId: userId, comment: commentController.text);
+    result.fold((failure) {
+      emit(CreateCommentFailure(failure.message));
+    }, (comment) {
+      emit(CreateCommentSuccess(comment));
+    });
+  }
+
+  Future<void> fetchComments(String postId) async {
+    emit(FetchCommentsLoading());
+    final result = await postRepo.fetchComments(postId);
+    result.fold((failure) {
+      emit(FetchCommentsFailure(failure.message));
+    }, (comments) async {
+      await getCommentsUsers(comments);
+      emit(FetchCommentsSuccess(comments));
+    });
+  }
+
+  Future<void> getCommentsUsers(List<CommentModel> comments) async {
+    for (var comment in comments) {
+      if (postsUsers.containsKey(comment.userId)) continue;
+      final userDoc = await _usersCollection.doc(comment.userId).get();
+      final userModel =
+          UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+      postsUsers[comment.userId] = userModel;
+    }
+  }
+
   TextEditingController postTitleController = TextEditingController();
 
   Future<void> createPost(UserModel userModel) async {
@@ -132,6 +170,14 @@ class PostCubit extends Cubit<PostState> {
       emit(CanNotUploadPost());
     } else {
       emit(CanUploadPost());
+    }
+  }
+
+  void checkCommentStatus() {
+    if (commentController.text.trim().isEmpty) {
+      emit(CanNotComment());
+    } else {
+      emit(CanComment());
     }
   }
 }

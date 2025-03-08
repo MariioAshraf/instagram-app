@@ -3,40 +3,46 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/utils/assets.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart';
+import '../../../../../core/theming/app_styles.dart';
 import '../../../../../core/utils/spacing.dart';
 import '../../../../../core/widgets/app_icon_button.dart';
+import '../../../../home/presentation/views/widgets/app_main_gradient_background_container.dart';
+import 'comments_list_view_builder.dart';
+import 'create_comments_text_form_field_and_send_button.dart';
 import 'like_button.dart';
 
 class InteractionsWithPostRow extends StatelessWidget {
   const InteractionsWithPostRow({
     super.key,
-    required this.index,
+    required this.postId,
     required this.likesNum,
     required this.commentsNum,
   });
 
   final int likesNum;
-  final int index;
+  final String postId;
   final int commentsNum;
 
   @override
   Widget build(BuildContext context) {
-    final PostCubit postCubit = PostCubit.get(context);
-    final List<String> postIds = postCubit.allPostsMap.keys.toList();
-    final bool isLiked = postCubit.likedPostsMap.containsKey(postIds[index]);
+    final postCubit = PostCubit.get(context);
+    final bool isLiked = postCubit.likedPostsMap.containsKey(postId);
     final String userId = HomeCubit.get(context).userId;
     return Row(
       children: [
         LikeButton(
           isLiked: isLiked,
           onTap: () {
-            postCubit.toggleLike(postIds[index], userId);
+            postCubit.toggleLike(postId, userId);
           },
         ),
         Text(likesNum.toString()),
         horizontalSpacing(16),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            _buildBottomSheet(context);
+            postCubit.fetchComments(postId);
+          },
           child: Icon(
             size: 23.sp,
             Icons.mode_comment_outlined,
@@ -61,6 +67,50 @@ class InteractionsWithPostRow extends StatelessWidget {
           size: 24.sp,
         ),
       ],
+    );
+  }
+
+  void _buildBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.97,
+          width: double.infinity,
+          child: Stack(
+            children: [
+              AppMainGradientBackgroundContainer(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Divider(
+                      thickness: 1.3,
+                      height: 4.h,
+                      indent: 170,
+                      endIndent: 170,
+                    ),
+                    Divider(
+                      thickness: 1.3,
+                      height: 4.h,
+                      indent: 190,
+                      endIndent: 190,
+                    ),
+                    Text(
+                      'Comments',
+                      style: AppTextStyles.font16DarkBlueMedium,
+                    ),
+                    verticalSpacing(16),
+                    const CommentsListViewBuilder(),
+                  ],
+                ),
+              ),
+              CreateCommentsTextFormFieldAndSendButton(postId: postId),
+            ],
+          ),
+        );
+      },
     );
   }
 }

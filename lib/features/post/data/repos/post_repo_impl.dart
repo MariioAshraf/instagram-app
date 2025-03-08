@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
+import 'package:instagram_app/features/post/data/models/comment_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/errors/failure.dart';
 import '../../domain/repos/post_repo.dart';
@@ -145,6 +146,52 @@ class PostRepoImpl extends PostRepo {
       final postDoc = await _postsCollection.doc(postId).get();
       return Right(postDoc.data()?[kLikesCount] ?? 0);
     } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> createComment(
+      {required String postId,
+      required String userId,
+      required String comment}) async {
+    try {
+      final commentRef =
+          _postsCollection.doc(postId).collection(kCommentsCollection).doc();
+
+      final commentModel = CommentModel(
+          commentId: commentRef.id,
+          userId: userId,
+          comment: comment,
+          createdAt: DateTime.now());
+
+      await commentRef.set(commentModel.toJson());
+      _postsCollection.doc(postId).update({
+        kCommentsCount: FieldValue.increment(1),
+      });
+
+      return Right(comment);
+    } on Exception catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CommentModel>>> fetchComments(
+      String postId) async {
+    try {
+      final List<CommentModel> comments = [];
+      final commentsCollection = await _postsCollection
+          .doc(postId)
+          .collection(kCommentsCollection)
+          .get();
+      for (var doc in commentsCollection.docs) {
+        comments.add(CommentModel.fromJson(doc.data()));
+      }
+
+      return Right(
+          comments..sort((k1, k2) => k2.createdAt.compareTo(k1.createdAt)));
+    } on Exception catch (e) {
       return Left(Failure(e.toString()));
     }
   }
