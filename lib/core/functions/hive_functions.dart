@@ -59,11 +59,11 @@ class HiveFunctions {
     return box.get(kUserId);
   }
 
-  static Future<void> savePosts(List<PostModel> posts) async {
-    final box = Hive.box<PostModel>(kPostsCollection);
-    Map<String, PostModel> postsMap = {
-      for (var post in posts) post.postId: post
-    };
-    box.putAll(postsMap);
-  }
+// static Future<void> savePosts(List<PostModel> posts) async {
+//   final box = Hive.box<PostModel>(kPostsCollection);
+//   Map<String, PostModel> postsMap = {
+//     for (var post in posts) post.postId: post
+//   };
+//   box.putAll(postsMap);
+// }
 }

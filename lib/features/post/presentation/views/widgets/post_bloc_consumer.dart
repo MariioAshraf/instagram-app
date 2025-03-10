@@ -52,9 +52,7 @@ class _PostBlocConsumerState extends State<PostBlocConsumer> {
         if (state is ToggleLikeSuccess) {
           PostCubit.get(context).fetchLikesCount(state.postId);
         }
-        // if (state is CreatePostSuccess) {
-        //   // postCubit.fetchPosts(userId: userId);
-        // }
+
         if (state is FetchLikesCountSuccess) {
           postCubit.allPostsMap[state.postId]!.likesCount = state.likesCount;
         }

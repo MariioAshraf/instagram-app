@@ -17,13 +17,15 @@ class EditProfileRow extends StatelessWidget {
                 border: Border.all(width: 0.7.w, color: Colors.grey)),
             height: 50.h,
             child: const Center(
-                child: Text(
-              'EDIT PROFILE',
-              style: TextStyle(
+              child: Text(
+                'EDIT PROFILE',
+                style: TextStyle(
                   color: Colors.black,
                   fontSize: 17,
-                  fontWeight: FontWeight.w600),
-            )),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
         ),
         SizedBox(

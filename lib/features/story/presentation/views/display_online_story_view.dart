@@ -24,7 +24,7 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
 
   @override
   void initState() {
-    userId = HomeCubit.get(context).userModel.uId!;
+    userId = HomeCubit.get(context).userId;
     super.initState();
     _storyCubit = StoryCubit.get(context);
     _loadCurrentStory();

@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../features/home/presentation/manager/home_cubit.dart';
 
-Widget buildUserCoverImage(
-  BuildContext context,
-) {
-  final userCoverImageUrl = HomeCubit.get(context).userModel.coverImageUrl!;
+Widget buildUserCoverImage(BuildContext context,
+    {required String userCoverImageUrl}) {
   final height = MediaQuery.of(context).size.height;
   return userCoverImageUrl.isNotEmpty
       ? Container(

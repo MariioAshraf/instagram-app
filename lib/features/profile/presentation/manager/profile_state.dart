@@ -29,7 +29,11 @@ final class PickCoverPhotoSuccess extends ProfileState {
 
 final class UploadProfilePhotoLoading extends ProfileState {}
 
-final class UploadProfilePhotoSuccess extends ProfileState {}
+final class UploadProfilePhotoSuccess extends ProfileState {
+  final String profileImageUrl;
+
+  UploadProfilePhotoSuccess({required this.profileImageUrl});
+}
 
 final class UploadProfilePhotoFailure extends ProfileState {
   final String errMessage;

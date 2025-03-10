@@ -134,8 +134,8 @@ class StoryCubit extends Cubit<StoryState> {
     for (var entry in storiesMap.entries) {
       final List<StoryModel> userStories = entry.value;
       final String storiesOwnerId = entry.key;
-      bool allViewed =
-          userStories.every((story) => story.seenStoryDate!.containsKey(userId));
+      bool allViewed = userStories
+          .every((story) => story.seenStoryDate!.containsKey(userId));
       if (allViewed) {
         storiesMapSeenBefore[storiesOwnerId] = userStories;
         // print('all seen ${storiesMapSeenBefore[storiesOwnerId]}');
@@ -157,10 +157,11 @@ class StoryCubit extends Cubit<StoryState> {
   late Duration storyDuration;
   Duration defaultDuration = const Duration(seconds: 5);
   late Duration elapsedTime;
-  late bool isStoryLoading;
+  bool isStoryLoading = false;
 
   /// for load story and download story file
   Future<void> loadOnlineStory(StoryModel storyModel, String userId) async {
+    print('ddddddddddddddddddddddddddgggggggggggggggggggggggggggggg');
     isStoryLoading = true;
     emit(LoadStoryLoading());
     try {
@@ -179,7 +180,7 @@ class StoryCubit extends Cubit<StoryState> {
         await initializeVideoController(storyModel);
       }
       isStoryLoading = false;
-      storyRepo.setStorySeen(storyModel, userId: userId);
+      await storyRepo.setStorySeen(storyModel, userId: userId);
       emit(LoadStorySuccess(story: storyModel));
     } catch (e) {
       emit(LoadStoryFailure(errMsg: e.toString()));

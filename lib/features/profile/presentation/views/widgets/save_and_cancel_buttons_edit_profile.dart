@@ -4,7 +4,6 @@ import 'package:instagram_app/core/utils/extensions.dart';
 import 'package:instagram_app/core/utils/spacing.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/profile/presentation/manager/profile_cubit.dart';
-
 import '../../../../../core/theming/app_styles.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 

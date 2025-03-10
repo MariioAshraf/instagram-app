@@ -15,7 +15,6 @@ class ProfileCubit extends Cubit<ProfileState> {
   final nameController = TextEditingController();
   final bioController = TextEditingController();
 
-
   static ProfileCubit get(context) => BlocProvider.of(context);
 
   Future<void> updateUserNameAndBio(
@@ -67,7 +66,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         (fileUrl) async {
       // await HiveFunctions.saveUserModel(
       //     userModel.copyWith(profileImageUrl: fileUrl));
-      emit(UploadProfilePhotoSuccess());
+      emit(UploadProfilePhotoSuccess(profileImageUrl: fileUrl));
     });
   }
 
