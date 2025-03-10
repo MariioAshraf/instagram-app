@@ -20,7 +20,7 @@ class _StoriesListViewState extends State<StoriesListView> {
   @override
   void initState() {
     storyCubit = StoryCubit.get(context);
-    userId = HomeCubit.get(context).userId;
+    userId = HomeCubit.get(context).userId!;
     storyCubit.getFriendsStories(userId);
     super.initState();
   }

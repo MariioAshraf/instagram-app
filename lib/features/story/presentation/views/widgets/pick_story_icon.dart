@@ -26,7 +26,7 @@ class PickStoryIcon extends StatelessWidget {
       },
       icon: Stack(
         children: [
-          user.hasProfileImage
+          user!.hasProfileImage
               ? CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 45.r,

@@ -31,7 +31,7 @@ class InteractionsWithPostRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final fetchPostCubit = GetPostCubit.get(context);
     final bool isLiked = fetchPostCubit.likedPostsMap.containsKey(postId);
-    final String userId = HomeCubit.get(context).userId;
+    final String userId = HomeCubit.get(context).userId!;
     return Row(
       children: [
         LikeButton(

@@ -29,7 +29,7 @@ class StoryCaptionAndUploadButton extends StatelessWidget {
             hintText: 'Write a caption',
             suffixIcon: IconButton(
               onPressed: () {
-                storyCubit.uploadStory(userModel: userModel);
+                storyCubit.uploadStory(userModel: userModel!);
               },
               icon: const Icon(Icons.send, color: Colors.white),
             ),

@@ -17,7 +17,7 @@ class ProfileImageBlocConsumer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileImage = HomeCubit.get(context).userModel.profileImageUrl;
+    final profileImage = HomeCubit.get(context).userModel!.profileImageUrl;
     return Positioned(
       bottom: 0,
       child: CircleAvatar(

@@ -11,11 +11,11 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeCubit bottomNavCubit = HomeCubit.get(context);
+    HomeCubit homeCubit = HomeCubit.get(context);
     return AppMainGradientBackgroundContainer(
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          return state is GetUserLoading || state is BottomNavInitial
+          return homeCubit.userModel == null
               ? const Center(
                   child: CircularProgressIndicator(
                   color: AppColorsManager.mainBlue,
@@ -24,10 +24,8 @@ class HomeView extends StatelessWidget {
                   key: HomeCubit.get(context).scaffoldKey,
                   drawer: const BuildDrawer(),
                   backgroundColor: Colors.transparent,
-                  bottomNavigationBar:
-                      _buildBottomNavBar(bottomNavCubit, context),
-                  body: bottomNavCubit
-                      .screens(context)[bottomNavCubit.currentIndex],
+                  bottomNavigationBar: _buildBottomNavBar(homeCubit, context),
+                  body: homeCubit.screens(context)[homeCubit.currentIndex],
                 );
         },
       ),

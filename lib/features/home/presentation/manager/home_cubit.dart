@@ -25,9 +25,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   int currentIndex = 0;
 
-  late String userId;
+   String? userId;
 
-  late UserModel userModel;
+  UserModel? userModel;
 
   Map<String, UserModel> allUsersMap = {};
 
@@ -57,7 +57,7 @@ class HomeCubit extends Cubit<HomeState> {
               return buildUserProfileImage(
                 context,
                 radius: 14,
-                profileImage: userModel.profileImageUrl!,
+                profileImage: userModel!.profileImageUrl!,
               );
             },
           ),

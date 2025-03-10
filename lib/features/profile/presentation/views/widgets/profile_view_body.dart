@@ -11,13 +11,13 @@ import 'edit_profile_row.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({
-    super.key,
+    super.key, required this.dueToRebuildIssue,
   });
-
+final String dueToRebuildIssue;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final UserModel userModel = HomeCubit.get(context).userModel;
+    final UserModel userModel = HomeCubit.get(context).userModel!;
     return SingleChildScrollView(
       child: Column(
         children: [

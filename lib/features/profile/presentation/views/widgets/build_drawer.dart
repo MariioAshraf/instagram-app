@@ -20,7 +20,7 @@ class BuildDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildUserProfileImage(
-                  profileImage: user.profileImageUrl!,
+                  profileImage: user!.profileImageUrl!,
                   context,
                   radius: 38,
                 ),

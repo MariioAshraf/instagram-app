@@ -4,6 +4,7 @@ import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/post/data/models/post_model.dart';
 import 'package:instagram_app/features/post/presentation/views/widgets/post_image_container.dart';
 import '../../../../../core/utils/spacing.dart';
+import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../../../post/presentation/views/widgets/post_title.dart';
 import '../../../../post/presentation/views/widgets/post_user_image_and_name_row.dart';
 import 'interactions_with_post_row.dart';
@@ -20,6 +21,8 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeCubit = HomeCubit.get(context);
+    final userModel = user.uId == homeCubit.userId ? homeCubit.userModel : user;
     return Container(
         margin: EdgeInsets.only(
           bottom: 10.h,
@@ -44,8 +47,8 @@ class PostItem extends StatelessWidget {
           children: [
             PostUserImageAndNameRow(
               createdAt: post.createdAt,
-              userImage: user.profileImageUrl!,
-              userName: user.name,
+              userImage: userModel!.profileImageUrl!,
+              userName: userModel.name,
             ),
             verticalSpacing(10),
             PostTitle(

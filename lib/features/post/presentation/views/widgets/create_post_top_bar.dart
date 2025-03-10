@@ -20,7 +20,7 @@ class CreatePostTopBar extends StatefulWidget {
 class _CreatePostTopBarState extends State<CreatePostTopBar> {
   @override
   Widget build(BuildContext context) {
-    UserModel userModel = HomeCubit.get(context).userModel;
+    UserModel userModel = HomeCubit.get(context).userModel!;
     CreatePostCubit postCubit = CreatePostCubit.get(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

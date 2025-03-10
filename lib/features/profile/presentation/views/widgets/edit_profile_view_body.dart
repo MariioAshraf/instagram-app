@@ -110,13 +110,13 @@ class ChangeImagesBlocListener extends StatelessWidget {
         listener: (context, state) {
           if (state is PickProfilePhotoSuccess) {
             profileCubit.uploadProfilePhoto(
-              userModel: userModel,
+              userModel: userModel!,
               path: state.profileImagePath,
             );
           }
           if (state is PickCoverPhotoSuccess) {
             profileCubit.uploadCoverPhoto(
-              userModel: userModel,
+              userModel: userModel!,
               path: state.coverImagePath,
             );
           }

@@ -24,7 +24,7 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
 
   @override
   void initState() {
-    userId = HomeCubit.get(context).userId;
+    userId = HomeCubit.get(context).userId!;
     super.initState();
     _storyCubit = StoryCubit.get(context);
     _loadCurrentStory();
@@ -79,7 +79,6 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
       body: BlocConsumer<StoryCubit, StoryState>(
         buildWhen: (previous, current) =>
             current is DownloadingStoryLoading ||
-            current is DownloadingStorySuccess ||
             current is LoadStoryFailure ||
             current is LoadStorySuccess,
         listener: (context, state) async {

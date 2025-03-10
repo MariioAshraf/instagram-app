@@ -14,7 +14,7 @@ class SaveAndCancelButtonsEditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserModel userModel = HomeCubit.get(context).userModel;
+    final UserModel userModel = HomeCubit.get(context).userModel!;
     final ProfileCubit profileCubit = ProfileCubit.get(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
