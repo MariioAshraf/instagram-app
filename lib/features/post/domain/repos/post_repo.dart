@@ -7,7 +7,7 @@ import '../../data/models/comment_model.dart';
 import '../../data/models/post_model.dart';
 
 abstract class PostRepo {
-  Future<Either<Failure, void>> createPost({
+  Future<Either<Failure, PostModel>> createPost({
     required UserModel userModel,
     List<String>? postMediaUrl,
     String? postTitle,

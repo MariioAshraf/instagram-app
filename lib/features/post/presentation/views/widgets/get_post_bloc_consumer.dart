@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import 'package:instagram_app/features/post/presentation/views/widgets/post_item.dart';
 import 'package:instagram_app/features/post/presentation/views/widgets/post_shimmer_loading.dart';
-import '../../manager/post_cubit.dart';
+import '../../manager/get_post_cubit/get_post_cubit.dart';
 
-class PostBlocConsumer extends StatefulWidget {
-  const PostBlocConsumer({super.key, required this.scrollController});
+class GetPostsBlocConsumer extends StatefulWidget {
+  const GetPostsBlocConsumer({super.key, required this.scrollController});
 
   final ScrollController scrollController;
 
   @override
-  State<PostBlocConsumer> createState() => _PostBlocConsumerState();
+  State<GetPostsBlocConsumer> createState() => _GetPostsBlocConsumerState();
 }
 
-class _PostBlocConsumerState extends State<PostBlocConsumer> {
-  late PostCubit postCubit;
+class _GetPostsBlocConsumerState extends State<GetPostsBlocConsumer> {
+  late GetPostCubit fetchPostCubit;
 
   @override
   void initState() {
     super.initState();
-    postCubit = PostCubit.get(context);
+    fetchPostCubit = GetPostCubit.get(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final currentPosition = widget.scrollController.position.pixels;
       final maxScroll = widget.scrollController.position.maxScrollExtent;
 
-      if (postCubit.allPostsMap.isEmpty) {
-        postCubit.fetchPosts(limit: 10, reset: true);
+      if (fetchPostCubit.allPostsMap.isEmpty) {
+        fetchPostCubit.fetchPosts(limit: 10, reset: true);
       } else {
         if (maxScroll > 0 && currentPosition >= 0.7 * maxScroll) {
-          postCubit.fetchPosts(limit: 10, reset: true);
+          fetchPostCubit.fetchPosts(limit: 10, reset: true);
         }
       }
     });
@@ -36,13 +37,14 @@ class _PostBlocConsumerState extends State<PostBlocConsumer> {
 
   // @override
   // void didChangeDependencies() {
-  //   postCubit.fetchPosts(limit: 10, reset: true);
+  //   fetchPostCubit.fetchPosts(limit: 10, reset: true);
   //   super.didChangeDependencies();
   // }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PostCubit, PostState>(
+    final homeCubit = HomeCubit.get(context);
+    return BlocConsumer<GetPostCubit, GetPostState>(
       buildWhen: (_, current) =>
           current is GetPostsSuccess ||
           current is GetPostsLoading ||
@@ -50,17 +52,16 @@ class _PostBlocConsumerState extends State<PostBlocConsumer> {
           current is FetchLikesCountSuccess,
       listener: (context, state) {
         if (state is ToggleLikeSuccess) {
-          PostCubit.get(context).fetchLikesCount(state.postId);
+          fetchPostCubit.fetchLikesCount(state.postId);
         }
 
         if (state is FetchLikesCountSuccess) {
-          postCubit.allPostsMap[state.postId]!.likesCount = state.likesCount;
+          homeCubit.homePostsMap[state.postId]!.likesCount = state.likesCount;
         }
         if (state is GetPostsSuccess) {
           state.posts.map((post) {
-            if (!postCubit.allPostsMap.containsKey(post.postId)) {
-              postCubit.allPostsMap[post.postId] = post;
-            }
+            homeCubit.homePostsMap[post.postId] = post;
+            fetchPostCubit.allPostsMap = homeCubit.homePostsMap;
           }).toList();
         }
       },
@@ -70,12 +71,13 @@ class _PostBlocConsumerState extends State<PostBlocConsumer> {
         }
         return SliverList(
           delegate: SliverChildBuilderDelegate(
-              childCount: postCubit.allPostsMap.length, (context, index) {
-            final post = postCubit.allPostsMap.values.toList()[index];
-            final user = postCubit.postsUsers[post.uId];
+              childCount: homeCubit.homePostsMap.length, (context, index) {
+            final posts = homeCubit.homePostsMap.values.toList()
+              ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+            final user = fetchPostCubit.postsUsers[posts[index].uId];
             return PostItem(
               user: user!,
-              post: post,
+              post: posts[index],
             );
           }),
         );

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/utils/assets.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
-import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart';
+import 'package:instagram_app/features/post/data/repos/post_repo_impl.dart';
+import 'package:instagram_app/features/post/presentation/manager/comment_cubit/comment_cubit.dart';
+import '../../../../../core/di/dependency_injection.dart';
 import '../../../../../core/theming/app_styles.dart';
 import '../../../../../core/utils/spacing.dart';
 import '../../../../../core/widgets/app_icon_button.dart';
 import '../../../../home/presentation/views/widgets/app_main_gradient_background_container.dart';
+import '../../manager/get_post_cubit/get_post_cubit.dart';
 import 'comments_list_view_builder.dart';
 import 'create_comments_text_form_field_and_send_button.dart';
 import 'like_button.dart';
@@ -25,15 +29,15 @@ class InteractionsWithPostRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final postCubit = PostCubit.get(context);
-    final bool isLiked = postCubit.likedPostsMap.containsKey(postId);
+    final fetchPostCubit = GetPostCubit.get(context);
+    final bool isLiked = fetchPostCubit.likedPostsMap.containsKey(postId);
     final String userId = HomeCubit.get(context).userId;
     return Row(
       children: [
         LikeButton(
           isLiked: isLiked,
           onTap: () {
-            postCubit.toggleLike(postId, userId);
+            fetchPostCubit.toggleLike(postId, userId);
           },
         ),
         Text(likesNum.toString()),
@@ -41,7 +45,6 @@ class InteractionsWithPostRow extends StatelessWidget {
         GestureDetector(
           onTap: () {
             _buildBottomSheet(context);
-            postCubit.fetchComments(postId);
           },
           child: Icon(
             size: 23.sp,
@@ -75,39 +78,44 @@ class InteractionsWithPostRow extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.97,
-          width: double.infinity,
-          child: Stack(
-            children: [
-              AppMainGradientBackgroundContainer(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Divider(
-                      thickness: 1.3,
-                      height: 4.h,
-                      indent: 170,
-                      endIndent: 170,
-                    ),
-                    Divider(
-                      thickness: 1.3,
-                      height: 4.h,
-                      indent: 190,
-                      endIndent: 190,
-                    ),
-                    Text(
-                      'Comments',
-                      style: AppTextStyles.font16DarkBlueMedium,
-                    ),
-                    verticalSpacing(16),
-                    const CommentsListViewBuilder(),
-                  ],
+        return BlocProvider(
+          create: (context) => CommentCubit(getIt.get<PostRepoImpl>())
+            ..fetchComments(postId, HomeCubit.get(context).allUsersMap),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.97,
+            width: double.infinity,
+            child: Stack(
+              children: [
+                AppMainGradientBackgroundContainer(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Divider(
+                        thickness: 1.3,
+                        height: 4.h,
+                        indent: 170,
+                        endIndent: 170,
+                      ),
+                      Divider(
+                        thickness: 1.3,
+                        height: 4.h,
+                        indent: 190,
+                        endIndent: 190,
+                      ),
+                      Text(
+                        'Comments',
+                        style: AppTextStyles.font16DarkBlueMedium,
+                      ),
+                      verticalSpacing(16),
+                      const CommentsListViewBuilder(),
+                    ],
+                  ),
                 ),
-              ),
-              CreateCommentsTextFormFieldAndSendButton(postId: postId),
-            ],
+                CreateCommentsTextFormFieldAndSendButton(postId: postId),
+              ],
+            ),
           ),
         );
       },

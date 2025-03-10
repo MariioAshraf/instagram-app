@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart';
-import 'package:instagram_app/features/post/presentation/views/widgets/post_media_college.dart';
-import 'create_post_text_field.dart';
-import 'create_post_top_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/core/utils/extensions.dart';
+import 'package:instagram_app/features/post/presentation/manager/create_post_cubit/create_post_cubit.dart';
+import 'package:instagram_app/features/post/presentation/views/widgets/create_post_bloc_consumer.dart';
+import '../../../../../core/di/dependency_injection.dart';
+import '../../../../../core/theming/app_colors.dart';
+import '../../../../../core/theming/app_styles.dart';
+import '../../../data/repos/post_repo_impl.dart';
+import '../../../domain/use_cases/create_post_use_case.dart';
 
 class CreatePostViewBody extends StatelessWidget {
-  const CreatePostViewBody({super.key, required this.postCubit});
-
-  final PostCubit postCubit;
+  const CreatePostViewBody({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 40.h,
-        right: 16.w,
-        left: 16.w,
+    return BlocProvider(
+      create: (context) => CreatePostCubit(
+        getIt.get<CreatePostUseCase>(),
+        getIt.get<PostRepoImpl>(),
       ),
-      child: Column(
-        children: [
-          const CreatePostTopBar(),
-          const CreatePostTextField(),
-          _buildPostCollege(postCubit.media),
-        ],
-      ),
+      child: const CreatePostBlocConsumer(),
     );
   }
-}
-
-Widget _buildPostCollege(List<XFile>? media) {
-  return media != null && media.isNotEmpty
-      ? PhotoCollage(images: media)
-      : const SizedBox.shrink();
 }

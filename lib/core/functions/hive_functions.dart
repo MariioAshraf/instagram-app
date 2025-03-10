@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../../constants.dart';
 import '../../features/auth/models/user_model.dart';
-import '../../features/post/data/models/post_model.dart';
 import '../../features/story/data/models/story_model.dart';
 
 class HiveFunctions {

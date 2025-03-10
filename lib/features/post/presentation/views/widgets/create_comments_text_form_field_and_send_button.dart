@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/widgets/app_text_form_field.dart';
-import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart';
+import 'package:instagram_app/features/post/presentation/manager/comment_cubit/comment_cubit.dart';
 import '../../../../../core/theming/app_styles.dart';
-import 'create_comment_bloc_builder.dart';
+import 'create_comment_bloc_consumer.dart';
 
 class CreateCommentsTextFormFieldAndSendButton extends StatelessWidget {
   const CreateCommentsTextFormFieldAndSendButton(
@@ -13,8 +13,7 @@ class CreateCommentsTextFormFieldAndSendButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PostCubit postCubit = PostCubit.get(context);
-
+    final CommentCubit commentCubit = CommentCubit.get(context);
     return Positioned(
       right: 0,
       left: 0,
@@ -41,15 +40,15 @@ class CreateCommentsTextFormFieldAndSendButton extends StatelessWidget {
                 child: AppTextFormField(
                     onChanged: (value) {
                       if (value!.length < 2) {
-                        postCubit.checkCommentStatus();
+                        commentCubit.checkCommentStatus();
                       }
                     },
-                    controller: postCubit.commentController,
+                    controller: commentCubit.commentController,
                     hintStyle: AppTextStyles.font14GreyRegular,
                     backGroundColor: Colors.grey.shade100,
                     hintText: 'Write a comment...'),
               ),
-              CreateCommentBlocBuilder(
+              CreateCommentBlocConsumer(
                 postId: postId,
               ),
             ],

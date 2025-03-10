@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/theming/app_styles.dart';
 import 'package:instagram_app/core/utils/spacing.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import 'package:instagram_app/features/post/data/models/comment_model.dart';
-import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart';
 import '../../../../../core/utils/format_date_time.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
 import '../../../../home/presentation/views/widgets/home_create_post_gradient_container.dart';
@@ -15,8 +15,8 @@ class CommentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PostCubit postCubit = PostCubit.get(context);
-    final user = postCubit.postsUsers[commentModel.userId]!;
+    final HomeCubit postCubit =HomeCubit.get(context);
+    final user = postCubit.allUsersMap[commentModel.userId]!;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
