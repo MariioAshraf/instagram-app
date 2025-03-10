@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:instagram_app/features/post/presentation/manager/post_cubit.dart';
-import '../../../../post/presentation/views/widgets/post_bloc_consumer.dart';
-import '../../../../post/presentation/views/widgets/post_item.dart';
+import '../../../../post/presentation/views/widgets/get_post_bloc_consumer.dart';
 import '../../../../story/presentation/views/widgets/stories_list_view.dart';
 import '../../manager/home_cubit.dart';
 import 'home_create_post_container.dart';
@@ -35,7 +32,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           const HomeViewTopBar(),
           const HomeCreatePostContainer(),
           const StoriesListView(),
-          PostBlocConsumer(
+          GetPostsBlocConsumer(
             scrollController: scrollController,
           ),
         ],

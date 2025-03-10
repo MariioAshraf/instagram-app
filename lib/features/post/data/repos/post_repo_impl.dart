@@ -17,7 +17,7 @@ class PostRepoImpl extends PostRepo {
   DocumentSnapshot? _lastDocument;
 
   @override
-  Future<Either<Failure, void>> createPost({
+  Future<Either<Failure, PostModel>> createPost({
     required UserModel userModel,
     List<String>? postMediaUrl,
     String? postTitle,
@@ -33,7 +33,7 @@ class PostRepoImpl extends PostRepo {
         createdAt: DateTime.now(),
       );
       await docRef.set(postModel.toJson());
-      return right(null);
+      return right(postModel);
     } catch (e) {
       return Left(Failure(e.toString()));
     }

@@ -6,7 +6,7 @@ import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart
 
 import '../../../../../core/theming/app_styles.dart';
 import '../../../../../core/utils/spacing.dart';
-import '../../manager/post_cubit.dart';
+import '../../manager/create_post_cubit/create_post_cubit.dart';
 
 class CreatePostTopBar extends StatefulWidget {
   const CreatePostTopBar({
@@ -21,7 +21,7 @@ class _CreatePostTopBarState extends State<CreatePostTopBar> {
   @override
   Widget build(BuildContext context) {
     UserModel userModel = HomeCubit.get(context).userModel;
-    PostCubit postCubit = PostCubit.get(context);
+    CreatePostCubit postCubit = CreatePostCubit.get(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -36,7 +36,7 @@ class _CreatePostTopBarState extends State<CreatePostTopBar> {
           style: AppTextStyles.font18DarkBlueBold,
         ),
         horizontalSpacing(20),
-        BlocBuilder<PostCubit, PostState>(
+        BlocBuilder<CreatePostCubit, CreatePostState>(
           buildWhen: (previous, current) =>
               current is CanNotUploadPost ||
               current is CanUploadPost ||
@@ -61,7 +61,7 @@ class _CreatePostTopBarState extends State<CreatePostTopBar> {
     );
   }
 
-  TextButton _createPostTextButton(PostCubit postCubit, UserModel userModel) {
+  TextButton _createPostTextButton(CreatePostCubit postCubit, UserModel userModel) {
     return TextButton(
         style: ButtonStyle(
           overlayColor: const WidgetStatePropertyAll(Colors.black12),

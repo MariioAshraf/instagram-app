@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../manager/post_cubit.dart';
+import '../../manager/create_post_cubit/create_post_cubit.dart';
 
 class CreatePostTextField extends StatefulWidget {
   const CreatePostTextField({
@@ -11,14 +11,11 @@ class CreatePostTextField extends StatefulWidget {
 }
 
 class _CreatePostTextFieldState extends State<CreatePostTextField> {
-  late PostCubit postCubit;
-
-  late TextEditingController titleController;
+  late CreatePostCubit postCubit;
 
   @override
   void initState() {
-    postCubit = PostCubit.get(context);
-    titleController = TextEditingController();
+    postCubit = CreatePostCubit.get(context);
     postCubit.checkPostStatus();
     super.initState();
   }
@@ -27,7 +24,7 @@ class _CreatePostTextFieldState extends State<CreatePostTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: 8,
-      controller: titleController,
+      controller: postCubit.postTitleController,
       onChanged: (value) {
         if (value.trim().length < 2 &&
             (postCubit.media == null || postCubit.media!.isEmpty)) {

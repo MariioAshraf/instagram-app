@@ -47,6 +47,12 @@ class MyApp extends StatelessWidget {
           BlocProvider<HomeCubit>(
             create: (context) => HomeCubit()..getUser(),
           ),
+          // BlocProvider(
+          //   create: (context) => PostCubit(
+          //     getIt.get<CreatePostUseCase>(),
+          //     getIt.get<PostRepoImpl>(),
+          //   ),
+          // ),
           BlocProvider(
             create: (context) => StoryCubit(getIt.get<StoryRepoImpl>()),
           ),

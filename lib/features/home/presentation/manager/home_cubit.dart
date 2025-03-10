@@ -7,10 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/widgets/build_user_profile_image.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
-import '../../../../core/di/dependency_injection.dart';
-import '../../../post/data/repos/post_repo_impl.dart';
-import '../../../post/domain/use_cases/create_post_use_case.dart';
-import '../../../post/presentation/manager/post_cubit.dart';
+import '../../../post/data/models/post_model.dart';
 import '../../../profile/presentation/views/profile_view.dart';
 import '../../../search/presentation/views/search_view.dart';
 import '../views/widgets/home_view_body.dart';
@@ -31,6 +28,10 @@ class HomeCubit extends Cubit<HomeState> {
   late String userId;
 
   late UserModel userModel;
+
+  Map<String, UserModel> allUsersMap = {};
+
+  Map<String, PostModel> homePostsMap = {};
 
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection(kUsersCollection);
