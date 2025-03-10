@@ -25,7 +25,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   int currentIndex = 0;
 
-   String? userId;
+  String? userId;
 
   UserModel? userModel;
 
