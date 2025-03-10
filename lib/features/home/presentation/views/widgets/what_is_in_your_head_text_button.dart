@@ -13,7 +13,7 @@ class WhatIsInYourHeadTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        overlayColor: AppColorsManager.darkBlue,
+        overlayColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           side: const BorderSide(
             style: BorderStyle.none,

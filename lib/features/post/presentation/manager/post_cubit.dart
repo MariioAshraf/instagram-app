@@ -19,6 +19,7 @@ class PostCubit extends Cubit<PostState> {
       FirebaseFirestore.instance.collection(kUsersCollection);
 
   static PostCubit get(context) => BlocProvider.of(context);
+
   List<XFile>? media;
 
   Future<void> pickPostFiles() async {
@@ -39,15 +40,54 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
-  Future<void> fetchLikesCount(String postId) async {
-    final result = await postRepo.fetchLikesCount(postId);
+  final TextEditingController postTitleController = TextEditingController();
+
+  Future<void> createPost(UserModel userModel) async {
+    emit(CreatePostLoading());
+    var result = await createPostUseCase.call(
+        userModel, media, postTitleController.text);
     result.fold((failure) {
-      emit(FetchLikesCountFailure(failure.message));
-    }, (likesCount) {
-      emit(FetchLikesCountSuccess(likesCount, postId));
+      emit(CreatePostFailure(failure.message));
+    }, (r) {
+      media = null;
+      emit(CreatePostSuccess());
     });
   }
 
+  void checkPostStatus() {
+    if (postTitleController.text.trim().isEmpty &&
+        (media == null || media!.isEmpty)) {
+      emit(CanNotUploadPost());
+    } else {
+      emit(CanUploadPost());
+    }
+  }
+
+  void checkCommentStatus() {
+    if (commentController.text.trim().isEmpty) {
+      emit(CanNotComment());
+    } else {
+      emit(CanComment());
+    }
+  }
+
+  final TextEditingController commentController = TextEditingController();
+
+  Future<void> createComment({
+    required String postId,
+    required String userId,
+  }) async {
+    emit(CreateCommentLoading());
+    final result = await postRepo.createComment(
+        postId: postId, userId: userId, comment: commentController.text);
+    result.fold((failure) {
+      emit(CreateCommentFailure(failure.message));
+    }, (comment) {
+      emit(CreateCommentSuccess(comment));
+    });
+  }
+
+  /// Get post Cubit
   Future<void> toggleLike(String postId, String userId) async {
     _fastToggleLike(postId);
     final result = await postRepo.toggleLike(postId, userId);
@@ -101,6 +141,15 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  Future<void> fetchLikesCount(String postId) async {
+    final result = await postRepo.fetchLikesCount(postId);
+    result.fold((failure) {
+      emit(FetchLikesCountFailure(failure.message));
+    }, (likesCount) {
+      emit(FetchLikesCountSuccess(likesCount, postId));
+    });
+  }
+
   Future<void> _getPostsUsers(List<PostModel> posts) async {
     for (var post in posts) {
       final userId = post.uId;
@@ -111,22 +160,6 @@ class PostCubit extends Cubit<PostState> {
         postsUsers[userId] = userModel;
       }
     }
-  }
-
-  final TextEditingController commentController = TextEditingController();
-
-  Future<void> createComment({
-    required String postId,
-    required String userId,
-  }) async {
-    emit(CreateCommentLoading());
-    final result = await postRepo.createComment(
-        postId: postId, userId: userId, comment: commentController.text);
-    result.fold((failure) {
-      emit(CreateCommentFailure(failure.message));
-    }, (comment) {
-      emit(CreateCommentSuccess(comment));
-    });
   }
 
   Future<void> fetchComments(String postId) async {
@@ -147,37 +180,6 @@ class PostCubit extends Cubit<PostState> {
       final userModel =
           UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
       postsUsers[comment.userId] = userModel;
-    }
-  }
-
-  TextEditingController postTitleController = TextEditingController();
-
-  Future<void> createPost(UserModel userModel) async {
-    emit(CreatePostLoading());
-    var result = await createPostUseCase.call(
-        userModel, media, postTitleController.text);
-    result.fold((failure) {
-      emit(CreatePostFailure(failure.message));
-    }, (r) {
-      media = null;
-      emit(CreatePostSuccess());
-    });
-  }
-
-  void checkPostStatus() {
-    if (postTitleController.text.trim().isEmpty &&
-        (media == null || media!.isEmpty)) {
-      emit(CanNotUploadPost());
-    } else {
-      emit(CanUploadPost());
-    }
-  }
-
-  void checkCommentStatus() {
-    if (commentController.text.trim().isEmpty) {
-      emit(CanNotComment());
-    } else {
-      emit(CanComment());
     }
   }
 }

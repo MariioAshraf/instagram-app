@@ -21,11 +21,17 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(BottomNavInitial());
 
   static HomeCubit get(BuildContext context) => BlocProvider.of(context);
+
   final ScrollController scrollController = ScrollController();
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
   int currentIndex = 0;
+
   late String userId;
+
   late UserModel userModel;
+
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection(kUsersCollection);
 

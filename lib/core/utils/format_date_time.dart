@@ -9,12 +9,12 @@ String formatDateTime(DateTime createdAt) {
   } else if (difference.inMinutes < 60) {
     return "${difference.inMinutes}m";
   } else if (difference.inHours < 24) {
-    return "${difference.inHours}h";
+    return DateFormat("h:mm a").format(createdAt);
   } else if (difference.inDays < 7) {
     return "${difference.inDays}d";
   } else if (createdAt.year == now.year) {
-    return DateFormat("MMM d").format(createdAt); // Example: Feb 8
+    return DateFormat("MMM d").format(createdAt);
   } else {
-    return DateFormat("MMM d, yyyy").format(createdAt); // Example: Feb 8, 2023
+    return DateFormat("MMM d, yyyy").format(createdAt);
   }
 }

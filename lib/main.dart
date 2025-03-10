@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:instagram_app/core/routing/app_router.dart';
-import 'package:instagram_app/features/profile/data/repos/profile_repo_impl.dart';
-import 'package:instagram_app/features/profile/domain/use_cases/profile_use_case.dart';
 import 'package:instagram_app/features/story/data/repos/story_repo_impl.dart';
 import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import 'constants.dart';
@@ -18,7 +16,6 @@ import 'features/home/presentation/manager/home_cubit.dart';
 import 'features/post/data/repos/post_repo_impl.dart';
 import 'features/post/domain/use_cases/create_post_use_case.dart';
 import 'features/post/presentation/manager/post_cubit.dart';
-import 'features/profile/presentation/manager/profile_cubit.dart';
 import 'features/story/data/models/story_model.dart';
 import 'firebase_options.dart';
 
@@ -57,12 +54,6 @@ class MyApp extends StatelessWidget {
             create: (context) => PostCubit(
               getIt.get<CreatePostUseCase>(),
               getIt.get<PostRepoImpl>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => ProfileCubit(
-              getIt.get<ProfileRepoImpl>(),
-              getIt.get<ProfileUseCase>(),
             ),
           ),
           BlocProvider(

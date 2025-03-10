@@ -9,16 +9,11 @@ import '../../../../../core/utils/spacing.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import 'edit_profile_row.dart';
 
-class ProfileViewBody extends StatefulWidget {
+class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({
     super.key,
   });
 
-  @override
-  State<ProfileViewBody> createState() => _ProfileViewBodyState();
-}
-
-class _ProfileViewBodyState extends State<ProfileViewBody> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

@@ -31,7 +31,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
           const UpdateProfileBlocListener(),
           Stack(
             children: [
-              UserProfileAndCoverImages(
+              EditUserProfileAndCoverImages(
                 size: widget.size,
               ),
               Positioned(

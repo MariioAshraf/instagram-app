@@ -59,21 +59,13 @@ class ProfileImageBlocConsumer extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            if (state is UploadProfilePhotoLoading) {
-              return const ClipOval(child: ImageShimmerLoading());
-            }
-            if (state is UploadProfilePhotoSuccess) {
-              return buildUserProfileImage(
-                profileImage: state.profileImageUrl,
-                context,
-                radius: 66,
-              );
-            }
-            return buildUserProfileImage(
-              profileImage: profileImage!,
-              context,
-              radius: 66,
-            );
+            return state is UploadProfilePhotoLoading
+                ? const ClipOval(child: ImageShimmerLoading())
+                : buildUserProfileImage(
+                    profileImage: profileImage!,
+                    context,
+                    radius: 66,
+                  );
           },
         ),
       ),

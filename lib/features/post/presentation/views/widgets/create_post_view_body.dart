@@ -6,29 +6,10 @@ import 'package:instagram_app/features/post/presentation/views/widgets/post_medi
 import 'create_post_text_field.dart';
 import 'create_post_top_bar.dart';
 
-class CreatePostViewBody extends StatefulWidget {
+class CreatePostViewBody extends StatelessWidget {
   const CreatePostViewBody({super.key, required this.postCubit});
 
   final PostCubit postCubit;
-
-  @override
-  State<CreatePostViewBody> createState() => _CreatePostViewBodyState();
-}
-
-class _CreatePostViewBodyState extends State<CreatePostViewBody> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.postCubit.checkPostStatus();
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.postCubit.postTitleController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +23,7 @@ class _CreatePostViewBodyState extends State<CreatePostViewBody> {
         children: [
           const CreatePostTopBar(),
           const CreatePostTextField(),
-          _buildPostCollege(widget.postCubit.media),
+          _buildPostCollege(postCubit.media),
         ],
       ),
     );
