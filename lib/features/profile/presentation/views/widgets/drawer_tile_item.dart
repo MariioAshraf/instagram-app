@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
 import 'package:instagram_app/core/utils/extensions.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
@@ -49,7 +50,42 @@ void Function()? _onPressed(int index, BuildContext context) {
   } else if (index == 1) {
     // Photos/Videos
   } else if (index == 2) {
-    // Settings
+    context.pop();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: const Icon(
+          Icons.error,
+          color: Colors.red,
+          size: 32,
+        ),
+        content: Text(
+          'Are you sure you want to logout?',
+          style: AppTextStyles.font14DarkBlueMedium,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.pop();
+            },
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.font13BlueRegular,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              context.pop();
+              context.logOutAndGoToLogin(Routes.loginView);
+            },
+            child: Text(
+              'Got it',
+              style: AppTextStyles.font13BlueRegular,
+            ),
+          ),
+        ],
+      ),
+    );
   }
   return null;
 }

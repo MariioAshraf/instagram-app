@@ -10,3 +10,5 @@ final class ChangeBottomNavState extends HomeState {}
 final class GetUserSuccess extends HomeState {}
 
 final class GetUserLoading extends HomeState {}
+
+final class LogoutSuccess extends HomeState {}

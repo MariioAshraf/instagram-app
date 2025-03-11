@@ -6,35 +6,20 @@ import '../../manager/home_cubit.dart';
 import 'home_create_post_container.dart';
 import 'home_view_top_bar.dart';
 
-class HomeViewBody extends StatefulWidget {
+class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
-
-  @override
-  State<HomeViewBody> createState() => _HomeViewBodyState();
-}
-
-class _HomeViewBodyState extends State<HomeViewBody> {
-  late ScrollController scrollController;
-
-  @override
-  void initState() {
-    scrollController = HomeCubit.get(context).scrollController;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          const HomeViewTopBar(),
-          const HomeCreatePostContainer(),
-          const StoriesListView(),
-          GetPostsBlocConsumer(
-            scrollController: scrollController,
-          ),
+        controller: HomeCubit.get(context).scrollController,
+        slivers:  [
+          HomeViewTopBar(),
+          HomeCreatePostContainer(),
+          StoriesListView(),
+          GetPostsBlocConsumer(),
         ],
       ),
     );

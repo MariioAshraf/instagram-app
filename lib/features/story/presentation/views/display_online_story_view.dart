@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram_app/features/story/data/extensions/story_model_extension.dart';
 import 'package:video_player/video_player.dart';
 import '../../../home/presentation/manager/home_cubit.dart';
 import '../../data/models/story_model.dart';
@@ -30,12 +29,20 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
     _loadCurrentStory();
   }
 
-  void _loadCurrentStory() async {
+  void _loadCurrentStory() {
     final story = widget.stories[_currentIndex];
-    if (story.haslocalFilePath) {
-      await _storyCubit.loadOnlineStory(story, userId);
-    } else {
-      await _storyCubit.downloadStoryFile(story);
+    if (story.mediaType == MediaType.video) {
+      if (_storyCubit.videoController != null) {
+        _storyCubit.videoController!.dispose();
+        _storyCubit.videoController = null;
+      }
+      _storyCubit.videoController =
+          VideoPlayerController.file(File(story.localFilePath!))
+            ..initialize().then((_) {
+              _storyCubit.videoController!.play();
+            }).catchError((error) {
+              print('Error initializing video: $error');
+            });
     }
   }
 
@@ -48,14 +55,22 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
 
   void _onNextStory() {
     if (_currentIndex < widget.stories.length - 1) {
+      // تحقق مما إذا كانت القصة الحالية فيديو ثم قم بالتخلص منها
       if (widget.stories[_currentIndex].mediaType == MediaType.video) {
-        _storyCubit.videoController?.pause();
-        _storyCubit.videoController?.dispose();
+        if (_storyCubit.videoController != null) {
+          _storyCubit.videoController!.dispose();
+          _storyCubit.videoController = null; // قم بتصفير الكائن لمنع استخدامه
+        }
       }
+
       setState(() {
         _currentIndex++;
       });
-      _loadCurrentStory();
+
+      // تأكد من تحميل القصة الجديدة بشكل صحيح
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _loadCurrentStory();
+      });
     }
   }
 
@@ -89,10 +104,13 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
           }
         },
         builder: (context, state) {
-          if (_storyCubit.isStoryLoading || state is DownloadingStoryLoading) {
+          if (_storyCubit.isStoryLoading ||
+              state is DownloadingStoryLoading ||
+              state is StartTimer) {
             return const Center(
               child: CircularProgressIndicator(
                 color: Colors.white,
+                backgroundColor: Colors.black,
                 strokeWidth: 1.5,
               ),
             );
@@ -125,7 +143,9 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
               },
               child: Stack(
                 children: [
-                  _buildStoryMedia(story.mediaType, story.localFilePath!),
+                  Positioned.fill(
+                      child: _buildStoryMedia(
+                          story.mediaType, story.localFilePath!)),
                   _buildProgressBars(),
                   _buildCaption(story.caption),
                 ],

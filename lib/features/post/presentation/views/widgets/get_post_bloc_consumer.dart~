@@ -59,6 +59,7 @@ class _GetPostsBlocConsumerState extends State<GetPostsBlocConsumer> {
         if (state is GetPostsLoading) {
           return const PostShimmerLoading();
         }
+
         return SliverList(
           delegate: SliverChildBuilderDelegate(
               childCount: homeCubit.homePostsMap.length, (context, index) {

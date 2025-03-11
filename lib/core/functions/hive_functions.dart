@@ -53,6 +53,11 @@ class HiveFunctions {
     return userId;
   }
 
+  static Future<void> removeUserId() async {
+    final box = Hive.box<String>(kUserId);
+    await box.delete(kUserId);
+  }
+
   static Future<String?> getUserId() async {
     final box = Hive.box<String>(kUserId);
     return box.get(kUserId);

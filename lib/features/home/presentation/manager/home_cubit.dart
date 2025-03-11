@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/constants.dart';
+import 'package:instagram_app/core/functions/hive_functions.dart';
 import 'package:instagram_app/core/widgets/build_user_profile_image.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import '../../../post/data/models/post_model.dart';
@@ -76,6 +77,13 @@ class HomeCubit extends Cubit<HomeState> {
       // print('userModel: ${userModel.toJson()}');
       emit(GetUserSuccess());
     }
+  }
+
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    userModel = null;
+    HiveFunctions.removeUserId();
+    emit(LogoutSuccess());
   }
 
   // getUser() async {

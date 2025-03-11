@@ -4,7 +4,10 @@ part of 'get_post_cubit.dart';
 sealed class GetPostState {}
 
 final class FetchInitial extends GetPostState {}
+
 final class GetPostsLoading extends GetPostState {}
+
+final class GetPostsPaginationLoading extends GetPostState {}
 
 final class GetPostsFailure extends GetPostState {
   final String errMessage;
@@ -17,6 +20,8 @@ final class GetPostsSuccess extends GetPostState {
 
   GetPostsSuccess(this.posts);
 }
+
+final class NoMorePosts extends GetPostState {}
 
 final class ToggleLikeSuccess extends GetPostState {
   final String postId;
@@ -44,4 +49,3 @@ final class FetchLikesCountFailure extends GetPostState {
 }
 
 final class FastToggleLike extends GetPostState {}
-

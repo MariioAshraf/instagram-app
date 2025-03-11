@@ -16,5 +16,12 @@ extension Navigation on BuildContext {
         .pushNamedAndRemoveUntil(routeName, predicate, arguments: arguments);
   }
 
+  Future<void> logOutAndGoToLogin(String loginRouteName) async {
+    Navigator.of(this).pushNamedAndRemoveUntil(
+      loginRouteName,
+      (route) => false,
+    );
+  }
+
   void pop() => Navigator.of(this).pop();
 }
