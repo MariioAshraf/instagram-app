@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/features/post/domain/repos/post_repo.dart';
 import '../../../../auth/models/user_model.dart';
 import '../../../data/models/post_model.dart';
@@ -12,6 +14,8 @@ class CreatePostCubit extends Cubit<CreatePostState> {
   CreatePostCubit(this.createPostUseCase, this.postRepo) : super(PostInitial());
   final CreatePostUseCase createPostUseCase;
   final PostRepo postRepo;
+  final _usersCollection =
+      FirebaseFirestore.instance.collection(kUsersCollection);
 
   static CreatePostCubit get(context) => BlocProvider.of(context);
 
@@ -37,16 +41,25 @@ class CreatePostCubit extends Cubit<CreatePostState> {
 
   final TextEditingController postTitleController = TextEditingController();
 
-  Future<void> createPost(UserModel userModel) async {
+  Future<void> createPost(
+    UserModel userModel,
+  ) async {
     emit(CreatePostLoading());
     var result = await createPostUseCase.call(
         userModel, media, postTitleController.text);
     result.fold((failure) {
       emit(CreatePostFailure(failure.message));
-    }, (post) {
+    }, (post) async {
       media = null;
-      emit(CreatePostSuccess(post));
+      final user = await getPostUser(post.uId);
+      emit(CreatePostSuccess(post, user));
     });
+  }
+
+  Future<UserModel> getPostUser(String userId) async {
+    final userDoc = await _usersCollection.doc(userId).get();
+
+    return UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
   }
 
   void checkPostStatus() {

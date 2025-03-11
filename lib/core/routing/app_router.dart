@@ -13,6 +13,8 @@ import '../../features/auth/login/presentation/manager/login_cubit.dart';
 import '../../features/auth/login/presentation/views/login_view.dart';
 import '../../features/auth/sign_up/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
+import '../../features/post/domain/use_cases/create_post_use_case.dart';
+import '../../features/post/presentation/manager/create_post_cubit/create_post_cubit.dart';
 import '../../features/post/presentation/manager/get_post_cubit/get_post_cubit.dart';
 import '../../features/post/presentation/views/create_post_view.dart';
 import '../../features/story/data/models/story_model.dart';
@@ -23,21 +25,30 @@ class AppRouter {
     switch (settings.name) {
       case Routes.loginView:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
-            child: const LoginView(),
-          ),
+          builder: (_) =>
+              BlocProvider(
+                create: (context) => LoginCubit(getIt.get<LoginUseCase>()),
+                child: const LoginView(),
+              ),
         );
       case Routes.homeView:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => GetPostCubit(getIt.get<PostRepoImpl>()),
-            child: const HomeView(),
-          ),
+          builder: (_) =>
+              BlocProvider(
+                create: (context) => GetPostCubit(getIt.get<PostRepoImpl>()),
+                child: const HomeView(),
+              ),
         );
       case Routes.createPostView:
         return MaterialPageRoute(
-          builder: (_) => const CreatePostView(),
+          builder: (_) =>
+              BlocProvider(
+                create: (context) => CreatePostCubit(
+                  getIt.get<CreatePostUseCase>(),
+                  getIt.get<PostRepoImpl>(),
+                ),
+                child: const CreatePostView(),
+              ),
         );
       case Routes.signUpView:
         return MaterialPageRoute(

@@ -16,6 +16,7 @@ class CreatePostBlocConsumer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeCubit = HomeCubit.get(context);
     final postCubit = CreatePostCubit.get(context);
     return BlocConsumer<CreatePostCubit, CreatePostState>(
       buildWhen: (_, current) =>
@@ -35,7 +36,8 @@ class CreatePostBlocConsumer extends StatelessWidget {
           );
         }
         if (state is CreatePostSuccess) {
-          HomeCubit.get(context).homePostsMap[state.post.postId] = state.post;
+          homeCubit.homePostsMap[state.post.postId] = state.post;
+          homeCubit.allUsersMap[state.post.uId] = state.userModel;
           context.pop();
           context.pop();
         }

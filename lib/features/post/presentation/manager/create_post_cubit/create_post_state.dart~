@@ -15,9 +15,8 @@ final class PostFilesPickedFailure extends CreatePostState {
 
 final class CreatePostSuccess extends CreatePostState {
   final PostModel post;
-  final UserModel userModel;
 
-  CreatePostSuccess(this.post, this.userModel);
+  CreatePostSuccess(this.post);
 }
 
 final class CreatePostLoading extends CreatePostState {}
@@ -31,3 +30,6 @@ final class CreatePostFailure extends CreatePostState {
 final class CanUploadPost extends CreatePostState {}
 
 final class CanNotUploadPost extends CreatePostState {}
+
+
+
