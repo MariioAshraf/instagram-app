@@ -49,12 +49,13 @@ class GetPostCubit extends Cubit<GetPostState> {
 
   Future<void> fetchPosts({
     bool reset = false,
+    required String userId,
   }) async {
     allPostsMap.isEmpty
         ? emit(GetPostsLoading())
         : emit(GetPostsPaginationLoading());
 
-    var result = await postRepo.fetchPosts(reset: reset);
+    var result = await postRepo.fetchPosts(userId: userId, reset: reset);
     result.fold((failure) {
       emit(GetPostsFailure(failure.message));
     }, (posts) async {

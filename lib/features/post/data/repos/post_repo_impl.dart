@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/post/data/models/comment_model.dart';
+import 'package:instagram_app/features/post/data/post_model_extensions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/errors/failure.dart';
 import '../../domain/repos/post_repo.dart';
@@ -44,6 +45,7 @@ class PostRepoImpl extends PostRepo {
   Future<Either<Failure, List<PostModel>>> fetchPosts({
     int limit = 10,
     bool reset = false,
+    required String userId,
   }) async {
     try {
       if (reset) {
@@ -63,9 +65,23 @@ class PostRepoImpl extends PostRepo {
         _lastDocument = querySnapshot.docs.last;
       }
 
-      return Right(querySnapshot.docs
-          .map((doc) => PostModel.fromJson(doc.data() as Map<String, dynamic>))
-          .toList());
+      List<PostModel> posts = [];
+
+      for (var doc in querySnapshot.docs) {
+        var likesCollection = doc.reference.collection(kLikesCollection);
+
+        // 🔵 تحقق مما إذا كان المستخدم قد أعجب بالمنشور أم لا
+        var userLikeDoc = await likesCollection.doc(userId).get();
+        bool isLiked = userLikeDoc.exists;
+
+        // 📝 إنشاء كائن PostModel مع تحديث isLiked
+        var post = PostModel.fromJson(doc.data() as Map<String, dynamic>)
+            .copyWith(isLiked: isLiked);
+
+        posts.add(post);
+      }
+
+      return Right(posts);
     } catch (e) {
       return Left(Failure(e.toString()));
     }

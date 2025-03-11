@@ -37,6 +37,7 @@ class InteractionsWithPostRow extends StatelessWidget {
         LikeButton(
           isLiked: isLiked,
           onTap: () {
+            print('like${HomeCubit.get(context).userModel!.uId}');
             fetchPostCubit.toggleLike(postId, userId);
           },
         ),

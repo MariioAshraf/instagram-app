@@ -14,6 +14,7 @@ abstract class PostRepo {
   });
 
   Future<Either<Failure, List<PostModel>>> fetchPosts({
+    required String userId,
     int limit = 10,
     bool reset = false,
   });

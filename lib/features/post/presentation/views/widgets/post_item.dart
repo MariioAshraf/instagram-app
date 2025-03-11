@@ -46,7 +46,7 @@ class _PostItemState extends State<PostItem> {
     if (currentPosition >= 0.7 * maxScroll) {
       if (!_isLoading && _getPostCubit.state is! NoMorePosts) {
         _isLoading = true;
-        await _getPostCubit.fetchPosts();
+        await _getPostCubit.fetchPosts(userId: _homeCubit.userId!);
         _isLoading = false;
       }
     }

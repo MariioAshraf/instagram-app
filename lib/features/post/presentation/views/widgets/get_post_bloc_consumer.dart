@@ -26,7 +26,7 @@ class _GetPostsBlocConsumerState extends State<GetPostsBlocConsumer> {
 
   _initializeData() async {
     if (getPostsCubit.allPostsMap.isEmpty) {
-      await getPostsCubit.fetchPosts(reset: true);
+      await getPostsCubit.fetchPosts(userId: HomeCubit.get(context).userId!, reset: true);
     }
   }
 
