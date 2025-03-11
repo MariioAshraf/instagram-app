@@ -70,11 +70,9 @@ class PostRepoImpl extends PostRepo {
       for (var doc in querySnapshot.docs) {
         var likesCollection = doc.reference.collection(kLikesCollection);
 
-        // 🔵 تحقق مما إذا كان المستخدم قد أعجب بالمنشور أم لا
         var userLikeDoc = await likesCollection.doc(userId).get();
         bool isLiked = userLikeDoc.exists;
 
-        // 📝 إنشاء كائن PostModel مع تحديث isLiked
         var post = PostModel.fromJson(doc.data() as Map<String, dynamic>)
             .copyWith(isLiked: isLiked);
 
