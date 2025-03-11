@@ -21,7 +21,7 @@ class _MyStoriesSectionState extends State<MyStoriesSection> {
   @override
   void initState() {
     StoryCubit.get(context)
-        .getMyStories(HomeCubit.get(context).userModel.uId!);
+        .getMyStories(HomeCubit.get(context).userModel!.uId!);
     super.initState();
   }
 

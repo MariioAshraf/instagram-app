@@ -157,7 +157,7 @@ class StoryCubit extends Cubit<StoryState> {
   late Duration storyDuration;
   Duration defaultDuration = const Duration(seconds: 5);
   late Duration elapsedTime;
-  bool isStoryLoading = false;
+  bool isStoryLoading = true;
 
   /// for load story and download story file
   Future<void> loadOnlineStory(StoryModel storyModel, String userId) async {

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import 'package:instagram_app/features/profile/presentation/views/widgets/profile_view_body.dart';
 
-class ProfileView extends StatefulWidget {
+class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
-  @override
-  State<ProfileView> createState() => _ProfileViewState();
-}
+  final String dueToRebuildIssue = '';
 
-class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.transparent,
-      body: ProfileViewBody(),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          return ProfileViewBody(
+            dueToRebuildIssue: dueToRebuildIssue,
+          );
+        },
+      ),
     );
   }
 }

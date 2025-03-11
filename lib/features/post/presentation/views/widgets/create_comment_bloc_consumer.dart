@@ -19,6 +19,7 @@ class CreateCommentBlocConsumer extends StatelessWidget {
     return BlocConsumer<CommentCubit, CommentState>(
       listener: (context, state) {
         if (state is CreateCommentSuccess) {
+          HomeCubit.get(context).homePostsMap[postId]!.commentsCount++;
           commentCubit.fetchComments(postId, users);
         }
       },
@@ -39,7 +40,7 @@ class CreateCommentBlocConsumer extends StatelessWidget {
                   if (commentCubit.commentController.text.isNotEmpty) {
                     await commentCubit
                         .createComment(
-                            userId: HomeCubit.get(context).userId,
+                            userId: HomeCubit.get(context).userId!,
                             postId: postId)
                         .whenComplete(() {
                       commentCubit.commentController.clear();

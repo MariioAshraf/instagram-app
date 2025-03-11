@@ -15,7 +15,7 @@ class FriendsStoriesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storyCubit = StoryCubit.get(context);
-    final userId = HomeCubit.get(context).userModel!.uId!;
+    final userId = HomeCubit.get(context).userModel.uId!;
     return BlocBuilder<StoryCubit, StoryState>(
       buildWhen: (previous, current) => current is GetFriendsStoriesSuccess,
       builder: (context, state) {

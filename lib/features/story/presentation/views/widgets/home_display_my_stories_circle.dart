@@ -31,7 +31,7 @@ class HomeDisplayMyStoriesCircle extends StatelessWidget {
         );
       },
       child: DashedCircleAvatar(
-        imageUrl: user.profileImageUrl!,
+        imageUrl: user!.profileImageUrl!,
         name: user.name,
         dashCount: myStories.length,
       ),

@@ -11,7 +11,7 @@ class HomeCreatePostUserImageAndTextRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileImage = HomeCubit.get(context).userModel.profileImageUrl;
+    final profileImage = HomeCubit.get(context).userModel!.profileImageUrl;
     return Row(
       children: [
         horizontalSpacing(20),

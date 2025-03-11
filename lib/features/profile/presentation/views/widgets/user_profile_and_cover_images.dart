@@ -31,7 +31,7 @@ class UserProfileAndCoverImages extends StatelessWidget {
             alignment: Alignment.topCenter,
             children: [
               buildUserCoverImage(context,
-                  userCoverImageUrl: userModel.coverImageUrl!),
+                  userCoverImageUrl: userModel!.coverImageUrl!),
               Positioned(
                 bottom: 0,
                 child: CircleAvatar(

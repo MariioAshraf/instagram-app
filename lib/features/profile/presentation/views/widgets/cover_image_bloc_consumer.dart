@@ -55,7 +55,7 @@ class CoverImageBlocConsumer extends StatelessWidget {
               )
             : buildUserCoverImage(
                 userCoverImageUrl:
-                    HomeCubit.get(context).userModel.coverImageUrl!,
+                    HomeCubit.get(context).userModel!.coverImageUrl!,
                 context,
               );
       },
