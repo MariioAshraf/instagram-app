@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../features/home/presentation/manager/home_cubit.dart';
 
 Widget buildUserCoverImage(BuildContext context,
     {required String userCoverImageUrl}) {

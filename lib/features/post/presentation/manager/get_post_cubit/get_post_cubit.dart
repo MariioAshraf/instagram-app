@@ -48,17 +48,23 @@ class GetPostCubit extends Cubit<GetPostState> {
   Map<String, UserModel> postsUsers = {};
 
   Future<void> fetchPosts({
-    int limit = 10,
     bool reset = false,
   }) async {
-    emit(GetPostsLoading());
-    var result = await postRepo.fetchPosts(limit: limit, reset: reset);
+    allPostsMap.isEmpty
+        ? emit(GetPostsLoading())
+        : emit(GetPostsPaginationLoading());
+
+    var result = await postRepo.fetchPosts(reset: reset);
     result.fold((failure) {
       emit(GetPostsFailure(failure.message));
     }, (posts) async {
-      await _getPostsUsers(posts);
-      await organizeLikedPosts(posts);
-      emit(GetPostsSuccess(posts));
+      if (posts.isEmpty) {
+        emit(NoMorePosts());
+      } else {
+        await _getPostsUsers(posts);
+        await organizeLikedPosts(posts);
+        emit(GetPostsSuccess(posts));
+      }
     });
   }
 
