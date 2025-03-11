@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import 'package:instagram_app/features/post/presentation/views/widgets/post_item.dart';
 import 'package:instagram_app/features/post/presentation/views/widgets/post_shimmer_loading.dart';
@@ -15,56 +16,73 @@ class GetPostsBlocConsumer extends StatefulWidget {
 }
 
 class _GetPostsBlocConsumerState extends State<GetPostsBlocConsumer> {
-  late GetPostCubit getPostsCubit;
+  late GetPostCubit _getPostsCubit;
+  late HomeCubit _homeCubit;
 
   @override
   void initState() {
-    getPostsCubit = GetPostCubit.get(context);
+    _homeCubit = HomeCubit.get(context);
+    _getPostsCubit = GetPostCubit.get(context);
     _initializeData();
     super.initState();
   }
 
   _initializeData() async {
-    if (getPostsCubit.allPostsMap.isEmpty) {
-      await getPostsCubit.fetchPosts(userId: HomeCubit.get(context).userId!, reset: true);
+    if (_getPostsCubit.allPostsMap.isEmpty) {
+      await _getPostsCubit.fetchPosts(userId: _homeCubit.userId!, reset: true);
     }
   }
 
   @override
+  void didChangeDependencies() {
+    _initializeData();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final homeCubit = HomeCubit.get(context);
+    final homePostsMap = _homeCubit.homePostsMap;
     return BlocConsumer<GetPostCubit, GetPostState>(
       buildWhen: (_, current) =>
           current is GetPostsSuccess ||
           current is GetPostsLoading ||
           current is FastToggleLike ||
+          current is NoMorePosts ||
           current is GetPostsPaginationLoading ||
           current is FetchLikesCountSuccess,
       listener: (context, state) {
         if (state is ToggleLikeSuccess) {
-          getPostsCubit.fetchLikesCount(state.postId);
+          _getPostsCubit.fetchLikesCount(state.postId);
         }
 
         if (state is FetchLikesCountSuccess) {
-          homeCubit.homePostsMap[state.postId]!.likesCount = state.likesCount;
+          homePostsMap[state.postId]!.likesCount = state.likesCount;
         }
         if (state is GetPostsSuccess) {
           state.posts.map((post) {
-            homeCubit.homePostsMap[post.postId] = post;
-            getPostsCubit.allPostsMap = homeCubit.homePostsMap;
+            homePostsMap[post.postId] = post;
+            _getPostsCubit.allPostsMap = homePostsMap;
           }).toList();
         }
       },
       builder: (context, state) {
+        if (state is NoMorePosts && homePostsMap.isEmpty) {
+          return const SliverToBoxAdapter(
+            child: Center(
+              child: Text('No posts yet'),
+            ),
+          );
+        }
         if (state is GetPostsLoading) {
           return const PostShimmerLoading();
         }
         return SliverList(
-          delegate: SliverChildBuilderDelegate(
-              childCount: homeCubit.homePostsMap.length, (context, index) {
-            final posts = homeCubit.homePostsMap.values.toList()
+          delegate: SliverChildBuilderDelegate(childCount: homePostsMap.length,
+              (context, index) {
+            final posts = homePostsMap.values.toList()
               ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-            final user = getPostsCubit.postsUsers[posts[index].uId];
+            UserModel? user = _getPostsCubit.postsUsers[posts[index].uId];
+            user ??= _homeCubit.allUsersMap[posts[index].uId];
             return PostItem(
               user: user!,
               post: posts[index],
