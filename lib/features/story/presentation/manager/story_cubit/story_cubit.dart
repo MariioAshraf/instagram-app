@@ -96,6 +96,7 @@ class StoryCubit extends Cubit<StoryState> {
     });
   }
 
+
   Future<void> getFriendsStories(String userId) async {
     emit(GetFriendsStoriesLoading());
     var result = await storyRepo.getFriendsStories(userId);
@@ -121,23 +122,29 @@ class StoryCubit extends Cubit<StoryState> {
   //   return users;
   // }
 
-  Map<String, List<StoryModel>> storiesMapSeenBefore = {};
+  Map<String, List<StoryModel>> storiesMapAllSeenBefore = {};
   Map<String, List<StoryModel>> atLeastOneStoryNotSeenMap = {};
+  List<String> storySeenBefore = [];
 
   void organizeStories(
     String userId,
-    Map<String, List<StoryModel>> storiesMap,
+      Map<String, List<StoryModel>> storiesMap,
   ) {
-    storiesMapSeenBefore.clear();
+    storySeenBefore.clear();
+    storiesMapAllSeenBefore.clear();
     atLeastOneStoryNotSeenMap.clear();
 
     for (var entry in storiesMap.entries) {
       final List<StoryModel> userStories = entry.value;
       final String storiesOwnerId = entry.key;
-      bool allViewed = userStories
-          .every((story) => story.seenStoryDate!.containsKey(userId));
+      bool allViewed = userStories.every((story) {
+        if (story.seenStoryDate!.containsKey(userId)) {
+          storySeenBefore.add(story.storyId);
+        }
+        return story.seenStoryDate!.containsKey(userId);
+      });
       if (allViewed) {
-        storiesMapSeenBefore[storiesOwnerId] = userStories;
+        storiesMapAllSeenBefore[storiesOwnerId] = userStories;
         // print('all seen ${storiesMapSeenBefore[storiesOwnerId]}');
         // print(
         //     'all seen length ${storiesMapSeenBefore[storiesOwnerId]?.length}');
@@ -146,24 +153,24 @@ class StoryCubit extends Cubit<StoryState> {
         // print('not seen ${atLeastOneStoryNotSeenMap[storiesOwnerId]}');
       }
     }
+    emit(StoriesOrganized());
   }
 
   /// Variables for load story
   Timer? timer;
   Timer? tapTimer;
   bool isVideoInitialized = false;
-   VideoPlayerController? videoController;
+  VideoPlayerController? videoController;
   late bool isImage;
   late Duration storyDuration;
   Duration defaultDuration = const Duration(seconds: 5);
   late Duration elapsedTime;
-  bool isStoryLoading = true;
+  bool isStoryLoading = false;
 
   /// for load story and download story file
   Future<void> loadOnlineStory(StoryModel storyModel, String userId) async {
-    print('ddddddddddddddddddddddddddgggggggggggggggggggggggggggggg');
-    isStoryLoading = true;
     emit(LoadStoryLoading());
+    isStoryLoading = true;
     try {
       isImage = storyModel.mediaType == MediaType.image;
       if (isVideoInitialized) {
@@ -180,7 +187,7 @@ class StoryCubit extends Cubit<StoryState> {
         await initializeVideoController(storyModel);
       }
       isStoryLoading = false;
-      await storyRepo.setStorySeen(storyModel, userId: userId);
+      storyRepo.setStorySeen(storyModel, userId: userId);
       emit(LoadStorySuccess(story: storyModel));
     } catch (e) {
       emit(LoadStoryFailure(errMsg: e.toString()));

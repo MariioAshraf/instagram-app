@@ -32,8 +32,11 @@ class DashedCircleAvatar extends StatelessWidget {
             // Dashed border
             CustomPaint(
               size: Size(80.w, 80.h), // Circle size, adjust as needed
-              painter: DashedCirclePainter(dashCount, 45.r,
-                  storiesStates: storiesStates), // Pass radius here
+              painter: DashedCirclePainter(
+                dashCount,
+                45.r, // Pass radius here
+                storiesStates: storiesStates,
+              ),
             ),
             imageUrl.isNotEmpty
                 ? CircleAvatar(
@@ -89,17 +92,13 @@ class DashedCirclePainter extends CustomPainter {
     double dashLength = dashCount == 1 ? angleStep : angleStep * 0.93;
 
     for (int i = 0; i < dashCount; i++) {
-      // تحديد اللون بناءً على حالة `storiesStates`
       if (storiesStates != null && i < storiesStates!.length) {
-        // إذا كانت الليست موجودة وداخل الحدود، استخدم حالتها
         paint.color =
             storiesStates![i] ? Colors.grey : AppColorsManager.mainBlue;
       } else {
-        // إذا كانت الليست غير موجودة أو العدد أكبر من الليست، اجعلها رمادية
         paint.color = Colors.grey;
       }
 
-      // رسم الداش
       double startAngle = i * angleStep - pi + 1.8;
       canvas.drawArc(
         Rect.fromCircle(

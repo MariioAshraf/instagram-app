@@ -115,23 +115,18 @@ class StoryRepoImpl implements StoryRepo {
           await storyRemoteDataSource.getMyStories(
         userId: userId,
       );
-      // تحويل البيانات المحلية إلى خريطة لسهولة الوصول
       final Map<String, StoryModel> localStoriesMap = {
         for (var story in localStories) story.storyId: story
       };
 
-// تحديث البيانات المحلية بالقادمة من الريموت
       for (var remoteStory in remoteStories) {
         if (localStoriesMap.containsKey(remoteStory.storyId)) {
-          // تحديث القصة الموجودة محليًا بالمعلومات الجديدة
           localStoriesMap[remoteStory.storyId] = remoteStory;
         } else {
-          // إضافة القصة الجديدة التي ليست موجودة محليًا
           localStoriesMap[remoteStory.storyId] = remoteStory;
         }
       }
 
-// تحويل الخريطة إلى قائمة
       final List<StoryModel> allStories = localStoriesMap.values.toList();
 
       if (remoteStories.isNotEmpty) {
