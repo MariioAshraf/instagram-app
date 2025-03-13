@@ -147,7 +147,7 @@ class StoryRemoteDataSourceImpl implements StoryRemoteDataSource {
     await localFile.writeAsBytes(response.bodyBytes);
     storyModel = storyModel.copyWith(localFilePath: newPath);
     await box.put(storyModel.storyId, storyModel);
-    // debugPrint('File downloaded and saved: ${storyModel.toString()}');
+    debugPrint('File downloaded and saved: ${storyModel.toString()}');
     return storyModel;
   }
 }

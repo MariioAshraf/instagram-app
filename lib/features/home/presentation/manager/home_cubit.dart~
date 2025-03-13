@@ -8,7 +8,10 @@ import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/functions/hive_functions.dart';
 import 'package:instagram_app/core/widgets/build_user_profile_image.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
+import '../../../../core/di/dependency_injection.dart';
 import '../../../post/data/models/post_model.dart';
+import '../../../post/data/repos/post_repo_impl.dart';
+import '../../../post/presentation/manager/get_post_cubit/get_post_cubit.dart';
 import '../../../profile/presentation/views/profile_view.dart';
 import '../../../search/presentation/views/search_view.dart';
 import '../views/widgets/home_view_body.dart';
@@ -35,7 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
   Map<String, PostModel> homePostsMap = {};
 
   final CollectionReference _usersCollection =
-      FirebaseFirestore.instance.collection(kUsersCollection);
+  FirebaseFirestore.instance.collection(kUsersCollection);
 
   List<BottomNavigationBarItem> buildBottomNavItems(BuildContext context) {
     return [
@@ -54,7 +57,7 @@ class HomeCubit extends Cubit<HomeState> {
       BottomNavigationBarItem(
         icon: CircleAvatar(
           backgroundColor:
-              currentIndex == 3 ? Colors.white : Colors.transparent,
+          currentIndex == 3 ? Colors.white : Colors.transparent,
           radius: 16.r,
           child: BlocBuilder<HomeCubit, HomeState>(
             buildWhen: (_, current) => current is GetUserSuccess,
@@ -100,8 +103,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   List<Widget> screens(BuildContext context) {
     return [
-      const SafeArea(
-        child: HomeViewBody(),
+       SafeArea(
+        child: BlocProvider(
+          create: (context) => GetPostCubit(getIt.get<PostRepoImpl>()),
+
+          child: const HomeViewBody(),
+        ),
       ),
       const Center(child: Text('add story')),
       const SearchView(),

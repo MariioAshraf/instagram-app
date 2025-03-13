@@ -66,6 +66,7 @@ final class LoadStoryFailure extends StoryState {
 }
 
 final class LoadStoryLoading extends StoryState {}
+final class StoriesOrganized extends StoryState {}
 
 /// about timers initialization
 final class StartTimer extends StoryState {}

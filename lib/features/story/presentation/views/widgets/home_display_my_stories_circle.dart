@@ -4,7 +4,7 @@ import 'package:instagram_app/core/utils/extensions.dart';
 import '../../../../../constants.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../manager/story_cubit/story_cubit.dart';
-import 'DashedCircleAvatar.dart';
+import 'dashed_circle_avatar.dart';
 
 class HomeDisplayMyStoriesCircle extends StatelessWidget {
   const HomeDisplayMyStoriesCircle({

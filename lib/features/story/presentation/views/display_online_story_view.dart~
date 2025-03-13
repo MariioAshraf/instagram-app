@@ -41,7 +41,7 @@ class _DisplayOnlineStoryViewState extends State<DisplayOnlineStoryView> {
 
   @override
   void dispose() {
-    _storyCubit.getFriendsStories(userId);
+    _storyCubit.organizeStories(userId);
     _storyCubit.closeControllers();
     super.dispose();
   }

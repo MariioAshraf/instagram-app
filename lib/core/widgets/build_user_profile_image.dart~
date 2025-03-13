@@ -35,7 +35,7 @@ class UserCircleProfileImage extends StatelessWidget {
           height: radius.r * 2,
           width: radius.r * 2,
           imageUrl: imageUrl,
-          fit: BoxFit.cover,
+          fit: BoxFit.fitHeight,
           useOldImageOnUrlChange: true,
           placeholder: (context, url) => const ImageShimmerLoading(),
           errorWidget: (context, url, error) => const Icon(Icons.error),

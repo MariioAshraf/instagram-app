@@ -7,7 +7,7 @@ import 'package:instagram_app/features/story/presentation/manager/story_cubit/st
 import '../../../../../constants.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../../data/models/story_model.dart';
-import 'DashedCircleAvatar.dart';
+import 'dashed_circle_avatar.dart';
 
 class FriendsStoriesSection extends StatelessWidget {
   const FriendsStoriesSection({super.key});
@@ -15,7 +15,7 @@ class FriendsStoriesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storyCubit = StoryCubit.get(context);
-    final userId = HomeCubit.get(context).userModel.uId!;
+    final userId = HomeCubit.get(context).userModel!.uId!;
     return BlocBuilder<StoryCubit, StoryState>(
       buildWhen: (previous, current) => current is GetFriendsStoriesSuccess,
       builder: (context, state) {
@@ -28,7 +28,8 @@ class FriendsStoriesSection extends StatelessWidget {
               final storiesOwner =
                   storiesListAtLeastOneNotSeen.first.storyUserModel;
               final isStorySeen = storiesListAtLeastOneNotSeen
-                  .map((story) => story.seenStoryDate!.containsKey(userId))
+                  .map((story) =>
+                      storyCubit.storySeenBefore.contains(story.storyId))
                   .toList();
               return Padding(
                 padding: EdgeInsets.only(left: 12.w),
@@ -60,7 +61,7 @@ class FriendsStoriesSection extends StatelessWidget {
                 ),
               );
             }),
-            ...storyCubit.storiesMapSeenBefore.entries.map((entry) {
+            ...storyCubit.storiesMapAllSeenBefore.entries.map((entry) {
               final List<StoryModel> storiesList = entry.value
                 ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
               return Padding(

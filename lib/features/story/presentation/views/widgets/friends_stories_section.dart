@@ -7,7 +7,7 @@ import 'package:instagram_app/features/story/presentation/manager/story_cubit/st
 import '../../../../../constants.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../../data/models/story_model.dart';
-import 'DashedCircleAvatar.dart';
+import 'dashed_circle_avatar.dart';
 
 class FriendsStoriesSection extends StatelessWidget {
   const FriendsStoriesSection({super.key});
@@ -60,7 +60,7 @@ class FriendsStoriesSection extends StatelessWidget {
                 ),
               );
             }),
-            ...storyCubit.storiesMapSeenBefore.entries.map((entry) {
+            ...storyCubit.storiesMapAllSeenBefore.entries.map((entry) {
               final List<StoryModel> storiesList = entry.value
                 ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
               return Padding(

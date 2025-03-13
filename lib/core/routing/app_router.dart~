@@ -34,8 +34,15 @@ class AppRouter {
         );
       case Routes.homeView:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => GetPostCubit(getIt.get<PostRepoImpl>()),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => GetPostCubit(getIt.get<PostRepoImpl>()),
+              ),
+              BlocProvider(
+                create: (context) => StoryCubit(getIt.get<StoryRepoImpl>()),
+              )
+            ],
             child: const HomeView(),
           ),
         );

@@ -15,7 +15,7 @@ class HomeViewBody extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: CustomScrollView(
         controller: HomeCubit.get(context).scrollController,
-        slivers: [
+        slivers: const [
           HomeViewTopBar(),
           HomeCreatePostContainer(),
           StoriesListView(),
