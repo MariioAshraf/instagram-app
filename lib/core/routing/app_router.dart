@@ -4,8 +4,6 @@ import 'package:instagram_app/constants.dart';
 import 'package:instagram_app/core/routing/routes.dart';
 import 'package:instagram_app/features/post/data/repos/post_repo_impl.dart';
 import 'package:instagram_app/features/profile/presentation/views/edit_profile_view.dart';
-import 'package:instagram_app/features/splash/splash_view.dart';
-import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
 import 'package:instagram_app/features/story/presentation/views/display_offline_story_view.dart';
 import 'package:instagram_app/features/story/presentation/views/display_online_story_view.dart';
 import 'package:instagram_app/features/story/presentation/views/story_preview_view.dart';
@@ -19,7 +17,6 @@ import '../../features/post/presentation/manager/create_post_cubit/create_post_c
 import '../../features/post/presentation/manager/get_post_cubit/get_post_cubit.dart';
 import '../../features/post/presentation/views/create_post_view.dart';
 import '../../features/story/data/models/story_model.dart';
-import '../../features/story/data/repos/story_repo_impl.dart';
 import '../di/dependency_injection.dart';
 
 class AppRouter {
@@ -72,10 +69,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const StoryPreviewView(),
         );
-      case Routes.splashView:
-        return MaterialPageRoute(
-          builder: (_) => const SplashView(),
-        );
+
       case Routes.editProfileView:
         return MaterialPageRoute(
           builder: (_) => const EditProfileView(),

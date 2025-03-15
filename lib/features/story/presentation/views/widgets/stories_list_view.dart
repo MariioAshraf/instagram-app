@@ -37,7 +37,10 @@ class _StoriesListViewState extends State<StoriesListView> {
             MyStoriesSection(
               preventRebuildIssueWithConst: preventRebuildIssueWithConst,
             ),
-            const FriendsStoriesSection(),
+            Padding(
+              padding: EdgeInsets.only(right: 2.w),
+              child: const FriendsStoriesSection(),
+            ),
           ],
         ),
       ),

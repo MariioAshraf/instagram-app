@@ -8,5 +8,4 @@ class Routes {
   static const String storyPreviewView = '/storyPreviewView';
   static const displayOfflineStoriesView = '/displayOfflineStoriesStoryView';
   static const displayOnlineStoriesView = '/displayOnlineStoriesStoryView';
-  static const splashView = '/splashView';
 }

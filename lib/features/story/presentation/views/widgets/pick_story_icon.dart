@@ -26,17 +26,17 @@ class PickStoryIcon extends StatelessWidget {
         children: [
           buildUserProfileImage(
             context,
-            radius: 45.r,
+            radius: 40.r,
             profileImage: HomeCubit.get(context).userModel!.profileImageUrl!,
           ),
           Positioned(
             right: 0,
             bottom: 0,
             child: CircleAvatar(
-              radius: 21.r,
+              radius: 20.r,
               backgroundColor: Colors.white,
               child: CircleAvatar(
-                radius: 18.r,
+                radius: 16.r,
                 backgroundColor: AppColorsManager.mainBlue,
                 child: const Icon(
                   color: Colors.white,

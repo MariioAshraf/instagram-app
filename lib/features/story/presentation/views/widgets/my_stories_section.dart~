@@ -29,7 +29,12 @@ class _MyStoriesSectionState extends State<MyStoriesSection> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StoryCubit, StoryState>(
+    return BlocConsumer<StoryCubit, StoryState>(
+      listener: (context, state) {
+        if (state is GetMyStoriesSuccess) {
+          print(' user id ======= ${HomeCubit.get(context).userId}');
+        }
+      },
       buildWhen: (previous, current) => current is GetMyStoriesSuccess,
       builder: (context, state) {
         return storyCubit.myStories.isEmpty

@@ -63,7 +63,6 @@ class EditUserProfileAndCoverImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasStories = StoryCubit.get(context).myStories.isNotEmpty;
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (previous, current) => current is GetUserSuccess,
       builder: (context, state) {
@@ -76,9 +75,7 @@ class EditUserProfileAndCoverImages extends StatelessWidget {
               CoverImageBlocConsumer(
                 height: size.height,
               ),
-              ProfileImageBlocConsumer(
-                hasStories: hasStories,
-              ),
+              const ProfileImageBlocConsumer(),
             ],
           ),
         );

@@ -72,6 +72,10 @@ class HomeCubit extends Cubit<HomeState> {
     ];
   }
 
+  getUserId() async {
+    userId = await HiveFunctions.getUserId();
+  }
+
   Future<void> getUser() async {
     if (FirebaseAuth.instance.currentUser != null) {
       emit(GetUserLoading());
@@ -100,7 +104,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   List<Widget> screens(BuildContext context) {
     return [
-      const SafeArea(
+       SafeArea(
         child: HomeViewBody(),
       ),
       const Center(child: Text('add story')),

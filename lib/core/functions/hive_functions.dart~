@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import '../../constants.dart';
+import '../../features/auth/models/user_model.dart';
+import '../../features/story/data/models/story_model.dart';
+
+class HiveFunctions {
+  final userId = getUserId();
+
+  static Future<StoryModel?> getStory(String storyId) async {
+    final box = Hive.box<StoryModel>(kStoriesCollection);
+    StoryModel? story = box.get(storyId);
+    return story;
+  }
+
+  static Future<List<StoryModel>> getMyStories(String userId) async {
+    final box = Hive.box<StoryModel>(kStoriesCollection);
+    return box.values.where((story) => story.userId == userId).toList()
+      ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  }
+
+  static Future<void> saveStory(
+    String? localPath,
+    StoryModel story,
+    UserModel userModel,
+  ) async {
+    final box = Hive.box<StoryModel>(kStoriesCollection);
+    StoryModel localStory = StoryModel(
+      storyUserModel: userModel,
+      caption: story.caption,
+      mediaType: story.mediaType,
+      duration: story.duration,
+      userId: story.userId,
+      createdAt: story.createdAt,
+      localFilePath: localPath,
+      storyId: story.storyId,
+      seenStoryDate: <String, String>{},
+      viewersModels: <String, UserModel>{},
+    );
+    await box.put(story.storyId, localStory);
+    debugPrint('story saved to hive${localStory.toJson()}');
+  }
+
+  static saveStories(List<StoryModel> stories) {
+    final box = Hive.box<StoryModel>(kStoriesCollection);
+    Map<String, StoryModel> storiesMap = {
+      for (var story in stories) story.storyId: story
+    };
+    box.putAll(storiesMap);
+  }
+
+  static Future<String> saveUserId(String userId) async {
+    final box = Hive.box<String>(kUserId);
+    await box.put(kUserId, userId);
+    return userId;
+  }
+
+  static Future<void> removeUserId() async {
+    final box = Hive.box<String>(kUserId);
+    await box.delete(kUserId);
+  }
+
+  static Future<String?> getUserId() async {
+    final box = Hive.box<String>(kUserId);
+    return box.get(kUserId);
+  }
+
+// static Future<void> savePosts(List<PostModel> posts) async {
+//   final box = Hive.box<PostModel>(kPostsCollection);
+//   Map<String, PostModel> postsMap = {
+//     for (var post in posts) post.postId: post
+//   };
+//   box.putAll(postsMap);
+// }
+}

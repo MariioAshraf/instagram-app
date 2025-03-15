@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) =>
-                StoryCubit(getIt.get<StoryRepoImpl>()),
+                StoryCubit(getIt.get<StoryRepoImpl>())..getMyStories(userId!),
           ),
         ],
         child: MaterialApp(
