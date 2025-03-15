@@ -10,10 +10,8 @@ import '../../manager/profile_cubit.dart';
 class ProfileImageBlocConsumer extends StatelessWidget {
   const ProfileImageBlocConsumer({
     super.key,
-    required this.hasStories,
   });
 
-  final bool hasStories;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class ProfileImageBlocConsumer extends StatelessWidget {
       bottom: 0,
       child: CircleAvatar(
         radius: 69.r,
-        backgroundColor: hasStories ? AppColorsManager.mainBlue : Colors.white,
+        backgroundColor:  Colors.white,
         child: BlocConsumer<ProfileCubit, ProfileState>(
           buildWhen: (_, current) =>
               current is UploadProfilePhotoSuccess ||

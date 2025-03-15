@@ -55,6 +55,9 @@ class StoryViewersItem extends StatelessWidget {
     if (durationSinceViewed.inHours < 24 && dateTimeViewedAt.day == now.day) {
       return "Today, ${DateFormat('hh:mm a').format(dateTimeViewedAt)}";
     }
+    if (durationSinceViewed.inSeconds <= 60) {
+      return "Just now";
+    }
     if (durationSinceViewed.inHours < 24) {
       return "Yesterday, ${DateFormat('hh:mm a').format(dateTimeViewedAt)}";
     } else {

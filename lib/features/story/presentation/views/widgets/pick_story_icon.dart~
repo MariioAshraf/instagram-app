@@ -24,11 +24,11 @@ class PickStoryIcon extends StatelessWidget {
       },
       icon: Stack(
         children: [
-          buildUserProfileImage
-
-            (context,
-              radius: 45.r,
-              profileImage: HomeCubit.get(context).userModel!.profileImageUrl!),
+          buildUserProfileImage(
+            context,
+            radius: 40.r,
+            profileImage: HomeCubit.get(context).userModel!.profileImageUrl!,
+          ),
           Positioned(
             right: 0,
             bottom: 0,

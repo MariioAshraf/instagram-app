@@ -81,7 +81,11 @@ class StoryCubit extends Cubit<StoryState> {
     result.fold((err) {
       emit(GetMyStoriesFailure(err.message));
     }, (r) {
+      print('stories rrrrrrrrrrr ${r.length}');
+
       myStories = r;
+      print('myStories ${myStories.length}');
+
       emit(GetMyStoriesSuccess());
     });
   }
@@ -95,7 +99,6 @@ class StoryCubit extends Cubit<StoryState> {
       emit(DownloadingStorySuccess(story: storyModel));
     });
   }
-
 
   Future<void> getFriendsStories(String userId) async {
     emit(GetFriendsStoriesLoading());
@@ -128,7 +131,7 @@ class StoryCubit extends Cubit<StoryState> {
 
   void organizeStories(
     String userId,
-      Map<String, List<StoryModel>> storiesMap,
+    Map<String, List<StoryModel>> storiesMap,
   ) {
     storySeenBefore.clear();
     storiesMapAllSeenBefore.clear();

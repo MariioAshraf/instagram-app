@@ -17,7 +17,7 @@ class FriendsStoriesSection extends StatelessWidget {
     final storyCubit = StoryCubit.get(context);
     final userId = HomeCubit.get(context).userModel!.uId!;
     return BlocBuilder<StoryCubit, StoryState>(
-      buildWhen: (previous, current) => current is GetFriendsStoriesSuccess,
+      buildWhen: (_, current) => current is GetFriendsStoriesSuccess,
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -28,8 +28,7 @@ class FriendsStoriesSection extends StatelessWidget {
               final storiesOwner =
                   storiesListAtLeastOneNotSeen.first.storyUserModel;
               final isStorySeen = storiesListAtLeastOneNotSeen
-                  .map((story) =>
-                      storyCubit.storySeenBefore.contains(story.storyId))
+                  .map((story) => story.seenStoryDate!.containsKey(userId))
                   .toList();
               return Padding(
                 padding: EdgeInsets.only(left: 12.w),
