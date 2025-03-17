@@ -39,7 +39,6 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold((failure) => emit(LoginFailure(errMessage: failure.message)),
         (userModel) async {
       userId = userModel.uId;
-      await HiveFunctions.saveUser(userModel);
       this.userModel = userModel;
       emit(LoginSuccess(userModel));
     });

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/constants.dart';
+import 'package:instagram_app/core/functions/hive_functions.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
+import 'package:instagram_app/features/auth/user_model_extensions.dart';
 import 'package:instagram_app/features/profile/domain/repos/profile_repo.dart';
 import 'package:instagram_app/features/profile/domain/use_cases/profile_use_case.dart';
 
@@ -17,17 +19,21 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   static ProfileCubit get(context) => BlocProvider.of(context);
 
-  Future<void> updateUserNameAndBio(
-      {String? name, String? bio, required UserModel userModel}) async {
+  Future<void> updateUserNameAndBio({required UserModel userModel}) async {
     emit(UpdateUserLoading());
     var result = await profileRepo.updateUserProfile(
-      name: name,
-      bio: bio,
+      name: nameController.text,
+      bio: bioController.text,
       userModel: userModel,
     );
 
-    result.fold((failure) => emit(UpdateUserFailure(failure.message)),
-        (userModel) => emit(UpdateUserSuccess()));
+    result.fold((failure) => emit(UpdateUserFailure(failure.message)), (_) {
+      HiveFunctions.updaterUserNameAndBio(
+        name: nameController.text,
+        bio: bioController.text,
+      );
+      emit(UpdateUserSuccess());
+    });
   }
 
   String? profileImagePath;
@@ -63,9 +69,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       kProfileImage,
     );
     result.fold((failure) => emit(UploadProfilePhotoFailure(failure.message)),
-        (fileUrl) async {
-      // await HiveFunctions.saveUserModel(
-      //     userModel.copyWith(profileImageUrl: fileUrl));
+        (fileUrl) {
       emit(UploadProfilePhotoSuccess(profileImageUrl: fileUrl));
     });
   }
@@ -82,8 +86,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
     result.fold((failure) => emit(UploadCoverPhotoFailure(failure.message)),
         (fileUrl) async {
-      // await HiveFunctions.saveUserModel(
-      //     userModel.copyWith(coverImageUrl: fileUrl));
+      await HiveFunctions.updateUser(
+          userModel.copyWith(coverImageUrl: fileUrl));
       emit(UploadCoverPhotoSuccess());
     });
   }

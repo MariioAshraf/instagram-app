@@ -28,17 +28,17 @@ void main() async {
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(MediaTypeAdapter());
   await Hive.openBox<StoryModel>(kStoriesCollection);
-  await Hive.openBox<String>(kUserId);
+  await Hive.openBox<UserModel>(kUsersCollection);
   setupServiceLocator();
   Bloc.observer = AppBlocObserver();
-  final userId = await HiveFunctions.getUserId();
-  runApp(MyApp(userId: userId));
+  final userId = await HiveFunctions.getUser();
+  runApp(MyApp(user: userId));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, this.userId});
+  const MyApp({super.key, this.user});
 
-  final String? userId;
+  final UserModel? user;
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +49,15 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<HomeCubit>(
             create: (context) => HomeCubit()
-              ..getUserId()
+              // ..getUserId()
               ..getUser(),
           ),
           BlocProvider(
-            create: (context) =>
-                StoryCubit(getIt.get<StoryRepoImpl>()),
+            create: (context) => StoryCubit(getIt.get<StoryRepoImpl>()),
           ),
         ],
         child: MaterialApp(
-          initialRoute: userId != null ? Routes.homeView : Routes.loginView,
+          initialRoute: user != null ? Routes.homeView : Routes.loginView,
           onGenerateRoute: AppRouter().generateRoute,
           debugShowCheckedModeBanner: false,
         ),

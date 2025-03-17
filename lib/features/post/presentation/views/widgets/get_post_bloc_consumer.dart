@@ -4,6 +4,7 @@ import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
 import 'package:instagram_app/features/post/presentation/views/widgets/post_item.dart';
 import 'package:instagram_app/features/post/presentation/views/widgets/post_shimmer_loading.dart';
+
 import '../../manager/get_post_cubit/get_post_cubit.dart';
 
 class GetPostsBlocConsumer extends StatefulWidget {
@@ -48,15 +49,12 @@ class _GetPostsBlocConsumerState extends State<GetPostsBlocConsumer> {
           current is GetPostsLoading ||
           current is FastToggleLike ||
           current is NoMorePosts ||
-          current is GetPostsPaginationLoading ||
-          current is FetchLikesCountSuccess,
+          current is GetPostsPaginationLoading,
       listener: (context, state) {
-        if (state is ToggleLikeSuccess) {
-          _getPostsCubit.fetchLikesCount(state.postId);
-        }
-
-        if (state is FetchLikesCountSuccess) {
-          homePostsMap[state.postId]!.likesCount = state.likesCount;
+        if (state is FastToggleLike) {
+          state.like
+              ? homePostsMap[state.postId]!.likesCount++
+              : homePostsMap[state.postId]!.likesCount--;
         }
         if (state is GetPostsSuccess) {
           state.posts.map((post) {

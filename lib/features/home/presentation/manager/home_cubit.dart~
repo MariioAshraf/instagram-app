@@ -37,48 +37,53 @@ class HomeCubit extends Cubit<HomeState> {
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection(kUsersCollection);
 
-  List<BottomNavigationBarItem> buildBottomNavItems(BuildContext context) {
-    return [
-      const BottomNavigationBarItem(
-        icon: Icon(CupertinoIcons.home),
-        label: 'Home',
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(CupertinoIcons.add),
-        label: 'add story',
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(CupertinoIcons.search),
-        label: 'Search',
-      ),
-      BottomNavigationBarItem(
-        icon: CircleAvatar(
-          backgroundColor:
-              currentIndex == 3 ? Colors.white : Colors.transparent,
-          radius: 16.r,
-          child: BlocBuilder<HomeCubit, HomeState>(
-            buildWhen: (_, current) => current is GetUserSuccess,
-            builder: (context, state) {
-              return buildUserProfileImage(
-                context,
-                radius: 14,
-                profileImage: userModel!.profileImageUrl!,
-              );
-            },
-          ),
+  List<BottomNavigationBarItem> get buildBottomNavItems => [
+        const BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.home),
+          label: 'Home',
         ),
-        label: 'Profile',
-      ),
-    ];
-  }
+        const BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.add),
+          label: 'add story',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.search),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: CircleAvatar(
+            backgroundColor:
+                currentIndex == 3 ? Colors.white : Colors.transparent,
+            radius: 16.r,
+            child: BlocBuilder<HomeCubit, HomeState>(
+              buildWhen: (_, current) => current is GetUserSuccess,
+              builder: (context, state) {
+                return buildUserProfileImage(
+                  context,
+                  radius: 14,
+                  profileImage: userModel!.profileImageUrl!,
+                );
+              },
+            ),
+          ),
+          label: 'Profile',
+        ),
+      ];
 
-  getUserId() async {
-    userId = await HiveFunctions.getUserId();
-  }
+  // getUserId() async {
+  //   userId = await HiveFunctions.getUser();
+  // }
 
   Future<void> getUser() async {
+    userModel = await HiveFunctions.getUser();
+    userId = userModel!.uId;
+    emit(GetUserSuccess());
+    updateUserFromFirebase();
+  }
+
+  Future<void> updateUserFromFirebase() async {
     if (FirebaseAuth.instance.currentUser != null) {
-      emit(GetUserLoading());
+      // emit(GetUserLoading());
       final uId = FirebaseAuth.instance.currentUser!.uid;
       final docSnapShot = await _usersCollection.doc(uId).get();
       userModel = UserModel.fromJson(docSnapShot);
@@ -102,16 +107,14 @@ class HomeCubit extends Cubit<HomeState> {
   //   }
   // }
 
-  List<Widget> screens(BuildContext context) {
-    return [
-      const SafeArea(
-        child: HomeViewBody(),
-      ),
-      const Center(child: Text('add story')),
-      const SearchView(),
-      const ProfileView(),
-    ];
-  }
+  List<Widget> get screens => [
+        const SafeArea(
+          child: HomeViewBody(),
+        ),
+        const Center(child: Text('add story')),
+        const SearchView(),
+        const ProfileView(),
+      ];
 
   void changeBottomNav(index) {
     currentIndex = index;

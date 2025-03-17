@@ -39,10 +39,10 @@ class UpdateProfileBlocListener extends StatelessWidget {
         }
         if (state is UploadProfilePhotoSuccess ||
             state is UploadCoverPhotoSuccess) {
-          homeCubit.getUser();
+          homeCubit.updateUserFromFirebase();
         }
         if (state is UpdateUserSuccess) {
-          homeCubit.getUser();
+          homeCubit.updateUserFromFirebase();
           context.pop();
           context.pop();
         }

@@ -59,6 +59,8 @@ class SaveAndCancelButtonsEditProfile extends StatelessWidget {
             ),
             onPressed: () async {
               await profileCubit.updateUserNameAndBio(
+                name: profileCubit.nameController.text,
+                bio: profileCubit.bioController.text,
                 userModel: userModel,
               );
             },
