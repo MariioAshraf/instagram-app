@@ -26,7 +26,7 @@ class HomeView extends StatelessWidget {
                   drawer: const BuildDrawer(),
                   backgroundColor: Colors.transparent,
                   bottomNavigationBar: _buildBottomNavBar(homeCubit, context),
-                  body: homeCubit.screens(context)[homeCubit.currentIndex],
+                  body: homeCubit.screens[homeCubit.currentIndex],
                 );
         },
       ),
@@ -44,7 +44,7 @@ class HomeView extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: homeCubit.buildBottomNavItems(context),
+        items: homeCubit.buildBottomNavItems,
         currentIndex: homeCubit.currentIndex,
         onTap: (index) {
           if (index == 1) {

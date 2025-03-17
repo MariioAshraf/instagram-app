@@ -43,6 +43,7 @@ class GetPostCubit extends Cubit<GetPostState> {
       like = true;
       likedPostsMap[postId] = allPostsMap[postId]!;
     }
+
     emit(FastToggleLike(like, postId));
   }
 

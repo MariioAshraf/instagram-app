@@ -48,4 +48,9 @@ final class FetchLikesCountFailure extends GetPostState {
   FetchLikesCountFailure(this.errMessage);
 }
 
-final class FastToggleLike extends GetPostState {}
+final class FastToggleLike extends GetPostState {
+  final bool like;
+  final String postId;
+
+  FastToggleLike(this.like, this.postId);
+}

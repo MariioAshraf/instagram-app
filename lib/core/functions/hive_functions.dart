@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:instagram_app/features/auth/user_model_extensions.dart';
 import '../../constants.dart';
 import '../../features/auth/models/user_model.dart';
 import '../../features/story/data/models/story_model.dart';
@@ -47,22 +48,35 @@ class HiveFunctions {
     box.putAll(storiesMap);
   }
 
-  static Future<String> saveUserId(String userId) async {
-    final box = Hive.box<String>(kUserId);
-    await box.put(kUserId, userId);
-    return userId;
+  static Future<void> saveUser(UserModel user) async {
+    final box = Hive.box<UserModel>(kUsersCollection);
+    await box.put(kUsersCollection, user);
   }
 
-  static Future<void> removeUserId() async {
-    final box = Hive.box<String>(kUserId);
-    await box.delete(kUserId);
+  static Future<void> removeUser() async {
+    final box = Hive.box<UserModel>(kUsersCollection);
+    await box.delete(kUsersCollection);
   }
 
-  static Future<String?> getUserId() async {
-    final box = Hive.box<String>(kUserId);
-    return box.get(kUserId);
+  static Future<UserModel?> getUser() async {
+    final box = Hive.box<UserModel>(kUsersCollection);
+    return box.get(kUsersCollection);
   }
 
+  static Future<void> updaterUserNameAndBio(
+      {required String name, required String bio}) async {
+    final box = Hive.box<UserModel>(kUsersCollection);
+    UserModel user = box.get(kUsersCollection)!;
+    final updatedName = name.isNotEmpty ? name : user.name;
+    final updatedBio = bio.isNotEmpty ? bio : user.bio;
+    await box.put(
+        kUsersCollection, user.copyWith(name: updatedName, bio: updatedBio));
+  }
+
+  static Future<void> updateUser(UserModel user) async {
+    final box = Hive.box<UserModel>(kUsersCollection);
+    await box.put(kUsersCollection, user);
+  }
 // static Future<void> savePosts(List<PostModel> posts) async {
 //   final box = Hive.box<PostModel>(kPostsCollection);
 //   Map<String, PostModel> postsMap = {

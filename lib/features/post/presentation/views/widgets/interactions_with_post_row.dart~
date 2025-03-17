@@ -30,17 +30,29 @@ class InteractionsWithPostRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fetchPostCubit = GetPostCubit.get(context);
-    final bool isLiked = fetchPostCubit.likedPostsMap.containsKey(postId);
+    final bool liked = fetchPostCubit.likedPostsMap.containsKey(postId);
+    ValueNotifier<bool> isLiked = ValueNotifier(liked);
+
     final String userId = HomeCubit.get(context).userId!;
     return Row(
       children: [
-        LikeButton(
-          isLiked: isLiked,
-          onTap: () {
-            print('like${HomeCubit.get(context).userModel!.uId}');
-            fetchPostCubit.toggleLike(postId, userId);
+        ValueListenableBuilder<bool>(
+          valueListenable: isLiked,
+          builder: (context, value, child) {
+            return IconButton(
+              icon: Icon(value ? Icons.favorite : Icons.favorite_border),
+              onPressed: () {
+                isLiked.value = !isLiked.value;
+              },
+            );
           },
         ),
+        // LikeButton(
+        //   isLiked: isLiked,
+        //   onTap: () {
+        //     fetchPostCubit.toggleLike(postId, userId);
+        //   },
+        // ),
         Text(likesNum.toString()),
         horizontalSpacing(16),
         GestureDetector(
