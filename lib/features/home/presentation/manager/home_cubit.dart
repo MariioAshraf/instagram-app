@@ -76,7 +76,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getUser() async {
     userModel = await HiveFunctions.getUser();
-    userId = userModel!.uId;
+    userId = userModel?.uId;
     emit(GetUserSuccess());
     updateUserFromFirebase();
   }

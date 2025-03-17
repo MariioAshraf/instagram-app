@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:instagram_app/core/theming/app_colors.dart';
+import 'package:instagram_app/features/auth/user_model_extensions.dart';
+import '../../../../../core/functions/hive_functions.dart';
 import '../../../../../core/widgets/build_user_profile_image.dart';
 import '../../../../home/presentation/manager/home_cubit.dart';
 import '../../../../home/presentation/views/widgets/image_shimmer_loading.dart';
@@ -12,21 +14,20 @@ class ProfileImageBlocConsumer extends StatelessWidget {
     super.key,
   });
 
-
   @override
   Widget build(BuildContext context) {
-    final profileImage = HomeCubit.get(context).userModel!.profileImageUrl;
+    final userModel = HomeCubit.get(context).userModel!;
     return Positioned(
       bottom: 0,
       child: CircleAvatar(
-        radius: 69.r,
-        backgroundColor:  Colors.white,
+        radius: 80.r,
+        backgroundColor: Colors.white,
         child: BlocConsumer<ProfileCubit, ProfileState>(
           buildWhen: (_, current) =>
               current is UploadProfilePhotoSuccess ||
               current is UploadProfilePhotoFailure ||
               current is UploadProfilePhotoLoading,
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is UploadProfilePhotoFailure) {
               showDialog(
                 context: context,
@@ -55,6 +56,10 @@ class ProfileImageBlocConsumer extends StatelessWidget {
                 ),
               );
             }
+            if (state is UploadProfilePhotoSuccess) {
+              await HiveFunctions.updateUser(
+                  userModel.copyWith(profileImageUrl: state.profileImageUrl));
+            }
           },
           builder: (context, state) {
             if (state is UploadProfilePhotoLoading) {
@@ -68,7 +73,7 @@ class ProfileImageBlocConsumer extends StatelessWidget {
               );
             }
             return buildUserProfileImage(
-              profileImage: profileImage!,
+              profileImage: userModel.profileImageUrl!,
               context,
               radius: 66,
             );
