@@ -48,7 +48,9 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<HomeCubit>(
-            create: (context) => HomeCubit()..getUser(),
+            create: (context) => HomeCubit()
+              // ..getUserId()
+              ..getUser(),
           ),
           BlocProvider(
             create: (context) => StoryCubit(getIt.get<StoryRepoImpl>()),

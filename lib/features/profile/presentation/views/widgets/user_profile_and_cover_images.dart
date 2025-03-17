@@ -35,13 +35,13 @@ class UserProfileAndCoverImages extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 child: CircleAvatar(
-                  radius: 69.r,
+                  radius: 70.r,
                   backgroundColor:
                       hasStories ? AppColorsManager.mainBlue : Colors.white,
                   child: buildUserProfileImage(
                     context,
                     profileImage: userModel.profileImageUrl!,
-                    radius: 66.r,
+                    radius: 60.r,
                   ),
                 ),
               )
