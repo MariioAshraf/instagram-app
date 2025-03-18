@@ -1,4 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:instagram_app/core/theming/app_colors.dart';
+
+import '../theming/app_styles.dart';
 
 extension Navigation on BuildContext {
   Future<dynamic> pushNamed(String routeName, {Object? arguments}) {
@@ -24,4 +27,15 @@ extension Navigation on BuildContext {
   }
 
   void pop() => Navigator.of(this).pop();
+}
+
+extension ShowSnackBar on BuildContext {
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(
+      {required String message, Color? color}) {
+    final snackBar = SnackBar(
+      content: Text(message, style: AppTextStyles.font14DarkBlueMedium),
+      backgroundColor: color ?? AppColorsManager.mainBlue,
+    );
+    return ScaffoldMessenger.of(this).showSnackBar(snackBar);
+  }
 }

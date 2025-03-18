@@ -49,9 +49,15 @@ class _MyStoriesSectionState extends State<MyStoriesSection> {
         if (state is UploadStoriesSuccess) {
           storyCubit.getMyStories(userId);
         }
+        if (state is UploadStoriesFailure) {
+          context.showSnackBar(
+              message: 'error occurred while uploading stories');
+        }
       },
       buildWhen: (previous, current) =>
-          current is GetMyStoriesSuccess || current is UploadStoriesLoading,
+          current is GetMyStoriesSuccess ||
+          current is UploadStoriesLoading ||
+          current is UploadStoriesFailure,
       builder: (context, state) {
         return state is UploadStoriesLoading
             ? const UploadMyStoriesLoadingWidget()
