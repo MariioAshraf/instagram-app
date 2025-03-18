@@ -51,7 +51,8 @@ class MyApp extends StatelessWidget {
             create: (context) => HomeCubit()..getUser(),
           ),
           BlocProvider(
-            create: (context) => StoryCubit(getIt.get<StoryRepoImpl>()),
+            create: (context) => StoryCubit(getIt.get<StoryRepoImpl>())
+              ..storyRepo.deleteExpiredStories(),
           ),
         ],
         child: MaterialApp(

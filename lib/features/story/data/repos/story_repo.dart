@@ -24,4 +24,6 @@ abstract class StoryRepo {
 
   Future<Either<Failure, void>> setStorySeen(StoryModel storyModel,
       {required String userId});
+
+  Future<Either<Failure, void>> deleteExpiredStories();
 }

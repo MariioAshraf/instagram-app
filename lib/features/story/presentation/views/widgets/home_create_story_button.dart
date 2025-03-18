@@ -15,14 +15,7 @@ class HomeCreateStoryButton extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        BlocListener<StoryCubit, StoryState>(
-          listener: (context, state) {
-            if (state is StoryMediaPickedSuccess) {
-              context.pushNamed(Routes.storyPreviewView);
-            }
-          },
-          child: const PickStoryIcon(),
-        ),
+        const PickStoryIcon(),
         verticalSpacing(10),
         Text(
           'Your Story',

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_app/core/utils/extensions.dart';
 import 'package:instagram_app/features/home/presentation/manager/home_cubit.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/upload_my_stories_loading_widget.dart';
+import '../../../../../core/routing/routes.dart';
 import '../../manager/story_cubit/story_cubit.dart';
 import 'home_create_story_button.dart';
 import 'home_display_my_stories_circle.dart';
@@ -19,22 +22,42 @@ class MyStoriesSection extends StatefulWidget {
 
 class _MyStoriesSectionState extends State<MyStoriesSection> {
   late StoryCubit storyCubit;
+  late String userId;
 
   @override
   void initState() {
-    storyCubit = StoryCubit.get(context);
-    storyCubit.getMyStories(HomeCubit.get(context).userId!);
+    _initializeData();
     super.initState();
+  }
+
+  Future<void> _initializeData() async {
+    storyCubit = StoryCubit.get(context);
+    userId = HomeCubit.get(context).userId!;
+    await storyCubit.storyRepo.deleteExpiredStories();
+    if (storyCubit.state is! UploadStoriesLoading) {
+      await storyCubit.getMyStories(userId);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StoryCubit, StoryState>(
-      buildWhen: (previous, current) => current is GetMyStoriesSuccess,
+    return BlocConsumer<StoryCubit, StoryState>(
+      listener: (context, state) {
+        if (state is StoryMediaPickedSuccess) {
+          context.pushNamed(Routes.storyPreviewView);
+        }
+        if (state is UploadStoriesSuccess) {
+          storyCubit.getMyStories(userId);
+        }
+      },
+      buildWhen: (previous, current) =>
+          current is GetMyStoriesSuccess || current is UploadStoriesLoading,
       builder: (context, state) {
-        return storyCubit.myStories.isEmpty
-            ? const HomeCreateStoryButton()
-            : HomeDisplayMyStoriesCircle(myStories: storyCubit.myStories);
+        return state is UploadStoriesLoading
+            ? const UploadMyStoriesLoadingWidget()
+            : storyCubit.myStories.isEmpty
+                ? const HomeCreateStoryButton()
+                : HomeDisplayMyStoriesCircle(myStories: storyCubit.myStories);
       },
     );
   }

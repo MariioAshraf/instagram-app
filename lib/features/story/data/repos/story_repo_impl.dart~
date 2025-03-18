@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:instagram_app/core/errors/failure.dart';
 import 'package:instagram_app/core/functions/hive_functions.dart';
@@ -196,46 +195,30 @@ class StoryRepoImpl implements StoryRepo {
     }
   }
 
-  Future<void> _deleteStory(Box<StoryModel> box, String storyId,
-      {String? localPath}) async {
-    if (localPath != null) {
-      final file = File(localPath);
-      if (await file.exists()) {
-        try {
-          await file.delete();
-        } catch (e) {
-          debugPrint('Error deleting file: $e');
-        }
-      } else {
-        debugPrint('File does not exist: $localPath');
-      }
-    }
-    await box.delete(storyId);
-  }
-
   @override
-  Future<Either<Failure, void>> deleteExpiredStories() async {
-    final box = Hive.box<StoryModel>(kStoriesCollection);
+  Future<Either<Failure, void>> deleteExpiredStories()async {
+    final box = Hive.box<StoryModel>(kStoryBox);
     final now = DateTime.now();
     final expiryDate = now.subtract(const Duration(hours: 24));
 
     for (var key in box.keys) {
       final story = box.get(key);
       if (story != null && story.createdAt.isBefore(expiryDate)) {
-        await _deleteStory(box, key, localPath: story.localFilePath);
+        await deleteStory(box, key, localPath: story.localFilePath);
+        print('file deleted offline ${story.localFilePath}');
       }
     }
 
     try {
-      final users = await _usersCollection.get();
+      final users = await FirebaseFirestore.instance.collection('users').get();
       for (var userDoc in users.docs) {
         final storiesSnapshot = await userDoc.reference
-            .collection(kStoriesCollection)
-            .where(kCreatedAt, isLessThan: expiryDate)
+            .collection('stories')
+            .where('createdAt', isLessThan: expiryDate)
             .get();
         for (var doc in storiesSnapshot.docs) {
           StoryModel? story = box.get(doc.id);
-          await _deleteStory(box, doc.id, localPath: story?.localFilePath);
+          await deleteStory(box, doc.id, localPath: story?.localFilePath);
           await doc.reference.delete();
         }
       }

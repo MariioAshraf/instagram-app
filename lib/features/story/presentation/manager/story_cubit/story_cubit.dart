@@ -6,7 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_app/features/auth/models/user_model.dart';
 import 'package:instagram_app/features/story/data/models/story_model.dart';
 import 'package:instagram_app/features/story/data/repos/story_repo.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:path/path.dart' as path;
 
 part 'story_state.dart';
 
@@ -24,9 +26,7 @@ class StoryCubit extends Cubit<StoryState> {
 
   Future<void> pickStoryMedia() async {
     try {
-      storiesList.clear();
-      textEditingControllersList.clear();
-      videoPlayerControllerList.clear();
+      _clearLists();
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
         type: FileType.media,
@@ -39,7 +39,7 @@ class StoryCubit extends Cubit<StoryState> {
         );
         for (var file in storiesList) {
           if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
-            // await createThumbnails(file.path, listFiles.indexOf(file));
+            // await createThumbnails(file.path, storiesList.indexOf(file));
             final controller = VideoPlayerController.file(file);
             await controller.initialize();
             videoPlayerControllerList.add(controller);
@@ -52,6 +52,13 @@ class StoryCubit extends Cubit<StoryState> {
     } catch (e) {
       emit(StoryMediaPickedFailure(errMsg: e.toString()));
     }
+  }
+
+  void _clearLists() {
+    // storyThumbnailPathList.clear();
+    storiesList.clear();
+    textEditingControllersList.clear();
+    videoPlayerControllerList.clear();
   }
 
   Future<void> uploadStory({
@@ -81,11 +88,7 @@ class StoryCubit extends Cubit<StoryState> {
     result.fold((err) {
       emit(GetMyStoriesFailure(err.message));
     }, (r) {
-      print('stories rrrrrrrrrrr ${r.length}');
-
       myStories = r;
-      print('myStories ${myStories.length}');
-
       emit(GetMyStoriesSuccess());
     });
   }
@@ -111,6 +114,20 @@ class StoryCubit extends Cubit<StoryState> {
       emit(GetFriendsStoriesSuccess());
     });
   }
+
+  // List<String?> storyThumbnailPathList = [];
+  //
+  // Future<void> createThumbnails(String filePath, int index) async {
+  //   final directory = await getApplicationDocumentsDirectory();
+  //   final thumbnailPath = path.join(directory.path, 'thumbnail_$index.jpg');
+  //   storyThumbnailPathList[index] = await VideoThumbnail.thumbnailFile(
+  //     video: filePath,
+  //     thumbnailPath: thumbnailPath,
+  //     imageFormat: ImageFormat.JPEG,
+  //     maxHeight: 50,
+  //     quality: 75,
+  //   );
+  // }
 
   /// to get stories owners if we don't need to store them in hive
   /// storing them in hive causes non updatable user data during 1 day (story life time)
