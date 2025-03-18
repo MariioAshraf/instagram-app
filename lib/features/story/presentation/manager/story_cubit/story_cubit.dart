@@ -298,4 +298,12 @@ class StoryCubit extends Cubit<StoryState> {
     videoPlayerControllerList.removeAt(index);
     storiesList.removeAt(index);
   }
+
+  disposeControllers() {
+    for (var controller in videoPlayerControllerList) {
+      if (controller != null) {
+        controller.dispose();
+      }
+    }
+  }
 }

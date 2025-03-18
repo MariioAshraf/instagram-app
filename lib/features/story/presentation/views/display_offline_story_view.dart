@@ -49,7 +49,6 @@ class _DisplayOfflineStoriesStoryViewState
   void dispose() {
     _timer?.cancel();
     _tapTimer?.cancel();
-
     _videoController?.dispose();
 
     super.dispose();

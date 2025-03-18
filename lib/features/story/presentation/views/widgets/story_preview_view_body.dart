@@ -25,6 +25,12 @@ class _StoryPreviewViewBodyState extends State<StoryPreviewViewBody> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    storyCubit.disposeControllers();
+    super.dispose();
+  }
+
   _onPageChanged(int index) {
     {
       final file = storiesList[currentIndex];
