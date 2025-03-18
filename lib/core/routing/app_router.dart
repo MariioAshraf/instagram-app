@@ -17,6 +17,7 @@ import '../../features/post/presentation/manager/create_post_cubit/create_post_c
 import '../../features/post/presentation/manager/get_post_cubit/get_post_cubit.dart';
 import '../../features/post/presentation/views/create_post_view.dart';
 import '../../features/story/data/models/story_model.dart';
+import '../../features/story/presentation/views/stories_uploading_thumbnails_view.dart';
 import '../di/dependency_injection.dart';
 
 class AppRouter {
@@ -50,6 +51,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const SignUpView(),
         );
+      // case Routes.storiesUploadingThumbnailsView:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const StoriesUploadingThumbnailsView(),
+      //   );
       case Routes.displayOnlineStoriesView:
         return MaterialPageRoute(builder: (_) {
           final stories = settings.arguments as List<StoryModel>;

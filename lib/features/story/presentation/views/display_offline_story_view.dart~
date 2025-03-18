@@ -278,13 +278,14 @@ class _DisplayOfflineStoriesStoryViewState
                   child: VideoPlayer(_videoController!),
                 ),
               )
-            : const Center(child: CircularProgressIndicator());
+            : const Center(
+                child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 0.7,
+              ));
   }
 
   void _buildBottomSheet(BuildContext context, StoryModel story) {
-    print(story.viewersModels!.values.map((va) {
-      debugPrint('userrrrrrrrrrrrrrr ${va.toJson()}');
-    }).toList());
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -354,7 +355,6 @@ class _DisplayOfflineStoriesStoryViewState
                           child: ListView(
                             children: [
                               ...story.viewersModels!.entries.map((entry) {
-                                // print(vi)
                                 // story.seenStoryDate![entry.key] = DateTime.now().toIso8601String();
                                 return Padding(
                                   padding: EdgeInsets.only(top: 5.h),

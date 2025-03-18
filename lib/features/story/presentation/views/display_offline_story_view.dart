@@ -278,7 +278,12 @@ class _DisplayOfflineStoriesStoryViewState
                   child: VideoPlayer(_videoController!),
                 ),
               )
-            : const Center(child: CircularProgressIndicator());
+            : const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 0.7,
+                ),
+              );
   }
 
   void _buildBottomSheet(BuildContext context, StoryModel story) {

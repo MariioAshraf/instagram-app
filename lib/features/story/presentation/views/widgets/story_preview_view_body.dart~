@@ -1,0 +1,104 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_app/features/story/presentation/manager/story_cubit/story_cubit.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/preview_stories_images.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/preview_stories_videos.dart';
+import 'package:instagram_app/features/story/presentation/views/widgets/story_caption_and_upload_button.dart';
+
+class StoryPreviewViewBody extends StatefulWidget {
+  const StoryPreviewViewBody({super.key});
+
+  @override
+  State<StoryPreviewViewBody> createState() => _StoryPreviewViewBodyState();
+}
+
+class _StoryPreviewViewBodyState extends State<StoryPreviewViewBody> {
+  int currentIndex = 0;
+  late StoryCubit storyCubit;
+  late List<File> storiesList;
+
+  @override
+  void initState() {
+    storyCubit = StoryCubit.get(context);
+    storiesList = storyCubit.storiesList;
+    super.initState();
+  }
+
+  _onPageChanged(int index) {
+    {
+      final file = storiesList[currentIndex];
+      if ((file.path.endsWith('.mp4') || file.path.endsWith('.mov')) &&
+          storyCubit.videoPlayerControllerList[currentIndex]!.value.isPlaying) {
+        storyCubit.videoPlayerControllerList[currentIndex]!.pause();
+      }
+      setState(() {
+        currentIndex = index;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<StoryCubit, StoryState>(
+      listener: (context, state) {
+
+        if(state is UploadStoriesLoading){
+          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (context) => const Center(
+              child: CircularProgressIndicator(
+                color: AppColorsManager.mainBlue,
+              ),
+            ),
+          );
+        }
+      },
+      child: Stack(
+        children: [
+          Center(
+            child: PageView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: storiesList.length,
+              onPageChanged: _onPageChanged,
+              itemBuilder: (context, index) {
+                final file = storiesList[index];
+                if (file.path.endsWith('.mp4') || file.path.endsWith('.mov')) {
+                  return PreviewStoriesVideos(index: index);
+                }
+                return PreviewStoriesImages(file: file);
+              },
+            ),
+          ),
+          Positioned(
+            top: 15.h,
+            left: 15.w,
+            child: IconButton(
+              onPressed: () {
+                _deleteStoryFile(storyCubit, context);
+              },
+              icon: const Icon(Icons.cancel),
+            ),
+          ),
+          StoryCaptionAndUploadButton(currentIndex: currentIndex),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteStoryFile(StoryCubit storyCubit,
+      BuildContext context) async {
+    storyCubit.removeFile(currentIndex);
+    setState(() {
+      if (storyCubit.storiesList.isEmpty) {
+        Navigator.pop(context);
+      } else {
+        currentIndex = currentIndex >= storyCubit.storiesList.length
+            ? storyCubit.storiesList.length - 1
+            : currentIndex;
+      }
+    });
+  }
+}
