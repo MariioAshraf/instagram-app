@@ -32,7 +32,7 @@ class DrawerTileItem extends StatelessWidget {
       ),
       trailing: IconButton(
           onPressed: () {
-            _onPressed(context);
+            _onPressed(index, context);
           },
           icon: const Icon(
             color: Colors.black,
@@ -41,51 +41,51 @@ class DrawerTileItem extends StatelessWidget {
           )),
     );
   }
+}
 
-  void Function()? _onPressed(BuildContext context) {
-    if (index == 0) {
-      context.pop();
-      HomeCubit.get(context).changeBottomNav(3);
-    } else if (index == 1) {
-      // Photos/Videos
-    } else if (index == 2) {
-      context.pop();
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          icon: const Icon(
-            Icons.error,
-            color: Colors.red,
-            size: 32,
-          ),
-          content: Text(
-            'Are you sure you want to logout?',
-            style: AppTextStyles.font14DarkBlueMedium,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                context.pop();
-              },
-              child: Text(
-                'Cancel',
-                style: AppTextStyles.font13BlueRegular,
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                context.pop();
-                context.logOutAndGoToLogin(Routes.loginView);
-              },
-              child: Text(
-                'Got it',
-                style: AppTextStyles.font13BlueRegular,
-              ),
-            ),
-          ],
+void Function()? _onPressed(int index, BuildContext context) {
+  if (index == 0) {
+    context.pop();
+    HomeCubit.get(context).changeBottomNav(3);
+  } else if (index == 1) {
+    // Photos/Videos
+  } else if (index == 2) {
+    context.pop();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: const Icon(
+          Icons.error,
+          color: Colors.red,
+          size: 32,
         ),
-      );
-    }
-    return null;
+        content: Text(
+          'Are you sure you want to logout?',
+          style: AppTextStyles.font14DarkBlueMedium,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.pop();
+            },
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.font13BlueRegular,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              context.pop();
+              context.logOutAndGoToLogin(Routes.loginView);
+            },
+            child: Text(
+              'Got it',
+              style: AppTextStyles.font13BlueRegular,
+            ),
+          ),
+        ],
+      ),
+    );
   }
+  return null;
 }

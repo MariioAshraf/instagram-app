@@ -73,6 +73,15 @@ class HiveFunctions {
         kUsersCollection, user.copyWith(name: updatedName, bio: updatedBio));
   }
 
+  static Future<List<StoryModel>> getMyLocalStories(String userId) async {
+    final box = Hive.box<StoryModel>(kStoriesCollection);
+    List<StoryModel> stories = box.values
+        .where((story) => story.userId == userId)
+        .toList()
+      ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    return stories;
+  }
+
   static Future<void> updateUser(UserModel user) async {
     final box = Hive.box<UserModel>(kUsersCollection);
     await box.put(kUsersCollection, user);

@@ -33,7 +33,7 @@ class _MyStoriesSectionState extends State<MyStoriesSection> {
   Future<void> _initializeData() async {
     storyCubit = StoryCubit.get(context);
     userId = HomeCubit.get(context).userId!;
-    storyCubit.storyRepo.deleteExpiredStories();
+    await storyCubit.storyRepo.deleteExpiredStories();
     if (storyCubit.state is! UploadStoriesLoading) {
       await storyCubit.getMyStories(userId);
     }
